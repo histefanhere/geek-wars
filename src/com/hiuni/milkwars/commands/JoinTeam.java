@@ -1,6 +1,6 @@
-package com.unitato.milkwars.commands;
+package com.hiuni.milkwars.commands;
 
-import com.unitato.milkwars.MilkWars;
+import com.hiuni.milkwars.MilkWars;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
