@@ -1,4 +1,4 @@
-package com.unitato.milkwars;
+package com.hiuni.milkwars;
 
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
