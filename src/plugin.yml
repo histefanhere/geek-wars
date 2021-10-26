@@ -4,3 +4,7 @@ authors: [Uni-tato, Histefanhere]
 main: com.unitato.milkwars.MilkWars
 api-version: 1.17
 depend: []
+commands:
+  jointeam:
+    description: Join team cow or team sheep.
+    usage: /<command> <cow|sheep>
