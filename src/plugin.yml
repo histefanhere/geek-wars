@@ -1,6 +1,6 @@
 name: Milk-Wars
 version: 0.1
 authors: [Uni-tato, Histefanhere]
-main: com.unitato.milkwars.MilkWars
+main: com.hiuni.milkwars.MilkWars
 api-version: 1.17
 depend: []
