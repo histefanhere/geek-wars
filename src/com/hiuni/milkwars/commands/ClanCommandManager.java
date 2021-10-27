@@ -1,5 +1,6 @@
 package com.hiuni.milkwars.commands;
 
+import com.hiuni.milkwars.commands.subcommands.LeadersCommand;
 import com.hiuni.milkwars.commands.subcommands.MembersCommand;
 import org.bukkit.command.*;
 import org.bukkit.entity.Player;
@@ -7,11 +8,15 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 
+// If we ever end up needing a lot more commands, it'd be cool to use this:
+// https://github.com/aikar/commands
+
 public class ClanCommandManager implements TabExecutor {
     private ArrayList<SubCommand> subcommands = new ArrayList<>();
 
     public ClanCommandManager() {
         subcommands.add(new MembersCommand());
+        subcommands.add(new LeadersCommand());
     }
 
     @Override
