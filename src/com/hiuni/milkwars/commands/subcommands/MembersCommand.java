@@ -28,39 +28,55 @@ public class MembersCommand extends SubCommand {
     public void perform(Player player, String[] args) {
         if (args.length >= 2) {
             if (args[1].equalsIgnoreCase("list")) {
-                player.sendMessage("listing");
-
                 if (args.length == 3) {
-//                    TODO: list the players in the args[2] clan
+                    if (args[2].equalsIgnoreCase("cows")) {
+//                        TODO: List members of cow clan
+                        player.sendMessage("Listing members of cow clan...");
+                    }
+                    else if (args[2].equalsIgnoreCase("sheep")) {
+//                        TODO: List members of sheep clan
+                        player.sendMessage("Listing members in sheep clan...");
+                    }
+                    else {
+                        player.sendMessage("Usage: /clan members list [cows | sheep]");
+                    }
                 }
                 else {
 //                    TODO: list the players in the players clan
+                    player.sendMessage("Listing members in your clan...");
                 }
             }
 
             else if (args[1].equalsIgnoreCase("join")) {
-                player.sendMessage("joining");
-
                 if (args.length == 3) {
-//                    TODO: Join the args[2] clan
+                    if (args[2].equalsIgnoreCase("cows")) {
+//                        TODO: Join cow clan
+                        player.sendMessage("Joining cow clan...");
+                    }
+                    else if (args[2].equalsIgnoreCase("sheep")) {
+//                        TODO: Join sheep clan
+                        player.sendMessage("Joining sheep clan...");
+                    }
+                    else {
+                        player.sendMessage("Usage: /clan members join <cows | sheep>");
+                    }
                 }
                 else {
-//                    TODO: print `/clan members join` usage here
+                    player.sendMessage("Usage: /clan members join <cows | sheep>");
                 }
             }
 
             else if (args[1].equalsIgnoreCase("leave")) {
-                player.sendMessage("leaving");
-
 //                TODO: Leave the player from their clan
+                player.sendMessage("Leaving your clan...");
             }
 
             else {
-//                TODO: print `/clan members` usage here
+                player.sendMessage("Usage: /clan members <list | join | leave>");
             }
         }
         else {
-//            TODO: print /clan members usage here
+            player.sendMessage("Usage: /clan members <list | join | leave>");
         }
     }
 

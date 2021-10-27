@@ -51,6 +51,6 @@ public class ClanCommandManager implements TabExecutor {
             }
         }
 
-        return null;
+        return new ArrayList<>();
     }
 }
