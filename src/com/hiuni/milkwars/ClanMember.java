@@ -1,5 +1,7 @@
 package com.hiuni.milkwars;
 
+import org.bukkit.entity.Player;
+
 import java.util.UUID;
 
 public class ClanMember {
@@ -8,10 +10,10 @@ public class ClanMember {
     private boolean signedIn;
     private boolean leader;
 
-    ClanMember (String name, UUID uuid, boolean signedIn) {
+    ClanMember (String name, UUID uuid) {
         this.name = name;
         this.uuid = uuid;
-        this.signedIn = signedIn;
+        this.signedIn = true;
     }
 
     public String getName() {
@@ -67,6 +69,10 @@ public class ClanMember {
         }
         this.leader = false;
         return true;
+    }
+
+    public boolean isPlayer(Player player) {
+        return player.getUniqueId() == this.uuid;
     }
 
     // TODO save and load methods.

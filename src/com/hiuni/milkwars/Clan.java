@@ -4,19 +4,19 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class Clan {
 
     private String name;
-    private List<Player> members; // A list of clan members;
-    private List<Player> leaders; // The leaders of the clan, should not have double ups with members.
+    private List<ClanMember> members; // A list of clan members;
     private int kills; // A counter for how many times clan members have killed other clam members.
     private int captures; // A counter for how many times the clan has successfully captured the enemy flag.
 
     Clan(String name) {
         this.name = name;
-        this.members = new ArrayList<Player>();
-        this.leaders = new ArrayList<Player>();
+        this.members = new ArrayList<ClanMember>();
         this.kills = 0;
         this.captures = 0;
     }
@@ -26,67 +26,79 @@ public class Clan {
         if (this.hasMember(player)) {
             return false;
         } else {
-            return this.members.add(player);
+            return this.members.add(new ClanMember(player.getName(), player.getUniqueId()));
         }
     }
 
-    public boolean addLeader(Player player) {
+    public boolean promote(Player player) { // Replaces addLeader method, does basically the same thing. Player must already be a member when used.
         // Makes player a leader of the clan.
-        if (this.leaders.contains(player)) {
-            return false;
-        } else if (this.members.contains(player)) {
-            this.members.remove(player); // If they're already a member then remove them from the member list.
+        for (ClanMember member : this.members) {
+            if (member.isPlayer(player)) {
+                return member.promote();
+            }
         }
-        return this.leaders.add(player); // and add them to the leaders list.
+        return false;
+    }
+
+    public boolean demote(Player player) { // Replaced the demoteLeader method, does the same thing.
+        // Demoted the member from a leader to a normal member.
+        for (ClanMember member : this.members) {
+            if (member.isPlayer(player)) {
+                return member.demote();
+            }
+        }
+        return false;
     }
 
     public boolean removeMember(Player player) {
         // Removes a player from the clan if they are currently a member.
-        if (this.members.contains(player)) {
-            return this.members.remove((player));
-        } else if (this.leaders.contains(player)) {
-            return this.leaders.remove(player);
-            // Should a leader be able to be removed, or should they have to be demoted to member first?
+        for (ClanMember member : this.members) {
+            if (member.isPlayer(player)) {
+                this.members.remove(member);
+                return true;
+                // Could probably use "members.removeif(member -> (member.isPlayer(player)))",
+                // but this way we don't need to search the whole list if we find one early,
+                // since we know there will only be one occurrence (probably a better object to use tbh).
+            }
         }
         return false; // If we couldn't find the player to remove.
     }
 
-    public boolean demoteLeader(Player player) {
-        // Demote a player from leader to member.
-        if (!this.leaders.contains(player)) {
-            return false;
-        }
-        this.leaders.remove(player);
-        this.members.add(player);
-        return true;
-    }
-
-    public List<Player> getMembers() {
+    public List<ClanMember> getMembers() {
         // Returns a list of members (without leaders).
-        return members;
+        Predicate<ClanMember> ifNotLeader = member -> !member.isLeader();
+        return members.stream().filter(ifNotLeader).collect(Collectors.toList()); // I'm like 90% sure this will work.
     }
 
-    public List<Player> getLeaders() {
+    public List<ClanMember> getLeaders() {
         // Returns a list of clan leaders.
-        return leaders;
+        Predicate<ClanMember> ifLeader = ClanMember::isLeader;
+        return members.stream().filter(ifLeader).collect(Collectors.toList()); // I'm like 90% sure this will work.
     }
 
-    public List<Player> getAllMembers() {
+    public List<ClanMember> getAllMembers() {
         // Returns a list of all the clan members (leaders and normal members).
-        List<Player> allMembers = new ArrayList<Player>();
-        allMembers.addAll(this.getMembers());
-        allMembers.addAll(this.getLeaders());
-        return allMembers;
+        return this.members;
     }
 
     public boolean hasMember(Player player) {
         // Returns true if player is a member (or leader) of this clan.
-        return (this.members.contains(player) || this.leaders.contains(player));
+        for (ClanMember member : this.members) {
+            if (member.isPlayer(player)) {
+                return true;
+            }
+        }
+        return false; // If we couldn't find this member in the clan.
     }
 
     public boolean hasLeader(Player player) {
         // Returns true if the player is a leader of the clan.
-        return this.leaders.contains(player);
+        for (ClanMember member : this.members) {
+            if (member.isPlayer(player) && member.isLeader()) {
+                return true;
+            }
+        }
+        return false; // If we couldn't find this member in the clan.
     }
 
     public String getName() {
