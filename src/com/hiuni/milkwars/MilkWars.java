@@ -1,6 +1,7 @@
-package com.unitato.milkwars;
+package com.hiuni.milkwars;
 
-import com.unitato.milkwars.commands.JoinTeam;
+import com.hiuni.milkwars.commands.JoinTeam;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -39,12 +40,12 @@ public class MilkWars extends JavaPlugin {
     public void onEnable() {
         getCommand("jointeam").setExecutor(new JoinTeam());
 
-        getServer().getConsoleSender().sendMessage("§2[Milk-Wars] Plugin has been successfully enabled!");
+        getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[Milk-Wars] Plugin has been successfully enabled!");
     }
 
     @Override
     public void onDisable() {
-        getServer().getConsoleSender().sendMessage("§4[Milk-Wars] Plugin has been disabled.");
+        getServer().getConsoleSender().sendMessage(ChatColor.RED + "[Milk-Wars] Plugin has been disabled");
     }
 
 }

@@ -25,4 +25,6 @@ hs_err_pid*
 # intellij files
 milk-wars.iml
 .idea/
+
+# output files
 out/
