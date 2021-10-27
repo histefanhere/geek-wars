@@ -12,7 +12,7 @@ public class Clan {
     private int kills; // A counter for how many times clan members have killed other clam members.
     private int captures; // A counter for how many times the clan has successfully captured the enemy flag.
 
-    public void Clan(String name) {
+    Clan(String name) {
         this.name = name;
         this.members = new ArrayList<Player>();
         this.kills = 0;

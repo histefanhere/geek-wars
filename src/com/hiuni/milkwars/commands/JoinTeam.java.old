@@ -1,3 +1,5 @@
+// This stuff is outdated, I'm just leaving it here, so we can refer back to it.
+
 package com.hiuni.milkwars.commands;
 
 import com.hiuni.milkwars.MilkWars;
