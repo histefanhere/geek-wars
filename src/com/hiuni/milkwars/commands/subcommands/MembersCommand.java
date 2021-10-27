@@ -1,6 +1,8 @@
 package com.hiuni.milkwars.commands.subcommands;
 
+import com.hiuni.milkwars.MilkWars;
 import com.hiuni.milkwars.commands.SubCommand;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import java.sql.Array;
@@ -50,12 +52,10 @@ public class MembersCommand extends SubCommand {
             else if (args[1].equalsIgnoreCase("join")) {
                 if (args.length == 3) {
                     if (args[2].equalsIgnoreCase("cows")) {
-//                        TODO: Join cow clan
-                        player.sendMessage("Joining cow clan...");
+                        joinClan(player, 0);
                     }
                     else if (args[2].equalsIgnoreCase("sheep")) {
-//                        TODO: Join sheep clan
-                        player.sendMessage("Joining sheep clan...");
+                        joinClan(player, 1);
                     }
                     else {
                         player.sendMessage("Usage: /clan members join <cows | sheep>");
@@ -67,8 +67,21 @@ public class MembersCommand extends SubCommand {
             }
 
             else if (args[1].equalsIgnoreCase("leave")) {
-//                TODO: Leave the player from their clan
-                player.sendMessage("Leaving your clan...");
+                if (MilkWars.clans[0].removeMember(player)) {
+                    player.sendMessage(
+                            ChatColor.YELLOW + "Left the " + MilkWars.clans[0].getName()
+                    );
+                } else if (MilkWars.clans[1].removeMember(player)) {
+                    player.sendMessage(
+                            ChatColor.YELLOW + "Left the " + MilkWars.clans[1].getName()
+                    );
+                }
+//                Player is in no clan
+                else {
+                    player.sendMessage(
+                            ChatColor.RED + "You are not in any clan!"
+                    );
+                }
             }
 
             else {
@@ -77,6 +90,27 @@ public class MembersCommand extends SubCommand {
         }
         else {
             player.sendMessage("Usage: /clan members <list | join | leave>");
+        }
+    }
+
+    private void joinClan(Player player, int clan) {
+        int oppositeClan = 1 - clan;
+//        First test if they're a part of the sheep clan...
+        if (MilkWars.clans[oppositeClan].hasMember(player)) {
+            player.sendMessage(ChatColor.RED + "You cannot be a member of both clans!");
+            return;
+        }
+//        Try to add them to the clan...
+        if (MilkWars.clans[clan].addMember(player)) {
+            player.sendMessage(
+                    ChatColor.GREEN + "Welcome to the " + MilkWars.clans[clan].getName() + "!"
+            );
+        }
+//        They're already a part of the clan!
+        else {
+            player.sendMessage(
+                    ChatColor.RED + "You are already in the " + MilkWars.clans[clan].getName() + "!"
+            );
         }
     }
 
