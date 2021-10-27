@@ -84,12 +84,32 @@ public class MembersCommand extends SubCommand {
                 }
             }
 
+            else if (args[1].equalsIgnoreCase("promote")) {
+                if (args.length == 3) {
+//                    TODO: promote args[2] to a leader of their clan
+//                  player.sendMessage("Usage: /clan leaders add <player>");
+                }
+                else {
+                    player.sendMessage("Usage: /clan members promote <player>");
+                }
+            }
+
+            else if (args[1].equalsIgnoreCase("demote")) {
+                if (args.length == 3) {
+//                    TODO: remove args[2] from being a leader of their clan
+//                    player.sendMessage("Usage: /clan leaders remove <player>");
+                }
+                else {
+                    player.sendMessage("Usage: /clan leaders demote <player>");
+                }
+            }
+
             else {
-                player.sendMessage("Usage: /clan members <list | join | leave>");
+                player.sendMessage("Usage: /clan members <list | join | leave | promote | demote>");
             }
         }
         else {
-            player.sendMessage("Usage: /clan members <list | join | leave>");
+            player.sendMessage("Usage: /clan members <list | join | leave | promote | demote>");
         }
     }
 
@@ -123,6 +143,8 @@ public class MembersCommand extends SubCommand {
             arguments.add("list");
             arguments.add("join");
             arguments.add("leave");
+            arguments.add("promote");
+            arguments.add("demote");
         }
 
         else if (args.length == 3) {
@@ -131,6 +153,11 @@ public class MembersCommand extends SubCommand {
                 case "join":
                     arguments.add("cows");
                     arguments.add("sheep");
+                    break;
+                case "promote":
+                case "demote":
+//                    TODO: list online users
+                    arguments.add("allonlineusers");
                     break;
                 case "leave":
                 default:

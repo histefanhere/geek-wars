@@ -1,6 +1,5 @@
 package com.hiuni.milkwars.commands;
 
-import com.hiuni.milkwars.commands.subcommands.LeadersCommand;
 import com.hiuni.milkwars.commands.subcommands.MembersCommand;
 import org.bukkit.command.*;
 import org.bukkit.entity.Player;
@@ -16,7 +15,6 @@ public class ClanCommandManager implements TabExecutor {
 
     public ClanCommandManager() {
         subcommands.add(new MembersCommand());
-        subcommands.add(new LeadersCommand());
     }
 
     @Override
