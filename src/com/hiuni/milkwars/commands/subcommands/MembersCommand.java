@@ -26,24 +26,41 @@ public class MembersCommand extends SubCommand {
 
     @Override
     public void perform(Player player, String[] args) {
-        player.sendMessage("members stuff");
-
         if (args.length >= 2) {
-
             if (args[1].equalsIgnoreCase("list")) {
-                player.sendMessage("listing all members");
-                return;
+                player.sendMessage("listing");
+
+                if (args.length == 3) {
+//                    TODO: list the players in the args[2] clan
+                }
+                else {
+//                    TODO: list the players in the players clan
+                }
             }
 
             else if (args[1].equalsIgnoreCase("join")) {
                 player.sendMessage("joining");
-                return;
+
+                if (args.length == 3) {
+//                    TODO: Join the args[2] clan
+                }
+                else {
+//                    TODO: print `/clan members join` usage here
+                }
             }
 
             else if (args[1].equalsIgnoreCase("leave")) {
                 player.sendMessage("leaving");
-                return;
+
+//                TODO: Leave the player from their clan
             }
+
+            else {
+//                TODO: print `/clan members` usage here
+            }
+        }
+        else {
+//            TODO: print /clan members usage here
         }
     }
 
@@ -62,7 +79,6 @@ public class MembersCommand extends SubCommand {
             switch (args[1].toLowerCase()) {
                 case "list":
                 case "join":
-//                    clan names
                     arguments.add("cows");
                     arguments.add("sheep");
                     break;
