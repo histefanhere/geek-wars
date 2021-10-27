@@ -33,6 +33,11 @@ public class Clan {
         return this.members.remove(player);
     }
 
+    public boolean hasMember(Player player) {
+        // Returns true if player is a member of this clan.
+        return this.members.contains(player);
+    }
+
     public String getName() {
         // Returns the name of the clan.
         return this.name; // Is this safe? would it be possible to accidentally rename the clan with this.
