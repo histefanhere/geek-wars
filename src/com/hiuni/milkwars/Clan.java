@@ -43,9 +43,19 @@ public class Clan {
         return this.kills++;
     }
 
+    public int getKills() {
+        // Returns the amount of times an enemy clan member has been killed by someone in this clan.
+        return this.kills;
+    }
+
     public int addCapture() {
         // Increment the amount of captures the clan has and returns the new count.
         return this.captures++;
+    }
+
+    public int getCaptures() {
+        // Returns the amount of times this clan has successfully stolen another clans flag.
+        return this.captures;
     }
 
     public boolean save() {
