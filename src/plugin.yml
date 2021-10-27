@@ -4,3 +4,7 @@ authors: [Uni-tato, Histefanhere]
 main: com.hiuni.milkwars.MilkWars
 api-version: 1.17
 depend: []
+commands:
+  clan:
+    description: Main clan wars command.
+    usage: /<command [leaders,members,flags] ...
