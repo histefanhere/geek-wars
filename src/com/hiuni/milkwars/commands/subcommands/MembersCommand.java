@@ -1,15 +1,18 @@
 package com.hiuni.milkwars.commands.subcommands;
 
 import com.hiuni.milkwars.Clan;
+import com.hiuni.milkwars.ClanMember;
 import com.hiuni.milkwars.MilkWars;
 import com.hiuni.milkwars.commands.SubCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-import java.sql.Array;
+import java.text.Collator;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.TreeSet;
 
 public class MembersCommand extends SubCommand {
 
@@ -34,20 +37,26 @@ public class MembersCommand extends SubCommand {
             if (args[1].equalsIgnoreCase("list")) {
                 if (args.length == 3) {
                     if (args[2].equalsIgnoreCase("cows")) {
-//                        TODO: List members of cow clan
-                        player.sendMessage("Listing members of cow clan...");
+                        // List all members of cow clan
+                        listClan(player, MilkWars.clans[0]);
                     }
                     else if (args[2].equalsIgnoreCase("sheep")) {
-//                        TODO: List members of sheep clan
-                        player.sendMessage("Listing members in sheep clan...");
+                        // List all members of sheep clan
+                        listClan(player, MilkWars.clans[1]);
                     }
                     else {
                         player.sendMessage("Usage: /clan members list [cows | sheep]");
                     }
                 }
                 else {
-//                    TODO: list the players in the players clan
-                    player.sendMessage("Listing members in your clan...");
+                    for (Clan clan: MilkWars.clans) {
+                        if (MilkWars.clans[0].hasMember(player)) {
+                            listClan(player, clan);
+                            return;
+                        }
+                    }
+                    // Player is not a part of any clan
+                    player.sendMessage(ChatColor.RED + "You are not a part of any clan");
                 }
             }
 
@@ -151,7 +160,7 @@ public class MembersCommand extends SubCommand {
                         }
 
                         // If we've got here, the player isn't in any clan
-                        player.sendMessage(ChatColor.RED + "Player must be a normal member of a clan to be promoted");
+                        player.sendMessage(ChatColor.RED + "Player must be a leader of a clan to be demoted");
 
                     }
                     else {
@@ -192,6 +201,35 @@ public class MembersCommand extends SubCommand {
                     ChatColor.RED + "You are already in the " + MilkWars.clans[clan].getName() + "!"
             );
         }
+    }
+
+    private void listClan(Player player, Clan clan) {
+        int clanSize = clan.getAllMembers().size();
+        if (clanSize == 0) {
+            player.sendMessage(ChatColor.YELLOW + "The " + clan.getName() + " is empty");
+            return;
+        }
+
+        Collection<String> names = new TreeSet<>(Collator.getInstance());
+        String out = ChatColor.YELLOW + "Members of the " + clan.getName() + " (" +
+                ChatColor.GOLD + "leaders" + ChatColor.YELLOW + "):\n";
+
+        for (ClanMember clanMember: clan.getAllMembers()) {
+            if (clanMember.isLeader()) {
+                names.add(ChatColor.GOLD + clanMember.getName());
+            }
+            else {
+                names.add(ChatColor.YELLOW + clanMember.getName());
+            }
+        }
+
+        String delimiter = ChatColor.YELLOW + ", ";
+        if (clanSize > 15) {
+            delimiter = "\n";
+        }
+        out += String.join(delimiter, names);
+
+        player.sendMessage(out);
     }
 
     @Override
