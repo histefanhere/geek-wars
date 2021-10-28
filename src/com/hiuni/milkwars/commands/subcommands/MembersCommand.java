@@ -1,7 +1,9 @@
 package com.hiuni.milkwars.commands.subcommands;
 
+import com.hiuni.milkwars.Clan;
 import com.hiuni.milkwars.MilkWars;
 import com.hiuni.milkwars.commands.SubCommand;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -86,8 +88,37 @@ public class MembersCommand extends SubCommand {
 
             else if (args[1].equalsIgnoreCase("promote")) {
                 if (args.length == 3) {
-//                    TODO: promote args[2] to a leader of their clan
-//                  player.sendMessage("Usage: /clan leaders add <player>");
+                    // Find the player from args
+                    Player targetPlayer = null;
+                    for (Player p : Bukkit.getOnlinePlayers()) {
+                        if (p.getName().equals(args[2])) {
+                            targetPlayer = p;
+                            break;
+                        }
+                    }
+
+                    if (targetPlayer != null) {
+                        // We've found the player!
+
+                        // Try and promote the player in both clans
+                        for (Clan clan: MilkWars.clans) {
+                            if (clan.promote(player)) {
+                                player.sendMessage(ChatColor.GREEN + "Promoted Successfully");
+                                player.sendMessage(
+                                        ChatColor.GREEN + "You are now a leader of the " + clan.getName() + "!"
+                                );
+                                return;
+                            }
+                        }
+
+                        // If we've got here, the player isn't in any clan
+                        player.sendMessage(ChatColor.RED + "Player must be a normal member of a clan to be promoted");
+
+                    }
+                    else {
+                        // We couldn't find the player
+                        player.sendMessage(ChatColor.RED + "Invalid player");
+                    }
                 }
                 else {
                     player.sendMessage("Usage: /clan members promote <player>");
@@ -96,11 +127,40 @@ public class MembersCommand extends SubCommand {
 
             else if (args[1].equalsIgnoreCase("demote")) {
                 if (args.length == 3) {
-//                    TODO: remove args[2] from being a leader of their clan
-//                    player.sendMessage("Usage: /clan leaders remove <player>");
+                    // Find the player from args
+                    Player targetPlayer = null;
+                    for (Player p : Bukkit.getOnlinePlayers()) {
+                        if (p.getName().equals(args[2])) {
+                            targetPlayer = p;
+                            break;
+                        }
+                    }
+
+                    if (targetPlayer != null) {
+                        // We've found the player!
+
+                        // Try and demote the player in both clans
+                        for (Clan clan: MilkWars.clans) {
+                            if (clan.demote(player)) {
+                                player.sendMessage(ChatColor.GREEN + "Demoted Successfully");
+                                player.sendMessage(
+                                        ChatColor.GREEN + "You have been demoted from the " + clan.getName()
+                                );
+                                return;
+                            }
+                        }
+
+                        // If we've got here, the player isn't in any clan
+                        player.sendMessage(ChatColor.RED + "Player must be a normal member of a clan to be promoted");
+
+                    }
+                    else {
+                        // We couldn't find the player
+                        player.sendMessage(ChatColor.RED + "Invalid player");
+                    }
                 }
                 else {
-                    player.sendMessage("Usage: /clan leaders demote <player>");
+                    player.sendMessage("Usage: /clan members promote <player>");
                 }
             }
 
@@ -156,8 +216,9 @@ public class MembersCommand extends SubCommand {
                     break;
                 case "promote":
                 case "demote":
-//                    TODO: list online users
-                    arguments.add("allonlineusers");
+                    for (Player p: Bukkit.getOnlinePlayers()) {
+                        arguments.add(p.getName());
+                    }
                     break;
                 case "leave":
                 default:
