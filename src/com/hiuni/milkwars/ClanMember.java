@@ -76,8 +76,6 @@ public class ClanMember {
     }
 
     public boolean isPlayer(Player player) {
-        Bukkit.getConsoleSender().sendMessage(player.getUniqueId().toString());
-        Bukkit.getConsoleSender().sendMessage(this.uuid.toString());
         return player.getUniqueId() == this.uuid;
     }
 
@@ -91,11 +89,12 @@ public class ClanMember {
 
     public static ClanMember load(FileConfiguration config, String keyPath, String uuid) {
         // Loads data from config to the member.
-
-        // Need to put default values here.
-        //config.setDefaults();
-
         keyPath = keyPath + "." + uuid;
+
+        // Default values for if the data can't be found on file.
+        config.addDefault(keyPath + ".name", "ErrorLoadingName");
+        config.addDefault(keyPath + ".signedIn", false);
+        config.addDefault(keyPath + ".leader", false);
 
         ClanMember member = new ClanMember(
                 config.getString(keyPath + ".name"),

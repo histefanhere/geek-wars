@@ -35,7 +35,8 @@ public class MilkWars extends JavaPlugin {
     public boolean load() {
         FileManager.setup(this, "ClanData.yml");
         clans[0].load(FileManager.getConfig(), "cows");
-        clans[1].load(FileManager.getConfig(), "sheep");
+        Bukkit.getConsoleSender().sendMessage("I think it's happening here.");
+        clans[1].load(FileManager.getConfig(), "sheep"); // I think it's breaking because there's no data in here.
         Bukkit.getConsoleSender().sendMessage("Plz why broked");
         return true;
     }
