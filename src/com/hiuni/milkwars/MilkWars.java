@@ -1,7 +1,6 @@
 package com.hiuni.milkwars;
 
 import com.hiuni.milkwars.commands.ClanCommandManager;
-import com.hiuni.milkwars.commands.FileManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;

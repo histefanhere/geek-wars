@@ -1,4 +1,4 @@
-package com.hiuni.milkwars.commands;
+package com.hiuni.milkwars;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
