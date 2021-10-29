@@ -1,7 +1,14 @@
 package com.hiuni.milkwars;
 
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
@@ -19,6 +26,7 @@ public class Clan {
         this.members = new ArrayList<ClanMember>();
         this.kills = 0;
         this.captures = 0;
+
     }
 
     public boolean addMember(Player player) {
@@ -128,12 +136,12 @@ public class Clan {
 
     public boolean save() {
         // Saves the clan data to file so that it can preserved when the server restarts.
-        return false; // TODO Implement the save method.
+        return false;
     }
 
     public boolean load() {
         // Loads the clan data from file, uses the clan name as an identifier.
-        return false; // TODO Implement the load method.
+        return false;
     }
 
 
