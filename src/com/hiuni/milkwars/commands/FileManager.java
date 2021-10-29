@@ -20,9 +20,11 @@ public class FileManager {
         if (!file.exists()) {
             Bukkit.getServer().getLogger().severe(ChatColor.RED + "[Milk-Wars] Could not find " + ymlName + " Creating new file.");
             try {
+                file.getParentFile().mkdirs();
                 file.createNewFile();
             } catch (IOException e) {
-                Bukkit.getServer().getLogger().severe("[Milk-Wars] Failed to create new file.");
+                Bukkit.getServer().getLogger().severe("[Milk-Wars] Failed to create new file." +
+                        "\n" + e.getMessage());
                 return false;
             }
         }

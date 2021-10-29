@@ -1,5 +1,7 @@
 package com.hiuni.milkwars.commands;
 
+import com.hiuni.milkwars.MilkWars;
+import com.hiuni.milkwars.commands.subcommands.FileCommand;
 import com.hiuni.milkwars.commands.subcommands.MembersCommand;
 import org.bukkit.command.*;
 import org.bukkit.entity.Player;
@@ -13,8 +15,11 @@ import java.util.List;
 public class ClanCommandManager implements TabExecutor {
     private ArrayList<SubCommand> subcommands = new ArrayList<>();
 
-    public ClanCommandManager() {
+    public ClanCommandManager(MilkWars plugin) {
         subcommands.add(new MembersCommand());
+        FileCommand fileCommand = new FileCommand();
+        fileCommand.setPlugin(plugin);
+        subcommands.add(fileCommand);
     }
 
     @Override

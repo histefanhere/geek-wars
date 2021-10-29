@@ -1,14 +1,13 @@
 package com.hiuni.milkwars;
 
+import com.hiuni.milkwars.commands.FileManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
@@ -20,6 +19,17 @@ public class Clan {
     private List<ClanMember> members; // A list of clan members;
     private int kills; // A counter for how many times clan members have killed other clam members.
     private int captures; // A counter for how many times the clan has successfully captured the enemy flag.
+
+//    private static JavaPlugin plugin;
+//
+//    public static void setPlugin(JavaPlugin plugin) {
+//        // Sets the that this is operating in.
+//        Clan.plugin = plugin;
+//    }
+//
+//    public static JavaPlugin getPlugin() {
+//        return Clan.plugin;
+//    }
 
     Clan(String name) {
         this.name = name;
@@ -92,6 +102,7 @@ public class Clan {
     public boolean hasMember(Player player) {
         // Returns true if player is a member (or leader) of this clan.
         for (ClanMember member : this.members) {
+            Bukkit.getConsoleSender().sendMessage(player.getUniqueId().toString());
             if (member.isPlayer(player)) {
                 return true;
             }
@@ -134,15 +145,32 @@ public class Clan {
         return this.captures;
     }
 
-    public boolean save() {
+    public void save(FileConfiguration config, String keyPath) {
         // Saves the clan data to file so that it can preserved when the server restarts.
-        return false;
+        config.set(keyPath + ".name", getName());
+        config.set(keyPath + ".kills", getKills());
+        config.set(keyPath + ".captures", getCaptures());
+        for (ClanMember member : members) {
+            member.save(config, keyPath + ".members");
+        }
     }
 
-    public boolean load() {
-        // Loads the clan data from file, uses the clan name as an identifier.
-        return false;
+    public void load(FileConfiguration config, String keyPath) {
+        // Loads the clan data from config.
+
+        // Put default stuff here.
+        //config.setDefaults();
+
+        this.name = config.getString(keyPath + ".name");
+        this.kills = config.getInt(keyPath + ".kills");
+        this.captures = config.getInt(keyPath + ".captures");
+        for( String key : config.getConfigurationSection(keyPath + ".members").getKeys(false) ) {
+            Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + key);
+            // The keys of each member is their uuid as a string.
+            // The load method creates a new member from the data found in config.
+            ClanMember member = ClanMember.load(config, keyPath + ".members", key);
+            Bukkit.getConsoleSender().sendMessage(member.getName());
+            members.add(member); // Where tf is this error coming from?!
+        }
     }
-
-
 }
