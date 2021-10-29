@@ -158,18 +158,20 @@ public class Clan {
     public void load(FileConfiguration config, String keyPath) {
         // Loads the clan data from config.
 
-        // Put default stuff here.
-        //config.setDefaults();
+        config.addDefault(keyPath + ".name", "ErrorLoadingClanName");
+        config.addDefault(keyPath + ".kills", 0);
+        config.addDefault(keyPath + ".captures", 0);
+        config.addDefault(keyPath + ".members", "");
 
         this.name = config.getString(keyPath + ".name");
         this.kills = config.getInt(keyPath + ".kills");
         this.captures = config.getInt(keyPath + ".captures");
+        Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + this.getName());
         for( String key : config.getConfigurationSection(keyPath + ".members").getKeys(false) ) {
             Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + key);
             // The keys of each member is their uuid as a string.
             // The load method creates a new member from the data found in config.
             ClanMember member = ClanMember.load(config, keyPath + ".members", key);
-            Bukkit.getConsoleSender().sendMessage(member.getName());
             members.add(member); // Where tf is this error coming from?!
         }
     }

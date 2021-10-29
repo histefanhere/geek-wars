@@ -39,14 +39,11 @@ public class FileCommand extends SubCommand {
                 player.sendMessage(ChatColor.RED + "[Milk-Wars] Something went wrong, couldn't save the clans.");
             }
         } else if (args[1].equalsIgnoreCase("load")) {
-            Bukkit.getServer().getConsoleSender().sendMessage("before");
-            FileCommand.plugin.load();
-            Bukkit.getServer().getConsoleSender().sendMessage("after");
-//            if (FileCommand.plugin.load()) {
-//                player.sendMessage(ChatColor.GREEN + "[Milk-Wars] Successfully loaded clans.");
-//            } else {
-//                player.sendMessage(ChatColor.RED + "[Milk-Wars] Something went wrong, couldn't load the clans.");
-//            }
+            if (FileCommand.plugin.load()) {
+                player.sendMessage(ChatColor.GREEN + "[Milk-Wars] Successfully loaded clans.");
+            } else {
+                player.sendMessage(ChatColor.RED + "[Milk-Wars] Something went wrong, couldn't load the clans.");
+            }
         } else {
             player.sendMessage(ChatColor.RED + "[Milk-Wars] Usage: /clan file [save | load]");
         }

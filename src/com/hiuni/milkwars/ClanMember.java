@@ -92,7 +92,7 @@ public class ClanMember {
         keyPath = keyPath + "." + uuid;
 
         // Default values for if the data can't be found on file.
-        config.addDefault(keyPath + ".name", "ErrorLoadingName");
+        config.addDefault(keyPath + ".name", "ErrorLoadingPlayerName");
         config.addDefault(keyPath + ".signedIn", false);
         config.addDefault(keyPath + ".leader", false);
 
