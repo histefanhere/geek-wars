@@ -76,7 +76,8 @@ public class ClanMember {
     }
 
     public boolean isPlayer(Player player) {
-        return player.getUniqueId() == this.uuid;
+        // Checks if the member is the player provided.
+        return player.getUniqueId().equals(this.uuid);
     }
 
     public void save (FileConfiguration config, String keyPath) {

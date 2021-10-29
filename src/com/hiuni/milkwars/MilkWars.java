@@ -25,6 +25,7 @@ public class MilkWars extends JavaPlugin {
     }
 
     public boolean save() {
+        // Should probably move this somewhere else, but it's fine for now.
         FileManager.setup(this, "ClanData.yml");
         clans[0].save(FileManager.getConfig(), "cows");
         clans[1].save(FileManager.getConfig(), "sheep");
@@ -32,11 +33,10 @@ public class MilkWars extends JavaPlugin {
     }
 
     public boolean load() {
+        // And of course move this aswell.
         FileManager.setup(this, "ClanData.yml");
         clans[0].load(FileManager.getConfig(), "cows");
-        Bukkit.getConsoleSender().sendMessage("I think it's happening here.");
-        clans[1].load(FileManager.getConfig(), "sheep"); // I think it's breaking because there's no data in here.
-        Bukkit.getConsoleSender().sendMessage("Plz why broked");
+        clans[1].load(FileManager.getConfig(), "sheep");
         return true;
     }
 
