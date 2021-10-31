@@ -1,6 +1,7 @@
 package com.hiuni.milkwars;
 
 import com.hiuni.milkwars.commands.ClanCommandManager;
+import com.hiuni.milkwars.events.SaveOnWorldSave;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -16,6 +17,7 @@ public class MilkWars extends JavaPlugin {
 
         DataManager.setPlugin(this);
         DataManager.load();
+        getServer().getPluginManager().registerEvents(new SaveOnWorldSave(), this);
 
         getCommand("clan").setExecutor(new ClanCommandManager(this));
 

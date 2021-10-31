@@ -1,5 +1,7 @@
 package com.hiuni.milkwars;
 
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class DataManager {
@@ -14,6 +16,10 @@ public class DataManager {
         // Saves the clan data to file.
 
         // Should probably make sure plugin has been set before trying.
+
+        Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[Milk-Wars]" +
+                " Saving data to file.");
+
         FileManager.setup(DataManager.plugin, "ClanData.yml");
         MilkWars.clans[0].save(FileManager.getConfig(), "cows");
         MilkWars.clans[1].save(FileManager.getConfig(), "sheep");
