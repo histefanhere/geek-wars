@@ -34,6 +34,8 @@ public class MembersCommand extends SubCommand {
     @Override
     public void perform(Player player, String[] args) {
         if (args.length >= 2) {
+
+            // Handles the "/clan members list ..." subcommand option
             if (args[1].equalsIgnoreCase("list")) {
                 if (args.length == 3) {
                     if (args[2].equalsIgnoreCase("cows")) {
@@ -50,7 +52,7 @@ public class MembersCommand extends SubCommand {
                 }
                 else {
                     for (Clan clan: MilkWars.clans) {
-                        if (MilkWars.clans[0].hasMember(player)) {
+                        if (clan.hasMember(player)) {
                             listClan(player, clan);
                             return;
                         }
@@ -60,6 +62,7 @@ public class MembersCommand extends SubCommand {
                 }
             }
 
+            // Handles the "/clan members join ..." subcommand option
             else if (args[1].equalsIgnoreCase("join")) {
                 if (args.length == 3) {
                     if (args[2].equalsIgnoreCase("cows")) {
@@ -77,17 +80,19 @@ public class MembersCommand extends SubCommand {
                 }
             }
 
+            // Handles the "/clan members leave ..." subcommand option
             else if (args[1].equalsIgnoreCase("leave")) {
                 if (MilkWars.clans[0].removeMember(player)) {
                     player.sendMessage(
                             ChatColor.YELLOW + "Left the " + MilkWars.clans[0].getName()
                     );
-                } else if (MilkWars.clans[1].removeMember(player)) {
+                }
+                else if (MilkWars.clans[1].removeMember(player)) {
                     player.sendMessage(
                             ChatColor.YELLOW + "Left the " + MilkWars.clans[1].getName()
                     );
                 }
-//                Player is in no clan
+                // Player is in no clan
                 else {
                     player.sendMessage(
                             ChatColor.RED + "You are not in any clan!"
@@ -95,6 +100,7 @@ public class MembersCommand extends SubCommand {
                 }
             }
 
+            // Handles the "/clan members promote ..." subcommand option
             else if (args[1].equalsIgnoreCase("promote")) {
                 if (args.length == 3) {
                     // Find the player from args
@@ -134,6 +140,7 @@ public class MembersCommand extends SubCommand {
                 }
             }
 
+            // Handles the "/clan members demote ..." subcommand option
             else if (args[1].equalsIgnoreCase("demote")) {
                 if (args.length == 3) {
                     // Find the player from args
@@ -184,18 +191,19 @@ public class MembersCommand extends SubCommand {
 
     private void joinClan(Player player, int clan) {
         int oppositeClan = 1 - clan;
-//        First test if they're a part of the sheep clan...
+        // First test if they're a part of the sheep clan...
         if (MilkWars.clans[oppositeClan].hasMember(player)) {
             player.sendMessage(ChatColor.RED + "You cannot be a member of both clans!");
             return;
         }
-//        Try to add them to the clan...
+
+        // Try to add them to the clan...
         if (MilkWars.clans[clan].addMember(player)) {
             player.sendMessage(
                     ChatColor.GREEN + "Welcome to the " + MilkWars.clans[clan].getName() + "!"
             );
         }
-//        They're already a part of the clan!
+        // They're already a part of the clan!
         else {
             player.sendMessage(
                     ChatColor.RED + "You are already in the " + MilkWars.clans[clan].getName() + "!"
@@ -204,12 +212,15 @@ public class MembersCommand extends SubCommand {
     }
 
     private void listClan(Player player, Clan clan) {
+        // List all the members of clan `clan` and send it to `player`
+
         int clanSize = clan.getAllMembers().size();
         if (clanSize == 0) {
             player.sendMessage(ChatColor.YELLOW + "The " + clan.getName() + " is empty");
             return;
         }
 
+        // Tree sets are automatically sorted. Handy!
         Collection<String> names = new TreeSet<>(Collator.getInstance());
         String out = ChatColor.YELLOW + "Members of the " + clan.getName() + " (" +
                 ChatColor.GOLD + "leaders" + ChatColor.YELLOW + "):\n";
@@ -232,11 +243,14 @@ public class MembersCommand extends SubCommand {
         player.sendMessage(out);
     }
 
+    // This method gets called when tab completion options need to be presented
     @Override
     public List<String> getSubcommandArguments(Player player, String[] args) {
 
         List<String> arguments = new ArrayList<>();
 
+        // The player has typed in "/clan members ..." and needs to be suggested
+        // A subcommand option
         if (args.length == 2) {
             arguments.add("list");
             arguments.add("join");
@@ -245,6 +259,8 @@ public class MembersCommand extends SubCommand {
             arguments.add("demote");
         }
 
+        // The player has typed in "/clan members option" and some options need
+        // to be passed a value, e.g. "/clan members list sheep"
         else if (args.length == 3) {
             switch (args[1].toLowerCase()) {
                 case "list":

@@ -13,6 +13,7 @@ public class MilkWars extends JavaPlugin {
         clans[0] = new Clan("Milk Drinkers");
         clans[1] = new Clan("Wool Wearers"); // WIP name.
 
+        // Register the clan command manager
         getCommand("clan").setExecutor(new ClanCommandManager());
 
         getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[Milk-Wars] Plugin has been successfully enabled!");
