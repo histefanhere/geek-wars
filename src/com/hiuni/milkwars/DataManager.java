@@ -6,7 +6,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class DataManager {
 
-    private static JavaPlugin plugin;
+    private static JavaPlugin plugin = null;
 
     public static void setPlugin(JavaPlugin plugin) {
         DataManager.plugin = plugin;
@@ -15,7 +15,12 @@ public class DataManager {
     public static boolean save() {
         // Saves the clan data to file.
 
-        // Should probably make sure plugin has been set before trying.
+        if (DataManager.plugin == null) {
+            Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Milk-Wars] Could not" +
+                    " save clan data, plugin has not been set.");
+            return false;
+        }
+        // TODO Only save if there's actually been a change to the data.
 
         Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[Milk-Wars]" +
                 " Saving data to file.");
@@ -28,7 +33,13 @@ public class DataManager {
 
     public static boolean load() {
         // Loads the data from file.
-        // The return value from this doesn't really mean anything yet lol.
+        // The return value from this doesn't really mean much yet lol.
+
+        if (DataManager.plugin == null) {
+            Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Milk-Wars] Could not" +
+                    " load clan data, plugin has not been set.");
+            return false;
+        }
 
         FileManager.setup(DataManager.plugin, "ClanData.yml");
         MilkWars.clans[0].load(FileManager.getConfig(), "cows");
