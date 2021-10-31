@@ -12,7 +12,10 @@ public class MilkWars extends JavaPlugin {
     @Override
     public void onEnable() {
         clans[0] = new Clan("Milk Drinkers");
-        clans[1] = new Clan("Wool Wearers"); // WIP name.
+        clans[1] = new Clan("Wool Wearers");
+
+        DataManager.setPlugin(this);
+        DataManager.load();
 
         getCommand("clan").setExecutor(new ClanCommandManager(this));
 
@@ -21,23 +24,8 @@ public class MilkWars extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        DataManager.save();
         getServer().getConsoleSender().sendMessage(ChatColor.RED + "[Milk-Wars] Plugin has been disabled");
-    }
-
-    public boolean save() {
-        // Should probably move this somewhere else, but it's fine for now.
-        FileManager.setup(this, "ClanData.yml");
-        clans[0].save(FileManager.getConfig(), "cows");
-        clans[1].save(FileManager.getConfig(), "sheep");
-        return FileManager.saveConfig();
-    }
-
-    public boolean load() {
-        // And of course move this aswell.
-        FileManager.setup(this, "ClanData.yml");
-        clans[0].load(FileManager.getConfig(), "cows");
-        clans[1].load(FileManager.getConfig(), "sheep");
-        return true;
     }
 
 }

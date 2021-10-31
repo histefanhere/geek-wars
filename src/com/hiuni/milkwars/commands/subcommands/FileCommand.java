@@ -1,8 +1,8 @@
 package com.hiuni.milkwars.commands.subcommands;
 
 import com.hiuni.milkwars.MilkWars;
+import com.hiuni.milkwars.DataManager;
 import com.hiuni.milkwars.commands.SubCommand;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -33,13 +33,13 @@ public class FileCommand extends SubCommand {
     @Override
     public void perform(Player player, String[] args) {
         if (args[1].equalsIgnoreCase("save")) {
-            if (FileCommand.plugin.save()) {
+            if (DataManager.save()) {
                 player.sendMessage(ChatColor.GREEN + "[Milk-Wars] Successfully saved clans.");
             } else {
                 player.sendMessage(ChatColor.RED + "[Milk-Wars] Something went wrong, couldn't save the clans.");
             }
         } else if (args[1].equalsIgnoreCase("load")) {
-            if (FileCommand.plugin.load()) {
+            if (DataManager.load()) {
                 player.sendMessage(ChatColor.GREEN + "[Milk-Wars] Successfully loaded clans.");
             } else {
                 player.sendMessage(ChatColor.RED + "[Milk-Wars] Something went wrong, couldn't load the clans.");
