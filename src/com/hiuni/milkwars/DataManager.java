@@ -8,8 +8,14 @@ public class DataManager {
 
     private static JavaPlugin plugin = null;
 
+    private static boolean hasChanged = false;
+
     public static void setPlugin(JavaPlugin plugin) {
         DataManager.plugin = plugin;
+    }
+
+    public static void registerChanges() {
+        DataManager.hasChanged = true;
     }
 
     public static boolean save() {
@@ -20,9 +26,14 @@ public class DataManager {
                     " save clan data, plugin has not been set.");
             return false;
         }
-        // TODO Only save if there's actually been a change to the data.
 
-        Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[Milk-Wars]" +
+        if (!DataManager.hasChanged) {
+            Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Milk-Wars] Clan data" +
+                    "has not changed, no reason to save to file.");
+            return true;
+        }
+
+        Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Milk-Wars]" +
                 " Saving data to file.");
 
         FileManager.setup(DataManager.plugin, "ClanData.yml");
@@ -44,6 +55,7 @@ public class DataManager {
         FileManager.setup(DataManager.plugin, "ClanData.yml");
         MilkWars.clans[0].load(FileManager.getConfig(), "cows");
         MilkWars.clans[1].load(FileManager.getConfig(), "sheep");
+        DataManager.hasChanged = false;
         return true;
     }
 

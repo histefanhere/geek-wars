@@ -18,17 +18,6 @@ public class Clan {
     private int kills; // A counter for how many times clan members have killed other clam members.
     private int captures; // A counter for how many times the clan has successfully captured the enemy flag.
 
-//    private static JavaPlugin plugin;
-//
-//    public static void setPlugin(JavaPlugin plugin) {
-//        // Sets the that this is operating in.
-//        Clan.plugin = plugin;
-//    }
-//
-//    public static JavaPlugin getPlugin() {
-//        return Clan.plugin;
-//    }
-
     Clan(String name) {
         this.name = name;
         this.members = new ArrayList<ClanMember>();
@@ -42,6 +31,7 @@ public class Clan {
         if (this.hasMember(player)) {
             return false;
         } else {
+            DataManager.registerChanges(); // Allows the system to know that changes haven't been saved to disk.
             return this.members.add(new ClanMember(player.getName(), player.getUniqueId()));
         }
     }
@@ -50,6 +40,7 @@ public class Clan {
         // Makes player a leader of the clan.
         for (ClanMember member : this.members) {
             if (member.isPlayer(player)) {
+                DataManager.registerChanges();
                 return member.promote();
             }
         }
@@ -60,6 +51,7 @@ public class Clan {
         // Demoted the member from a leader to a normal member.
         for (ClanMember member : this.members) {
             if (member.isPlayer(player)) {
+                DataManager.registerChanges();
                 return member.demote();
             }
         }
@@ -71,6 +63,7 @@ public class Clan {
         for (ClanMember member : this.members) {
             if (member.isPlayer(player)) {
                 this.members.remove(member);
+                DataManager.registerChanges();
                 return true;
                 // Could probably use "members.removeif(member -> (member.isPlayer(player)))",
                 // but this way we don't need to search the whole list if we find one early,
@@ -125,6 +118,7 @@ public class Clan {
 
     public int addKill() {
         // Increments the amount of kills the clan has and returns the new count.
+        DataManager.registerChanges();
         return this.kills++;
     }
 
@@ -135,6 +129,7 @@ public class Clan {
 
     public int addCapture() {
         // Increment the amount of captures the clan has and returns the new count.
+        DataManager.registerChanges();
         return this.captures++;
     }
 
