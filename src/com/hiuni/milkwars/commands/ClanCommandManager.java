@@ -2,6 +2,7 @@ package com.hiuni.milkwars.commands;
 
 import com.hiuni.milkwars.commands.subcommands.FileCommand;
 import com.hiuni.milkwars.commands.subcommands.MembersCommand;
+import com.hiuni.milkwars.commands.subcommands.SetChatColourCommand;
 import dev.jorel.commandapi.CommandAPICommand;
 
 public class ClanCommandManager {
@@ -9,6 +10,7 @@ public class ClanCommandManager {
         new CommandAPICommand("clan")
                 .withSubcommand(new MembersCommand().getCommand())
                 .withSubcommand(new FileCommand().getCommand())
+                .withSubcommand(new SetChatColourCommand().getCommand())
                 .register();
     }
 }

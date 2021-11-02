@@ -1,0 +1,85 @@
+package com.hiuni.milkwars.commands.subcommands;
+
+import com.hiuni.milkwars.Clan;
+import com.hiuni.milkwars.ClanMember;
+import com.hiuni.milkwars.MilkWars;
+import com.nametagedit.plugin.NametagEdit;
+import dev.jorel.commandapi.CommandAPICommand;
+import dev.jorel.commandapi.CommandPermission;
+import dev.jorel.commandapi.arguments.MultiLiteralArgument;
+import dev.jorel.commandapi.arguments.PlayerArgument;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.ScoreboardManager;
+import org.bukkit.scoreboard.Team;
+
+import java.lang.reflect.Array;
+import java.util.HashMap;
+
+public class SetChatColourCommand {
+
+    public HashMap<String, ChatColor> colours = new HashMap<>();
+
+    public SetChatColourCommand() {
+        colours.put("red", ChatColor.RED);
+        colours.put("green", ChatColor.GREEN);
+
+    }
+
+    public CommandAPICommand getCommand() {
+        return new CommandAPICommand("setchatcolour")
+                .withPermission(CommandPermission.OP)
+                .withArguments(new MultiLiteralArgument(colours.keySet().toArray(new String[0])))
+                .withArguments(new PlayerArgument("player"))
+                .executes((sender, args) -> {
+                    String colourName = (String) args[0];
+                    Player player = (Player) args[1];
+
+                    ChatColor teamColour = colours.get(colourName);
+
+                    // Get the target team name and the prefix of the team.
+                    // this is based on the passed colour name, if the player is in a clan
+                    // and if they're signed in
+                    String teamName = colourName;
+                    String teamPrefix = "";
+                    String[] prefixes = {"cw_", "sh_"};
+                    for (int i = 0; i < 2; i++) {
+                        Clan clan = MilkWars.clans[i];
+                        boolean foundPlayer = false;
+                        for (ClanMember member: clan.getAllMembers()) {
+                            if (member.isPlayer(player)) {
+                                if (member.isSignedIn()) {
+                                    teamName = prefixes[i] + teamName;
+                                    teamPrefix = clan.getPrefix();
+                                }
+                                foundPlayer = true;
+                                break;
+                            }
+                        }
+                        if (foundPlayer) {
+                            break;
+                        }
+                    }
+
+                    // Get the server scoreboard
+                    ScoreboardManager manager = Bukkit.getScoreboardManager();
+                    assert manager != null;
+                    Scoreboard board = manager.getMainScoreboard();
+
+                    Team targetTeam = board.getTeam(teamName);
+                    if (targetTeam == null) {
+                        // the target team doesn't exist in-game, we need to create it manually
+                        targetTeam = board.registerNewTeam(teamName);
+                        targetTeam.setColor(teamColour);
+                        targetTeam.setPrefix(teamPrefix);
+                    }
+
+                    // TODO: If the player is the last person in their old team, delete it?
+
+                    // Join the target team!
+                    targetTeam.addEntry(player.getName());
+                });
+    }
+}
