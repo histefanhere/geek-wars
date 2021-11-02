@@ -9,6 +9,8 @@ import java.util.List;
 
 // If we ever end up needing a lot more commands, it'd be cool to use this:
 // https://github.com/aikar/commands
+// Or maybe this is simpler/better:
+// https://github.com/JorelAli/CommandAPI
 
 public class ClanCommandManager implements TabExecutor {
     private ArrayList<SubCommand> subcommands = new ArrayList<>();
