@@ -1,6 +1,7 @@
 package com.hiuni.milkwars;
 
 import com.hiuni.milkwars.commands.ClanCommandManager;
+import com.hiuni.milkwars.commands.subcommands.FileCommand;
 import dev.jorel.commandapi.CommandAPI;
 import dev.jorel.commandapi.CommandAPIConfig;
 import org.bukkit.Bukkit;
@@ -20,6 +21,8 @@ public class MilkWars extends JavaPlugin {
     public void onEnable() {
         clans[0] = new Clan("Milk Drinkers");
         clans[1] = new Clan("Wool Wearers"); // WIP name.
+
+        new FileCommand().setPlugin(this);
 
         // Register the clan command
         ClanCommandManager.register();
