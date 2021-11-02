@@ -5,6 +5,7 @@ import com.hiuni.milkwars.ClanMember;
 import com.hiuni.milkwars.MilkWars;
 import dev.jorel.commandapi.CommandAPI;
 import dev.jorel.commandapi.CommandAPICommand;
+import dev.jorel.commandapi.CommandPermission;
 import dev.jorel.commandapi.arguments.MultiLiteralArgument;
 import dev.jorel.commandapi.arguments.PlayerArgument;
 import org.bukkit.ChatColor;
@@ -55,6 +56,7 @@ public class MembersCommand {
             });
 
     private final CommandAPICommand membersJoin = new CommandAPICommand("join")
+            .withPermission(CommandPermission.OP)
             .withArguments(new PlayerArgument("player"))
             .withArguments(new MultiLiteralArgument("cows", "sheep"))
             .executes((sender, args) -> {
@@ -94,6 +96,7 @@ public class MembersCommand {
             });
 
     private final CommandAPICommand membersLeave = new CommandAPICommand("leave")
+            .withPermission(CommandPermission.OP)
             .withArguments(new PlayerArgument("player"))
             .executes((sender, args) -> {
                 Player player = (Player) args[0];
@@ -120,6 +123,7 @@ public class MembersCommand {
             });
 
     private final CommandAPICommand membersPromote = new CommandAPICommand("promote")
+            .withPermission(CommandPermission.OP)
             .withArguments(new PlayerArgument("player"))
             .executes((sender, args) -> {
                Player player = (Player) args[0];
@@ -140,6 +144,7 @@ public class MembersCommand {
             });
 
     private final CommandAPICommand membersDemote = new CommandAPICommand("demote")
+            .withPermission(CommandPermission.OP)
             .withArguments(new PlayerArgument("player"))
             .executes((sender, args) -> {
                 Player player = (Player) args[0];
