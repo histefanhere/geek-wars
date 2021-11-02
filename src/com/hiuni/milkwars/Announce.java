@@ -17,15 +17,22 @@ public class Announce {
     }
 
     // Send to clan leaders.
+    public void sendToLeaders(Clan clan, String message, ChatColor color) {
+        // Sends the message to all signed in clan leaders.
+        sendToLeaders(clan, message, color, true);
+    }
+    public void sendToLeaders(Clan clan, String message, ChatColor color, boolean activeOnly) {
+        // Sends the message to all clan leaders, If activeOnly = true then only sends to all
+        // Signed in members, otherwise sends to all leaders including signed out ones.
+        clanSend(clan, message, color, activeOnly, true);
+    }
 
-    // Send to all.
-
-    private void memberSend(ClanMember member, String message, ChatColor color) {
+    public void memberSend(ClanMember member, String message, ChatColor color) {
         // Sends the message to the member formatted correctly.
         member.sendMessage(color + "[Milk-wars] " + message);
     }
 
-    private void clanSend(Clan clan, String message, ChatColor color,
+    public void clanSend(Clan clan, String message, ChatColor color,
                           boolean activeOnly, boolean leaderOnly) {
         for (ClanMember member : clan.getAllMembers()) {
             if (
