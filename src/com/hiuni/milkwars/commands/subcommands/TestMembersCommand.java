@@ -10,7 +10,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 public class TestMembersCommand {
-
     private final CommandAPICommand membersJoin = new CommandAPICommand("join")
             .withArguments(new PlayerArgument("player"))
             .withArguments(new MultiLiteralArgument("cows", "sheep"))
@@ -39,15 +38,38 @@ public class TestMembersCommand {
                     player.sendMessage(
                             String.format(ChatColor.GREEN + "Welcome to the %s!", clan.getName())
                     );
+                    return;
                 }
+
                 // They're already a part of the clan!
-                else {
-                    CommandAPI.fail("Player is already a member of the clan!");
+                CommandAPI.fail("Player is already a member of the clan!");
+            });
+
+    private final CommandAPICommand membersLeave = new CommandAPICommand("leave")
+            .withArguments(new PlayerArgument("player"))
+            .executes((sender, args) -> {
+                Player player = (Player) args[0];
+
+                // Try to add the player to each clan
+                for (Clan clan: MilkWars.clans) {
+                    if (clan.removeMember(player)) {
+                        sender.sendMessage(
+                                String.format(ChatColor.GREEN + "Successfully removed %s from the %s!", player.getName(), clan.getName())
+                        );
+                        player.sendMessage(
+                                String.format(ChatColor.GREEN + "Left the %s", clan.getName())
+                        );
+                        return;
+                    }
                 }
+
+                // If we've got here, the player isn't in any clan
+                CommandAPI.fail(ChatColor.RED + "You are not in any clan!");
             });
 
     public CommandAPICommand getCommand() {
         return new CommandAPICommand("members")
-                .withSubcommand(membersJoin);
+                .withSubcommand(membersJoin)
+                .withSubcommand(membersLeave);
     }
 }
