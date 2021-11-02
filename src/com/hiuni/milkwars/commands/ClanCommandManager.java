@@ -1,5 +1,7 @@
 package com.hiuni.milkwars.commands;
 
+import com.hiuni.milkwars.MilkWars;
+import com.hiuni.milkwars.commands.subcommands.FileCommand;
 import com.hiuni.milkwars.commands.subcommands.MembersCommand;
 import dev.jorel.commandapi.CommandAPICommand;
 

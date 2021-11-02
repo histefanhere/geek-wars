@@ -1,9 +1,13 @@
 package com.hiuni.milkwars;
 
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -14,11 +18,23 @@ public class Clan {
     private int kills; // A counter for how many times clan members have killed other clam members.
     private int captures; // A counter for how many times the clan has successfully captured the enemy flag.
 
+//    private static JavaPlugin plugin;
+//
+//    public static void setPlugin(JavaPlugin plugin) {
+//        // Sets the that this is operating in.
+//        Clan.plugin = plugin;
+//    }
+//
+//    public static JavaPlugin getPlugin() {
+//        return Clan.plugin;
+//    }
+
     Clan(String name) {
         this.name = name;
         this.members = new ArrayList<ClanMember>();
         this.kills = 0;
         this.captures = 0;
+
     }
 
     public boolean addMember(Player player) {
@@ -84,6 +100,7 @@ public class Clan {
     public boolean hasMember(Player player) {
         // Returns true if player is a member (or leader) of this clan.
         for (ClanMember member : this.members) {
+            Bukkit.getConsoleSender().sendMessage(player.getUniqueId().toString());
             if (member.isPlayer(player)) {
                 return true;
             }
@@ -126,15 +143,38 @@ public class Clan {
         return this.captures;
     }
 
-    public boolean save() {
+    public void save(FileConfiguration config, String keyPath) {
         // Saves the clan data to file so that it can preserved when the server restarts.
-        return false; // TODO Implement the save method.
+        config.set(keyPath + ".name", getName());
+        config.set(keyPath + ".kills", getKills());
+        config.set(keyPath + ".captures", getCaptures());
+        for (ClanMember member : members) {
+            member.save(config, keyPath + ".members");
+        }
     }
 
-    public boolean load() {
-        // Loads the clan data from file, uses the clan name as an identifier.
-        return false; // TODO Implement the load method.
+    public void load(FileConfiguration config, String keyPath) {
+        // Loads the clan data from config.
+
+        config.addDefault(keyPath + ".name", "ErrorLoadingClanName");
+        config.addDefault(keyPath + ".kills", 0);
+        config.addDefault(keyPath + ".captures", 0);
+
+        this.name = config.getString(keyPath + ".name");
+        this.kills = config.getInt(keyPath + ".kills");
+        this.captures = config.getInt(keyPath + ".captures");
+
+        try {
+            Set<String> uuids = config.getConfigurationSection(keyPath + ".members").getKeys(false);
+            for (String key : uuids) {
+                // The keys of each member is their uuid as a string.
+                // The load method creates a new member from the data found in config.
+                ClanMember member = ClanMember.load(config, keyPath + ".members", key);
+                members.add(member);
+            }
+        } catch (NullPointerException e) {
+            Bukkit.getConsoleSender().sendMessage("[Milk-Wars] Could not find any member data to load" +
+                    "for clan: " + this.name);
+        }
     }
-
-
 }

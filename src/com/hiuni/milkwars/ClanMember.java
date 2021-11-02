@@ -1,5 +1,8 @@
 package com.hiuni.milkwars;
 
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
@@ -14,6 +17,7 @@ public class ClanMember {
         this.name = name;
         this.uuid = uuid;
         this.signedIn = true;
+        this.leader = false;
     }
 
     public String getName() {
@@ -72,9 +76,35 @@ public class ClanMember {
     }
 
     public boolean isPlayer(Player player) {
-        return player.getUniqueId() == this.uuid;
+        // Checks if the member is the player provided.
+        return player.getUniqueId().equals(this.uuid);
     }
 
-    // TODO save and load methods.
+    public void save (FileConfiguration config, String keyPath) {
+        // Saves the member to the config file.
+        keyPath = keyPath + "." + getUuid().toString();
+        config.set(keyPath + ".name", getName());
+        config.set(keyPath + ".signedIn", isSignedIn());
+        config.set(keyPath + ".leader", isLeader());
+    }
+
+    public static ClanMember load(FileConfiguration config, String keyPath, String uuid) {
+        // Loads data from config to the member.
+        keyPath = keyPath + "." + uuid;
+
+        // Default values for if the data can't be found on file.
+        config.addDefault(keyPath + ".name", "ErrorLoadingPlayerName");
+        config.addDefault(keyPath + ".signedIn", false);
+        config.addDefault(keyPath + ".leader", false);
+
+        ClanMember member = new ClanMember(
+                config.getString(keyPath + ".name"),
+                UUID.fromString(uuid)
+        );
+        member.signedIn = config.getBoolean(keyPath + ".signedIn");
+        member.leader = config.getBoolean(keyPath + ".leader");
+
+        return member;
+    }
 
 }
