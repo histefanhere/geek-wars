@@ -1,7 +1,6 @@
 package com.hiuni.milkwars;
 
 import com.hiuni.milkwars.commands.ClanCommandManager;
-import com.hiuni.milkwars.commands.TestClanCommand;
 import dev.jorel.commandapi.CommandAPI;
 import dev.jorel.commandapi.CommandAPIConfig;
 import org.bukkit.ChatColor;
@@ -21,10 +20,8 @@ public class MilkWars extends JavaPlugin {
         clans[0] = new Clan("Milk Drinkers");
         clans[1] = new Clan("Wool Wearers"); // WIP name.
 
-        // Register the clan command manager
-        getCommand("clan").setExecutor(new ClanCommandManager());
-
-        TestClanCommand.register();
+        // Register the clan command
+        ClanCommandManager.register();
 
         CommandAPI.onEnable(this);
 
