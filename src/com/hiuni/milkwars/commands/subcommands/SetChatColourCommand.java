@@ -28,6 +28,67 @@ public class SetChatColourCommand {
 
     }
 
+    public void updateNameTag(Player player) {
+        // Find the colour they're in
+        ScoreboardManager manager = Bukkit.getScoreboardManager();
+        assert manager != null;
+        Scoreboard board = manager.getMainScoreboard();
+
+        Team team = board.getEntryTeam(player.getName());
+        if (team == null) {
+            return;
+        }
+        String colourName = team.getName().replace("cw_", "").replace("sh_", "");
+
+        doNameTag(player, colourName);
+    }
+
+    private void doNameTag(Player player, String colourName) {
+        ChatColor teamColour = colours.get(colourName);
+
+        // Get the target team name and the prefix of the team.
+        // this is based on the passed colour name, if the player is in a clan
+        // and if they're signed in
+        String teamName = colourName;
+        String teamPrefix = "";
+        String[] prefixes = {"cw_", "sh_"};
+        for (int i = 0; i < 2; i++) {
+            Clan clan = MilkWars.clans[i];
+            boolean foundPlayer = false;
+            for (ClanMember member: clan.getAllMembers()) {
+                if (member.isPlayer(player)) {
+                    if (member.isSignedIn()) {
+                        teamName = prefixes[i] + teamName;
+                        teamPrefix = clan.getPrefix();
+                    }
+                    foundPlayer = true;
+                    break;
+                }
+            }
+            if (foundPlayer) {
+                break;
+            }
+        }
+
+        // Get the server scoreboard
+        ScoreboardManager manager = Bukkit.getScoreboardManager();
+        assert manager != null;
+        Scoreboard board = manager.getMainScoreboard();
+
+        Team targetTeam = board.getTeam(teamName);
+        if (targetTeam == null) {
+            // the target team doesn't exist in-game, we need to create it manually
+            targetTeam = board.registerNewTeam(teamName);
+            targetTeam.setColor(teamColour);
+            targetTeam.setPrefix(teamPrefix);
+        }
+
+        // TODO: If the player is the last person in their old team, delete it?
+
+        // Join the target team!
+        targetTeam.addEntry(player.getName());
+    }
+
     public CommandAPICommand getCommand() {
         return new CommandAPICommand("setchatcolour")
                 .withPermission(CommandPermission.OP)
@@ -37,49 +98,7 @@ public class SetChatColourCommand {
                     String colourName = (String) args[0];
                     Player player = (Player) args[1];
 
-                    ChatColor teamColour = colours.get(colourName);
-
-                    // Get the target team name and the prefix of the team.
-                    // this is based on the passed colour name, if the player is in a clan
-                    // and if they're signed in
-                    String teamName = colourName;
-                    String teamPrefix = "";
-                    String[] prefixes = {"cw_", "sh_"};
-                    for (int i = 0; i < 2; i++) {
-                        Clan clan = MilkWars.clans[i];
-                        boolean foundPlayer = false;
-                        for (ClanMember member: clan.getAllMembers()) {
-                            if (member.isPlayer(player)) {
-                                if (member.isSignedIn()) {
-                                    teamName = prefixes[i] + teamName;
-                                    teamPrefix = clan.getPrefix();
-                                }
-                                foundPlayer = true;
-                                break;
-                            }
-                        }
-                        if (foundPlayer) {
-                            break;
-                        }
-                    }
-
-                    // Get the server scoreboard
-                    ScoreboardManager manager = Bukkit.getScoreboardManager();
-                    assert manager != null;
-                    Scoreboard board = manager.getMainScoreboard();
-
-                    Team targetTeam = board.getTeam(teamName);
-                    if (targetTeam == null) {
-                        // the target team doesn't exist in-game, we need to create it manually
-                        targetTeam = board.registerNewTeam(teamName);
-                        targetTeam.setColor(teamColour);
-                        targetTeam.setPrefix(teamPrefix);
-                    }
-
-                    // TODO: If the player is the last person in their old team, delete it?
-
-                    // Join the target team!
-                    targetTeam.addEntry(player.getName());
+                    doNameTag(player, colourName);
                 });
     }
 }

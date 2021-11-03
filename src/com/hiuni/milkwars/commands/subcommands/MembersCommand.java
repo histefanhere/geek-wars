@@ -88,6 +88,7 @@ public class MembersCommand {
                     player.sendMessage(
                             String.format(ChatColor.GREEN + "Welcome to the %s!", clan.getName())
                     );
+                    new SetChatColourCommand().updateNameTag(player);
                     return;
                 }
 
@@ -114,6 +115,7 @@ public class MembersCommand {
                         player.sendMessage(
                                 String.format(ChatColor.GREEN + "Left the %s", clan.getName())
                         );
+                        new SetChatColourCommand().updateNameTag(player);
                         return;
                     }
                 }
@@ -180,6 +182,9 @@ public class MembersCommand {
                                 // Signed in successfully
                                 sender.sendMessage(ChatColor.GREEN + "Signed in successfully");
                                 player.sendMessage(ChatColor.GREEN + "You are now signed in. Good luck!");
+
+                                // Update the player's name tag
+                                new SetChatColourCommand().updateNameTag(player);
                             } else {
                                 // Couldn't sign in
                                 sender.sendMessage(ChatColor.RED + "Player is already signed in");
@@ -210,6 +215,9 @@ public class MembersCommand {
                                 // Signed out successfully
                                 sender.sendMessage(ChatColor.GREEN + "Signed out successfully");
                                 player.sendMessage(ChatColor.GREEN + "You are now signed out");
+
+                                // Update the player's name tag
+                                new SetChatColourCommand().updateNameTag(player);
                             } else {
                                 // Couldn't sign out
                                 sender.sendMessage(ChatColor.RED + "Player is already signed out");
