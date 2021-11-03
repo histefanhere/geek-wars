@@ -164,12 +164,74 @@ public class MembersCommand {
                 CommandAPI.fail("Player must be a leader of a clan to be demoted");
             });
 
+    private final CommandAPICommand membersSignIn = new CommandAPICommand("signin")
+            .withPermission(CommandPermission.OP)
+            .withArguments(new PlayerArgument("player"))
+            .executes((sender, args) -> {
+                Player player = (Player) args[0];
+
+                // Try to add the player to each clan
+                for (Clan clan: MilkWars.clans) {
+                    for (ClanMember member : clan.getAllMembers()) {
+                        if (member.isPlayer(player)) {
+                            // Found the player
+
+                            if (member.signIn()) {
+                                // Signed in successfully
+                                sender.sendMessage(ChatColor.GREEN + "Signed in successfully");
+                                player.sendMessage(ChatColor.GREEN + "You are now signed in. Good luck!");
+                            } else {
+                                // Couldn't sign in
+                                sender.sendMessage(ChatColor.RED + "Player is already signed in");
+                                player.sendMessage(ChatColor.RED + "You are already signed in!");
+                            }
+                            return;
+                        }
+                    }
+                }
+
+                // If we've got here, player isn't in any clan
+                CommandAPI.fail("Player isn't a part of a clan!");
+            });
+
+    private final CommandAPICommand membersSignOut = new CommandAPICommand("signout")
+            .withPermission(CommandPermission.OP)
+            .withArguments(new PlayerArgument("player"))
+            .executes((sender, args) -> {
+                Player player = (Player) args[0];
+
+                // Try to add the player to each clan
+                for (Clan clan: MilkWars.clans) {
+                    for (ClanMember member : clan.getAllMembers()) {
+                        if (member.isPlayer(player)) {
+                            // Found the player
+
+                            if (member.signOut()) {
+                                // Signed out successfully
+                                sender.sendMessage(ChatColor.GREEN + "Signed out successfully");
+                                player.sendMessage(ChatColor.GREEN + "You are now signed out");
+                            } else {
+                                // Couldn't sign out
+                                sender.sendMessage(ChatColor.RED + "Player is already signed out");
+                                player.sendMessage(ChatColor.RED + "You are already signed out!");
+                            }
+                            return;
+                        }
+                    }
+                }
+
+                // If we've got here, player isn't in any clan
+                CommandAPI.fail("Player isn't a part of a clan!");
+            });
+
     public CommandAPICommand getCommand() {
         return new CommandAPICommand("members")
                 .withSubcommand(membersList)
                 .withSubcommand(membersJoin)
                 .withSubcommand(membersLeave)
                 .withSubcommand(membersPromote)
-                .withSubcommand(membersDemote);
+                .withSubcommand(membersDemote)
+                .withSubcommand(membersSignIn)
+                .withSubcommand(membersSignOut);
     }
 }
