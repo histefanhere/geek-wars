@@ -14,17 +14,31 @@ import java.util.stream.Collectors;
 public class Clan {
 
     private String name;
+    private String prefix;
     private List<ClanMember> members; // A list of clan members;
     private int kills; // A counter for how many times clan members have killed other clam members.
     private int captures; // A counter for how many times the clan has successfully captured the enemy flag.
 
-    Clan(String name) {
+    Clan(String name, String prefix) {
         this.name = name;
+        this.prefix = prefix;
         this.members = new ArrayList<ClanMember>();
         this.kills = 0;
         this.captures = 0;
 
     }
+
+//    private static JavaPlugin plugin;
+//
+//    public static void setPlugin(JavaPlugin plugin) {
+//        // Sets the that this is operating in.
+//        Clan.plugin = plugin;
+//    }
+//
+//    public static JavaPlugin getPlugin() {
+//        return Clan.plugin;
+//    }
+
 
     public boolean addMember(Player player) {
         // Adds a player to the clan if they are not already a part of it.
@@ -114,6 +128,11 @@ public class Clan {
     public String getName() {
         // Returns the name of the clan.
         return this.name; // Is this safe? would it be possible to accidentally rename the clan with this.
+    }
+
+    public String getPrefix() {
+        // Returns the prefix of the clan.
+        return this.prefix;
     }
 
     public int addKill() {
