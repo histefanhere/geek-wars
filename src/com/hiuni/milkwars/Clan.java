@@ -20,6 +20,8 @@ public class Clan {
     private int captures; // A counter for how many times the clan has successfully captured the enemy flag.
 
     Clan(String name, String prefix) {
+
+        // Remember if you add anything that needs to persist across server restarts then add it to the save/load methods.
         this.name = name;
         this.prefix = prefix;
         this.members = new ArrayList<ClanMember>();
@@ -162,6 +164,7 @@ public class Clan {
         config.set(keyPath + ".name", getName());
         config.set(keyPath + ".kills", getKills());
         config.set(keyPath + ".captures", getCaptures());
+        config.set(keyPath + ".prefix", getPrefix());
         for (ClanMember member : members) {
             member.save(config, keyPath + ".members");
         }
@@ -173,10 +176,12 @@ public class Clan {
         config.addDefault(keyPath + ".name", "ErrorLoadingClanName");
         config.addDefault(keyPath + ".kills", 0);
         config.addDefault(keyPath + ".captures", 0);
+        config.addDefault(keyPath + ".prefix", "[FailedToLoad] ");
 
         this.name = config.getString(keyPath + ".name");
         this.kills = config.getInt(keyPath + ".kills");
         this.captures = config.getInt(keyPath + ".captures");
+        this.prefix = config.getString(keyPath + ".prefix");
 
         try {
             Set<String> uuids = config.getConfigurationSection(keyPath + ".members").getKeys(false);
