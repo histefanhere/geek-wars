@@ -1,6 +1,7 @@
 package com.hiuni.milkwars;
 
 import com.hiuni.milkwars.commands.ClanCommandManager;
+import com.hiuni.milkwars.events.SaveOnWorldSave;
 import com.hiuni.milkwars.commands.subcommands.FileCommand;
 import dev.jorel.commandapi.CommandAPI;
 import dev.jorel.commandapi.CommandAPIConfig;
@@ -19,9 +20,17 @@ public class MilkWars extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        clans[0] = new Clan("Milk Drinkers", ChatColor.DARK_GRAY + "[MD] ");
-        clans[1] = new Clan("Wool Wearers", ChatColor.WHITE + "[WW] "); // WIP name.
 
+        // Create the clans.
+        clans[0] = new Clan("Milk Drinkers", ChatColor.DARK_GRAY + "[MD] ");
+        clans[1] = new Clan("Wool Wearers", ChatColor.WHITE + "[WW] ");
+
+        // Load the data, and set event for auto saving.
+        DataManager.setPlugin(this);
+        DataManager.load();
+        getServer().getPluginManager().registerEvents(new SaveOnWorldSave(), this);
+
+        // For manually saving and loading the data.
         new FileCommand().setPlugin(this);
 
         // Register the clan command
@@ -34,23 +43,8 @@ public class MilkWars extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        DataManager.save();
         getServer().getConsoleSender().sendMessage(ChatColor.RED + "[Milk-Wars] Plugin has been disabled");
-    }
-
-    public boolean save() {
-        // Should probably move this somewhere else, but it's fine for now.
-        FileManager.setup(this, "ClanData.yml");
-        clans[0].save(FileManager.getConfig(), "cows");
-        clans[1].save(FileManager.getConfig(), "sheep");
-        return FileManager.saveConfig();
-    }
-
-    public boolean load() {
-        // And of course move this aswell.
-        FileManager.setup(this, "ClanData.yml");
-        clans[0].load(FileManager.getConfig(), "cows");
-        clans[1].load(FileManager.getConfig(), "sheep");
-        return true;
     }
 
 }

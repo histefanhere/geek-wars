@@ -19,6 +19,17 @@ public class Clan {
     private int kills; // A counter for how many times clan members have killed other clam members.
     private int captures; // A counter for how many times the clan has successfully captured the enemy flag.
 
+    Clan(String name, String prefix) {
+
+        // Remember if you add anything that needs to persist across server restarts then add it to the save/load methods.
+        this.name = name;
+        this.prefix = prefix;
+        this.members = new ArrayList<ClanMember>();
+        this.kills = 0;
+        this.captures = 0;
+
+    }
+
 //    private static JavaPlugin plugin;
 //
 //    public static void setPlugin(JavaPlugin plugin) {
@@ -30,20 +41,13 @@ public class Clan {
 //        return Clan.plugin;
 //    }
 
-    Clan(String name, String prefix) {
-        this.name = name;
-        this.prefix = prefix;
-        this.members = new ArrayList<ClanMember>();
-        this.kills = 0;
-        this.captures = 0;
-
-    }
 
     public boolean addMember(Player player) {
         // Adds a player to the clan if they are not already a part of it.
         if (this.hasMember(player)) {
             return false;
         } else {
+            DataManager.registerChanges(); // Allows the system to know that changes haven't been saved to disk.
             return this.members.add(new ClanMember(player.getName(), player.getUniqueId()));
         }
     }
@@ -52,6 +56,7 @@ public class Clan {
         // Makes player a leader of the clan.
         for (ClanMember member : this.members) {
             if (member.isPlayer(player)) {
+                DataManager.registerChanges();
                 return member.promote();
             }
         }
@@ -62,6 +67,7 @@ public class Clan {
         // Demoted the member from a leader to a normal member.
         for (ClanMember member : this.members) {
             if (member.isPlayer(player)) {
+                DataManager.registerChanges();
                 return member.demote();
             }
         }
@@ -73,6 +79,7 @@ public class Clan {
         for (ClanMember member : this.members) {
             if (member.isPlayer(player)) {
                 this.members.remove(member);
+                DataManager.registerChanges();
                 return true;
                 // Could probably use "members.removeif(member -> (member.isPlayer(player)))",
                 // but this way we don't need to search the whole list if we find one early,
@@ -132,6 +139,7 @@ public class Clan {
 
     public int addKill() {
         // Increments the amount of kills the clan has and returns the new count.
+        DataManager.registerChanges();
         return this.kills++;
     }
 
@@ -142,6 +150,7 @@ public class Clan {
 
     public int addCapture() {
         // Increment the amount of captures the clan has and returns the new count.
+        DataManager.registerChanges();
         return this.captures++;
     }
 
@@ -155,6 +164,7 @@ public class Clan {
         config.set(keyPath + ".name", getName());
         config.set(keyPath + ".kills", getKills());
         config.set(keyPath + ".captures", getCaptures());
+        config.set(keyPath + ".prefix", getPrefix());
         for (ClanMember member : members) {
             member.save(config, keyPath + ".members");
         }
@@ -166,10 +176,12 @@ public class Clan {
         config.addDefault(keyPath + ".name", "ErrorLoadingClanName");
         config.addDefault(keyPath + ".kills", 0);
         config.addDefault(keyPath + ".captures", 0);
+        config.addDefault(keyPath + ".prefix", "[FailedToLoad] ");
 
         this.name = config.getString(keyPath + ".name");
         this.kills = config.getInt(keyPath + ".kills");
         this.captures = config.getInt(keyPath + ".captures");
+        this.prefix = config.getString(keyPath + ".prefix");
 
         try {
             Set<String> uuids = config.getConfigurationSection(keyPath + ".members").getKeys(false);
