@@ -109,12 +109,16 @@ public class Clan {
     }
 
     public boolean isSignedIn(Player player) {
+       return this.getMember(player).isSignedIn();
+    }
+
+    public ClanMember getMember(Player player) {
         for (ClanMember member : this.getAllMembers()) {
             if (member.isPlayer(player)) {
-                return member.isSignedIn();
+                return member;
             }
         }
-        throw new NoSuchElementException("Invalid player as argument");
+        throw new NoSuchElementException("This player is not a member of this clan");
     }
 
 
