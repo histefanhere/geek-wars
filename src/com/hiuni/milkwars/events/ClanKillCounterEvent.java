@@ -2,6 +2,7 @@ package com.hiuni.milkwars.events;
 
 import com.hiuni.milkwars.Announce;
 import com.hiuni.milkwars.Clan;
+import com.hiuni.milkwars.ClanMember;
 import com.hiuni.milkwars.MilkWars;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -9,6 +10,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
+
+import java.util.NoSuchElementException;
 
 
 public class ClanKillCounterEvent implements Listener {
@@ -23,17 +26,35 @@ public class ClanKillCounterEvent implements Listener {
 
         Clan friendlyClan = null;
         Clan enemyClan = null;
+        ClanMember member = null;
+        ClanMember killerMember = null;
         for (Clan clan : MilkWars.clans) {
-            if (clan.hasMember(player)) {
+//            if (clan.hasMember(player)) {
+//                friendlyClan = clan;
+//            }
+//            if (clan.hasMember(killer)) {
+//                enemyClan = clan;
+//            }
+            try {
+                member = clan.getMember(player);
                 friendlyClan = clan;
             }
-            if (clan.hasMember(killer)) {
+            catch (NoSuchElementException e) {}
+
+            try {
+                killerMember = clan.getMember(killer);
                 enemyClan = clan;
             }
+            catch (NoSuchElementException e) {}
         }
 
+
+
         // Check if the players are in different clans.
-        if (friendlyClan == null || enemyClan == null || friendlyClan.equals(enemyClan)) {
+        // And that they are both signed in.
+        if (
+                ( friendlyClan == null || enemyClan == null || friendlyClan.equals(enemyClan) ) ||
+                ( !(member.isSignedIn() && killerMember.isSignedIn())) ) {
             return;
         }
 
