@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -106,6 +107,16 @@ public class Clan {
         // Returns a list of all the clan members (leaders and normal members).
         return this.members;
     }
+
+    public boolean isSignedIn(Player player) {
+        for (ClanMember member : this.getAllMembers()) {
+            if (member.isPlayer(player)) {
+                return member.isSignedIn();
+            }
+        }
+        throw new NoSuchElementException("Invalid player as argument");
+    }
+
 
     public boolean hasMember(Player player) {
         // Returns true if player is a member (or leader) of this clan.
