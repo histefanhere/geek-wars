@@ -1,6 +1,11 @@
 package com.hiuni.milkwars;
 
+import dev.jorel.commandapi.arguments.ChatArgument;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.ScoreboardManager;
+import org.bukkit.scoreboard.Team;
 
 public class Announce { //TODO These should all be static lol.
 
@@ -42,9 +47,15 @@ public class Announce { //TODO These should all be static lol.
                 memberSend(member, message, color);
             }
         }
-
     }
 
 
-
+    public static String formatPlayerName(Player player, Clan clan) { // TODO clan not required, get from player.
+        // TODO make this use the player color, for some reason there's no way to get this colour without
+        // using their team, and there's no good way to get their team either >:(.
+        // It should also use prefix, but until I can get the colour in a neat way I don't want to
+        // use the prefix as it breaks the colours.
+        // This really shouldn't be as difficult as it is lol.
+        return player.getDisplayName();
+    }
 }

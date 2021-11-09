@@ -110,7 +110,6 @@ public class Clan {
     public boolean hasMember(Player player) {
         // Returns true if player is a member (or leader) of this clan.
         for (ClanMember member : this.members) {
-            Bukkit.getConsoleSender().sendMessage(player.getUniqueId().toString());
             if (member.isPlayer(player)) {
                 return true;
             }
@@ -130,7 +129,6 @@ public class Clan {
 
     public String getName() {
         // Returns the name of the clan.
-        Bukkit.getConsoleSender().sendMessage(this.name);
         return this.name; // Is this safe? would it be possible to accidentally rename the clan with this.
     }
 

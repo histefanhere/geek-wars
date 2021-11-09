@@ -1,5 +1,6 @@
 package com.hiuni.milkwars.events;
 
+import com.hiuni.milkwars.Announce;
 import com.hiuni.milkwars.Clan;
 import com.hiuni.milkwars.MilkWars;
 import org.bukkit.Bukkit;
@@ -32,10 +33,13 @@ public class ClanKillCounterEvent implements Listener {
             return;
         }
 
-        event.setDeathMessage(player.getName() + " of the " + friendlyClan.getName() +
-                " clan died at the hands of " + killer.getName() + " and the " +
+        event.setDeathMessage(Announce.formatPlayerName(player, friendlyClan) + " of the " +
+                friendlyClan.getName() + " clan died at the hands of " +
+                Announce.formatPlayerName(killer, enemyClan) + " and the " +
                 enemyClan.getName() + " clan.");
         enemyClan.addKill();
+
+        //TODO announcement on player kill, with a cooldown so it doesn't fire too often.
 
     }
 }
