@@ -19,8 +19,16 @@ public class MilkWars extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        clans[0] = new Clan("Milk Drinkers", ChatColor.DARK_GRAY + "[MD] ");
-        clans[1] = new Clan("Wool Wearers", ChatColor.WHITE + "[WW] "); // WIP name.
+        clans[0] = new Clan(
+                "Milk Drinkers",
+                ChatColor.DARK_GRAY + "[MD] ",
+                Flag.COW_HEAD
+        );
+        clans[1] = new Clan(
+                "Wool Wearers", // WIP name.
+                ChatColor.WHITE + "[WW] ",
+                Flag.SHEEP_HEAD
+        );
 
         new FileCommand().setPlugin(this);
 

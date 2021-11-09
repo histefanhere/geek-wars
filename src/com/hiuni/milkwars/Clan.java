@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -18,6 +19,7 @@ public class Clan {
     private List<ClanMember> members; // A list of clan members;
     private int kills; // A counter for how many times clan members have killed other clam members.
     private int captures; // A counter for how many times the clan has successfully captured the enemy flag.
+    private Flag flag;
 
 //    private static JavaPlugin plugin;
 //
@@ -30,13 +32,13 @@ public class Clan {
 //        return Clan.plugin;
 //    }
 
-    Clan(String name, String prefix) {
+    Clan(String name, String prefix, UUID flagHead) {
         this.name = name;
         this.prefix = prefix;
         this.members = new ArrayList<ClanMember>();
         this.kills = 0;
         this.captures = 0;
-
+        this.flag = new Flag(flagHead);
     }
 
     public boolean addMember(Player player) {
@@ -148,6 +150,11 @@ public class Clan {
     public int getCaptures() {
         // Returns the amount of times this clan has successfully stolen another clans flag.
         return this.captures;
+    }
+
+    public Flag getFlag() {
+        // Returns the flag object of this clan
+        return this.flag;
     }
 
     public void save(FileConfiguration config, String keyPath) {
