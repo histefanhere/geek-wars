@@ -23,6 +23,7 @@ public class Clan {
 
         // Remember if you add anything that needs to persist across server restarts then add it to the save/load methods.
         this.name = name;
+        Bukkit.getConsoleSender().sendMessage(this.name);
         this.prefix = prefix;
         this.members = new ArrayList<ClanMember>();
         this.kills = 0;
@@ -129,6 +130,7 @@ public class Clan {
 
     public String getName() {
         // Returns the name of the clan.
+        Bukkit.getConsoleSender().sendMessage(this.name);
         return this.name; // Is this safe? would it be possible to accidentally rename the clan with this.
     }
 
@@ -161,10 +163,10 @@ public class Clan {
 
     public void save(FileConfiguration config, String keyPath) {
         // Saves the clan data to file so that it can preserved when the server restarts.
-        config.set(keyPath + ".name", getName());
+        //config.set(keyPath + ".name", getName());
         config.set(keyPath + ".kills", getKills());
         config.set(keyPath + ".captures", getCaptures());
-        config.set(keyPath + ".prefix", getPrefix());
+        //config.set(keyPath + ".prefix", getPrefix());
         for (ClanMember member : members) {
             member.save(config, keyPath + ".members");
         }
@@ -173,15 +175,15 @@ public class Clan {
     public void load(FileConfiguration config, String keyPath) {
         // Loads the clan data from config.
 
-        config.addDefault(keyPath + ".name", "ErrorLoadingClanName");
+        //config.addDefault(keyPath + ".name", "ErrorLoadingClanName");
         config.addDefault(keyPath + ".kills", 0);
         config.addDefault(keyPath + ".captures", 0);
-        config.addDefault(keyPath + ".prefix", "[FailedToLoad] ");
+        //config.addDefault(keyPath + ".prefix", "[FailedToLoad] ");
 
-        this.name = config.getString(keyPath + ".name");
+        //this.name = config.getString(keyPath + ".name");
         this.kills = config.getInt(keyPath + ".kills");
         this.captures = config.getInt(keyPath + ".captures");
-        this.prefix = config.getString(keyPath + ".prefix");
+        //this.prefix = config.getString(keyPath + ".prefix");
 
         try {
             Set<String> uuids = config.getConfigurationSection(keyPath + ".members").getKeys(false);
