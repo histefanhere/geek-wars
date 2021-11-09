@@ -10,7 +10,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 
+
 public class ClanKillCounterEvent implements Listener {
+
+    static long announcementCooldown = System.currentTimeMillis();
+
     @EventHandler
     public static void onPlayerDeath (PlayerDeathEvent event) {
         Player player = event.getEntity();
@@ -39,7 +43,18 @@ public class ClanKillCounterEvent implements Listener {
                 enemyClan.getName() + " clan.");
         enemyClan.addKill();
 
-        //TODO announcement on player kill, with a cooldown so it doesn't fire too often.
+        long now = System.currentTimeMillis();
+        if (now - announcementCooldown > 30 * 60 * 1000) {
+            // Only send an announcement if there's been no kills in the last 30 minutes.
+            Announce.sendToClan(friendlyClan,
+                    "A member of the " + friendlyClan.getName() +
+                            " has been killed.\nThis means war!",
+                    ChatColor.YELLOW);
+            Announce.sendToClan(enemyClan,
+                    "Rally the troops; Your clan needs help!",
+                    ChatColor.YELLOW);
+        }
+        announcementCooldown = now;
 
     }
 }

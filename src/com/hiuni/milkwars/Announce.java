@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.scoreboard.Team;
 
-public class Announce { //TODO These should all be static lol.
+public class Announce {
 
     // Send to clan.
     public static void sendToClan (Clan clan, String message, ChatColor color) {
