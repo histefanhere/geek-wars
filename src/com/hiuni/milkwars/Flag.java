@@ -15,6 +15,7 @@ import org.bukkit.event.world.EntitiesLoadEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.scheduler.BukkitScheduler;
 
 import java.util.UUID;
 
@@ -42,6 +43,26 @@ public class Flag implements Listener {
 
     Flag(int clanId) {
         this.clanId = clanId;
+
+        BukkitScheduler scheduler = Bukkit.getScheduler();
+        scheduler.runTaskTimer(MilkWars.getInstance(), this::repeatingTask, 0, 1L);
+    }
+
+    private void repeatingTask() {
+        if (wearer != null) {
+            return;
+        }
+        if (flagLocation == null) {
+            return;
+        }
+
+        Entity ent = Bukkit.getEntity(flagId);
+        if (ent == null) {
+            return;
+        }
+
+        flagLocation.setYaw(Location.normalizeYaw(flagLocation.getYaw() + 0.5f));
+        ent.teleport(flagLocation);
     }
 
     /*
@@ -209,7 +230,7 @@ public class Flag implements Listener {
      */
     private void dropFlag() {
         Location location = getFlagLocation();
-        location.setY(location.getY() - OFFSET - 1.3);
+        location.setY(location.getY() - OFFSET - 1.1);
         setFlagLocation(location);
         wearer = null;
     }

@@ -11,6 +11,11 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class MilkWars extends JavaPlugin {
 
+    private static MilkWars instance;
+    public static MilkWars getInstance() {
+        return MilkWars.instance;
+    }
+
     public static Clan[] clans = new Clan[2];
 
     @Override
@@ -20,6 +25,8 @@ public class MilkWars extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        MilkWars.instance = this;
+        
         clans[0] = new Clan(
                 0,
                 "Milk Drinkers",

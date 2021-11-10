@@ -34,7 +34,7 @@ public class TreasureCommand {
                 Location location = player.getLocation();
                 location.setX(Location.locToBlock(location.getX()) + 0.5);
                 location.setZ(Location.locToBlock(location.getZ()) + 0.5);
-                location.setY(Location.locToBlock(location.getY()) - 0.5);
+                location.setY(Location.locToBlock(location.getY()) - 0.8);
 
                 for (Clan clan: MilkWars.clans) {
                     if (clan.hasLeader(player)) {
