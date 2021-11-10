@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -23,6 +24,7 @@ public class Clan {
 
         // Remember if you add anything that needs to persist across server restarts then add it to the save/load methods.
         this.name = name;
+        Bukkit.getConsoleSender().sendMessage(this.name);
         this.prefix = prefix;
         this.members = new ArrayList<ClanMember>();
         this.kills = 0;
@@ -106,10 +108,23 @@ public class Clan {
         return this.members;
     }
 
+    public boolean isSignedIn(Player player) {
+       return this.getMember(player).isSignedIn();
+    }
+
+    public ClanMember getMember(Player player) {
+        for (ClanMember member : this.getAllMembers()) {
+            if (member.isPlayer(player)) {
+                return member;
+            }
+        }
+        throw new NoSuchElementException("This player is not a member of this clan");
+    }
+
+
     public boolean hasMember(Player player) {
         // Returns true if player is a member (or leader) of this clan.
         for (ClanMember member : this.members) {
-            Bukkit.getConsoleSender().sendMessage(player.getUniqueId().toString());
             if (member.isPlayer(player)) {
                 return true;
             }
@@ -161,10 +176,10 @@ public class Clan {
 
     public void save(FileConfiguration config, String keyPath) {
         // Saves the clan data to file so that it can preserved when the server restarts.
-        config.set(keyPath + ".name", getName());
+        //config.set(keyPath + ".name", getName());
         config.set(keyPath + ".kills", getKills());
         config.set(keyPath + ".captures", getCaptures());
-        config.set(keyPath + ".prefix", getPrefix());
+        //config.set(keyPath + ".prefix", getPrefix());
         for (ClanMember member : members) {
             member.save(config, keyPath + ".members");
         }
@@ -173,15 +188,15 @@ public class Clan {
     public void load(FileConfiguration config, String keyPath) {
         // Loads the clan data from config.
 
-        config.addDefault(keyPath + ".name", "ErrorLoadingClanName");
+        //config.addDefault(keyPath + ".name", "ErrorLoadingClanName");
         config.addDefault(keyPath + ".kills", 0);
         config.addDefault(keyPath + ".captures", 0);
-        config.addDefault(keyPath + ".prefix", "[FailedToLoad] ");
+        //config.addDefault(keyPath + ".prefix", "[FailedToLoad] ");
 
-        this.name = config.getString(keyPath + ".name");
+        //this.name = config.getString(keyPath + ".name");
         this.kills = config.getInt(keyPath + ".kills");
         this.captures = config.getInt(keyPath + ".captures");
-        this.prefix = config.getString(keyPath + ".prefix");
+        //this.prefix = config.getString(keyPath + ".prefix");
 
         try {
             Set<String> uuids = config.getConfigurationSection(keyPath + ".members").getKeys(false);

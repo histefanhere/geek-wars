@@ -1,6 +1,7 @@
 package com.hiuni.milkwars;
 
 import com.hiuni.milkwars.commands.ClanCommandManager;
+import com.hiuni.milkwars.events.ClanKillCounterEvent;
 import com.hiuni.milkwars.events.SaveOnWorldSave;
 import com.hiuni.milkwars.commands.subcommands.FileCommand;
 import dev.jorel.commandapi.CommandAPI;
@@ -32,6 +33,9 @@ public class MilkWars extends JavaPlugin {
 
         // For manually saving and loading the data.
         new FileCommand().setPlugin(this);
+
+        // Event for clan kill counter.
+        getServer().getPluginManager().registerEvents(new ClanKillCounterEvent(), this);
 
         // Register the clan command
         ClanCommandManager.register();

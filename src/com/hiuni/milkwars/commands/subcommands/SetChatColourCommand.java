@@ -3,7 +3,6 @@ package com.hiuni.milkwars.commands.subcommands;
 import com.hiuni.milkwars.Clan;
 import com.hiuni.milkwars.ClanMember;
 import com.hiuni.milkwars.MilkWars;
-import com.nametagedit.plugin.NametagEdit;
 import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.CommandPermission;
 import dev.jorel.commandapi.arguments.MultiLiteralArgument;
