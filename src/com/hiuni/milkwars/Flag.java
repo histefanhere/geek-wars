@@ -10,6 +10,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.event.world.EntitiesLoadEvent;
 import org.bukkit.inventory.EquipmentSlot;
@@ -39,7 +40,7 @@ public class Flag implements Listener {
 
     private int clanId;
 
-    private static final double OFFSET = 1.5;
+    private static final double OFFSET = 1.9;
 
     Flag(int clanId) {
         this.clanId = clanId;
@@ -98,11 +99,17 @@ public class Flag implements Listener {
         setFlagLocation(poleLocation);
     }
 
+    /*
+    Gets the location of the flag pole (the home base location).
+     */
     public Location getFlagPoleLocation() {
-        // Gets the location of the flag pole (the home base location)
         return poleLocation;
     }
 
+    /*
+    We need to listen to the EntitiesLoad event to delete any old flags in the world.
+    We do this by checking their custom name, and then their UUID.
+     */
     @EventHandler
     public void onEntitiesLoad(EntitiesLoadEvent event) {
         for (Entity ent: event.getEntities()) {
@@ -117,8 +124,12 @@ public class Flag implements Listener {
         }
     }
 
+    /*
+    Called when an armor stand is manipulated in the world (right-clicked).
+    This is how players interact with the flag.
+     */
     @EventHandler
-    public void onPlayerInteractEntity(PlayerArmorStandManipulateEvent event) {
+    public void onArmorStandManipulate(PlayerArmorStandManipulateEvent event) {
         Player player = event.getPlayer();
         Entity entity = event.getRightClicked();
 
@@ -198,6 +209,9 @@ public class Flag implements Listener {
         // If we've got to here, the player isn't a part of any clan. We'll just ignore the event then
     }
 
+    /*
+    The flag needs to follow the wearer when they move.
+     */
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
         if (wearer == null) {
@@ -209,6 +223,9 @@ public class Flag implements Listener {
         }
     }
 
+    /*
+    If the wearer of the flag disconnects from the server they need to drop the flag.
+     */
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
         if (event.getPlayer().getUniqueId().equals(wearer)) {
@@ -217,6 +234,9 @@ public class Flag implements Listener {
         }
     }
 
+    /*
+    If the wearer of the flag gets kicked from the server they need to drop the flag.
+     */
     @EventHandler
     public void onPlayerKick(PlayerKickEvent event) {
         if (event.getPlayer().getUniqueId().equals(wearer)) {
@@ -226,9 +246,22 @@ public class Flag implements Listener {
     }
 
     /*
+    If the wearer of the flag dies they need to drop the flag.
+     */
+    @EventHandler
+    public void onPlayerDeath(PlayerDeathEvent event) {
+        if (event.getEntity().getUniqueId().equals(wearer)) {
+            // The wearer has died! We need to drop the flag
+            dropFlag();
+        }
+    }
+
+    /*
     Make the wearer drop the flag.
      */
     private void dropFlag() {
+        // TODO: broadcast or something?
+
         Location location = getFlagLocation();
         location.setY(location.getY() - OFFSET - 1.1);
         setFlagLocation(location);
@@ -300,9 +333,6 @@ public class Flag implements Listener {
         stand.getEquipment().setHelmet(stack);
 
         stand.setCustomName(getEntityName());
-
-        // DEBUGGING, probably don't want this visible in the real release
-//        stand.setCustomNameVisible(true);
 
         stand.setGravity(false);
         stand.setInvisible(true);
