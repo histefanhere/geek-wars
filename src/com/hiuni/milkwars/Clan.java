@@ -150,6 +150,11 @@ public class Clan {
         return false; // If we couldn't find this member in the clan.
     }
 
+    public int getClanId() {
+        // Returns the ID of the clan.
+        return this.clanId;
+    }
+
     public String getName() {
         // Returns the name of the clan.
         return this.name; // Is this safe? would it be possible to accidentally rename the clan with this.
