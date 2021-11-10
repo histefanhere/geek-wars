@@ -10,9 +10,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.event.world.EntitiesLoadEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
@@ -39,6 +37,8 @@ public class Flag implements Listener {
     private UUID wearer = null;
 
     private int clanId;
+
+    private static final double OFFSET = 1.5;
 
     Flag(int clanId) {
         this.clanId = clanId;
@@ -112,6 +112,11 @@ public class Flag implements Listener {
         // Cancel the event, since if it's a flag we don't want to be able to take things off it / put things on
         event.setCancelled(true);
 
+        // If this flag is being worn, it should not be able to be interacted with
+        if (wearer != null) {
+            return;
+        }
+
         // Some player has right-clicked the flag entity. The behaviour of this depends on what clan they're a part of
         for (Clan clan: MilkWars.clans) {
             if (clan.hasMember(player)) {
@@ -183,6 +188,32 @@ public class Flag implements Listener {
         }
     }
 
+    @EventHandler
+    public void onPlayerQuit(PlayerQuitEvent event) {
+        if (event.getPlayer().getUniqueId().equals(wearer)) {
+            // The wearer has quit the server! We need to drop the flag
+            dropFlag();
+        }
+    }
+
+    @EventHandler
+    public void onPlayerKick(PlayerKickEvent event) {
+        if (event.getPlayer().getUniqueId().equals(wearer)) {
+            // The wearer has kick the server! We need to drop the flag
+            dropFlag();
+        }
+    }
+
+    /*
+    Make the wearer drop the flag.
+     */
+    private void dropFlag() {
+        Location location = getFlagLocation();
+        location.setY(location.getY() - OFFSET - 1.3);
+        setFlagLocation(location);
+        wearer = null;
+    }
+
     /*
     Gets the name of the flag entity, since this depends on the clan the flag's in.
      */
@@ -204,7 +235,7 @@ public class Flag implements Listener {
         Location location = player.getLocation();
 
         // Put the flag two blocks above the player
-        location.setY(location.getY() + 1.5);
+        location.setY(location.getY() + OFFSET);
 
         setFlagLocation(location);
     }
