@@ -29,7 +29,13 @@ public class TreasureCommand {
                 // - has to be within 5k of spawn
                 // TODO: Check requirements
 
+                // Get the location to create the flag pole at
+                // Centered in the middle of the block
                 Location location = player.getLocation();
+                location.setX(Location.locToBlock(location.getX()) + 0.5);
+                location.setZ(Location.locToBlock(location.getZ()) + 0.5);
+                location.setY(Location.locToBlock(location.getY()) - 0.5);
+
                 for (Clan clan: MilkWars.clans) {
                     if (clan.hasLeader(player)) {
                         clan.getFlag().setFlagPoleLocation(location);
