@@ -12,6 +12,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.world.EntitiesLoadEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
@@ -23,8 +24,10 @@ public class Flag implements Listener {
 
     // TODO: Instead of using the UUIDs, use the Base64 encoding of these skins
     public static final UUID[] HEADS = {
-            UUID.fromString("f159b274-c22e-4340-b7c1-52abde147713"),
-            UUID.fromString("dfaad551-4e7e-45a1-a6f7-c6fc5ec823ac")
+            UUID.fromString("279c8a78-609d-49a3-a328-647b7485132e"),
+            UUID.fromString("e13a5e6a-587f-4f5e-81b0-709bb75ee2db")
+//            UUID.fromString("f159b274-c22e-4340-b7c1-52abde147713"), // COW
+//            UUID.fromString("dfaad551-4e7e-45a1-a6f7-c6fc5ec823ac") // SHEEP
     };
 
     // TODO: save/load flagId from file
@@ -39,6 +42,14 @@ public class Flag implements Listener {
 
     Flag(int clanId) {
         this.clanId = clanId;
+    }
+
+    /*
+    Get the UUID of the player carrying the flag.
+    Returns null if the flag is not being carried.
+     */
+    public UUID getWearer() {
+        return wearer;
     }
 
     /*
@@ -86,7 +97,7 @@ public class Flag implements Listener {
     }
 
     @EventHandler
-    public void onPlayerInteractEntityEvent(PlayerArmorStandManipulateEvent event) {
+    public void onPlayerInteractEntity(PlayerArmorStandManipulateEvent event) {
         Player player = event.getPlayer();
         Entity entity = event.getRightClicked();
 
@@ -105,8 +116,37 @@ public class Flag implements Listener {
         for (Clan clan: MilkWars.clans) {
             if (clan.hasMember(player)) {
                 if (clan.getClanId() == clanId) {
-                    // They're a part of the same clan as the flag. This means the flag
-                    // needs to be returned to it's flag pole.
+                    // They're a part of the same clan as the flag.
+
+                    // Are they carrying a flag?
+                    for (Clan otherClan: MilkWars.clans) {
+                        if (otherClan.getClanId() == clan.getClanId()) {
+                            continue;
+                        }
+
+                        if (otherClan.getFlag().getWearer() == player.getUniqueId()) {
+                            // A player has clicked on their flag while carrying the enemies flag.
+                            // If the flag is at its pole location, that means there's been a capture!
+                            if (flagLocation == poleLocation) {
+                                // CAAAAPPPPPTUUURRREEEE!!!!!
+
+                                // TODO: broadcast or something?
+                                player.sendMessage(
+                                        ChatColor.GOLD + "Congratulations on capturing the enemy treasure!"
+                                );
+                                clan.addCapture();
+
+                                // The flag they're carrying needs to be returned to the enemy base
+                                otherClan.getFlag().returnToPole();
+
+                                return;
+                            }
+                        }
+                    }
+
+                    // If we've got here, either the player isn't carrying an enemy flag
+                    // Or they are and the flag isn't at its pole.
+                    // In either case, clicking the flag should return it to its pole.
                     if (flagLocation != poleLocation) {
                         returnToPole();
                         // TODO: broadcast or something?
@@ -132,6 +172,17 @@ public class Flag implements Listener {
         // If we've got to here, the player isn't a part of any clan. We'll just ignore the event then
     }
 
+    @EventHandler
+    public void onPlayerMove(PlayerMoveEvent event) {
+        if (wearer == null) {
+            return;
+        }
+
+        if (event.getPlayer().getUniqueId().equals(wearer)) {
+            teleportToWearer();
+        }
+    }
+
     /*
     Gets the name of the flag entity, since this depends on the clan the flag's in.
      */
@@ -153,7 +204,7 @@ public class Flag implements Listener {
         Location location = player.getLocation();
 
         // Put the flag two blocks above the player
-        location.setY(location.getY() + 2);
+        location.setY(location.getY() + 1.5);
 
         setFlagLocation(location);
     }
@@ -199,7 +250,7 @@ public class Flag implements Listener {
         stand.setCustomName(getEntityName());
 
         // DEBUGGING, probably don't want this visible in the real release
-        stand.setCustomNameVisible(true);
+//        stand.setCustomNameVisible(true);
 
         stand.setGravity(false);
         stand.setInvisible(true);
