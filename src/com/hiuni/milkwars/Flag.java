@@ -1,5 +1,8 @@
 package com.hiuni.milkwars;
 
+import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.properties.Property;
+import dev.dbassett.skullcreator.SkullCreator;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -18,16 +21,21 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.scheduler.BukkitScheduler;
 
+import java.lang.reflect.Field;
 import java.util.UUID;
 
 public class Flag implements Listener {
 
-    // TODO: Instead of using the UUIDs, use the Base64 encoding of these skins
-    public static final UUID[] HEADS = {
-            UUID.fromString("279c8a78-609d-49a3-a328-647b7485132e"),
-            UUID.fromString("e13a5e6a-587f-4f5e-81b0-709bb75ee2db")
-//            UUID.fromString("f159b274-c22e-4340-b7c1-52abde147713"), // COW
-//            UUID.fromString("dfaad551-4e7e-45a1-a6f7-c6fc5ec823ac") // SHEEP
+    // Always only have TWO heads uncommented
+    private static final String[] HEADS = {
+//            "5d6c6eda942f7f5f71c3161c7306f4aed307d82895f9d2b07ab4525718edc5", // Base Cow
+            "8d103358d8f1bdaef1214bfa77c4da641433186bd4bc44d857c16811476fe", // Golden Cow
+//            "651c03b5e659275ed85ca2c8ad988c755ccfba45aff3f6d8d6f2738b0967cccd", // Milk Bucket
+
+//            "f31f9ccc6b3e32ecf13b8a11ac29cd33d18c95fc73db8a66c5d657ccb8be70", // Base Sheep
+            "2513d5d588af9c9e98dbf9ea57a7a1598740f21bcce133b9f9aacc67d4faa", // Golden Sheep
+//            "1646a62fec2dd97f5e4aa329ae446c6011a8e8e2d817aeeb8fdc11cc54ec2ebe", // Spool Of Wool
+//            "3faf4c29f1e7405f4680c5c2b03ef9384f1aecfe2986ad50138c605fefff2f15", // Wool Block
     };
 
     // TODO: save/load flagId from file
@@ -326,10 +334,8 @@ public class Flag implements Listener {
         ArmorStand stand = (ArmorStand) Bukkit.getWorld("world").spawnEntity(location, EntityType.ARMOR_STAND);
 
         // Set the helmet of the armor stand to a specific player head
-        ItemStack stack = new ItemStack(Material.PLAYER_HEAD);
-        SkullMeta meta = (SkullMeta) stack.getItemMeta();
-        meta.setOwningPlayer(Bukkit.getServer().getOfflinePlayer(HEADS[clanId]));
-        stack.setItemMeta(meta);
+        String url = "http://textures.minecraft.net/texture/" + HEADS[clanId];
+        ItemStack stack = SkullCreator.itemFromUrl(url);
         stand.getEquipment().setHelmet(stack);
 
         stand.setCustomName(getEntityName());
