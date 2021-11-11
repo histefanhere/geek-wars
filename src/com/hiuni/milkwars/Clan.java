@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.UUID;
 import java.util.function.Predicate;
@@ -23,6 +24,19 @@ public class Clan {
     private int captures; // A counter for how many times the clan has successfully captured the enemy flag.
     private Flag flag;
 
+    Clan(int clanId, String name, String prefix) {
+
+        // Remember if you add anything that needs to persist across server restarts then add it to the save/load methods.
+        this.clanId = clanId;
+        this.name = name;
+        Bukkit.getConsoleSender().sendMessage(this.name);
+        this.prefix = prefix;
+        this.members = new ArrayList<ClanMember>();
+        this.kills = 0;
+        this.captures = 0;
+        this.flag = new Flag(clanId);
+    }
+
 //    private static JavaPlugin plugin;
 //
 //    public static void setPlugin(JavaPlugin plugin) {
@@ -34,21 +48,12 @@ public class Clan {
 //        return Clan.plugin;
 //    }
 
-    Clan(int clanId, String name, String prefix) {
-        this.clanId = clanId;
-        this.name = name;
-        this.prefix = prefix;
-        this.members = new ArrayList<ClanMember>();
-        this.kills = 0;
-        this.captures = 0;
-        this.flag = new Flag(clanId);
-    }
-
     public boolean addMember(Player player) {
         // Adds a player to the clan if they are not already a part of it.
         if (this.hasMember(player)) {
             return false;
         } else {
+            DataManager.registerChanges(); // Allows the system to know that changes haven't been saved to disk.
             this.members.add(new ClanMember(player.getName(), player.getUniqueId()));
 
             // Update the command requirements of the player, now that they're a part of the clan.
@@ -67,6 +72,7 @@ public class Clan {
                 // If the player was successfully promoted, we need to update their command requirements
                 // so that they can access all their new commands
                 if (result) {
+                    DataManager.registerChanges();
                     CommandAPI.updateRequirements(player);
                 }
 
@@ -85,6 +91,7 @@ public class Clan {
                 // If the player was successfully demoted, we need to update their command requirements
                 // so that they cannot access all their old commands
                 if (result) {
+                    DataManager.registerChanges();
                     CommandAPI.updateRequirements(player);
                 }
 
@@ -99,6 +106,7 @@ public class Clan {
         for (ClanMember member : this.members) {
             if (member.isPlayer(player)) {
                 this.members.remove(member);
+                DataManager.registerChanges();
 
                 // Update their command requirements
                 CommandAPI.updateRequirements(player);
@@ -129,10 +137,23 @@ public class Clan {
         return this.members;
     }
 
+    public boolean isSignedIn(Player player) {
+       return this.getMember(player).isSignedIn();
+    }
+
+    public ClanMember getMember(Player player) {
+        for (ClanMember member : this.getAllMembers()) {
+            if (member.isPlayer(player)) {
+                return member;
+            }
+        }
+        throw new NoSuchElementException("This player is not a member of this clan");
+    }
+
+
     public boolean hasMember(Player player) {
         // Returns true if player is a member (or leader) of this clan.
         for (ClanMember member : this.members) {
-            Bukkit.getConsoleSender().sendMessage(player.getUniqueId().toString());
             if (member.isPlayer(player)) {
                 return true;
             }
@@ -167,6 +188,7 @@ public class Clan {
 
     public int addKill() {
         // Increments the amount of kills the clan has and returns the new count.
+        DataManager.registerChanges();
         return this.kills++;
     }
 
@@ -177,6 +199,7 @@ public class Clan {
 
     public int addCapture() {
         // Increment the amount of captures the clan has and returns the new count.
+        DataManager.registerChanges();
         return this.captures++;
     }
 
@@ -192,9 +215,10 @@ public class Clan {
 
     public void save(FileConfiguration config, String keyPath) {
         // Saves the clan data to file so that it can preserved when the server restarts.
-        config.set(keyPath + ".name", getName());
+        //config.set(keyPath + ".name", getName());
         config.set(keyPath + ".kills", getKills());
         config.set(keyPath + ".captures", getCaptures());
+        //config.set(keyPath + ".prefix", getPrefix());
         for (ClanMember member : members) {
             member.save(config, keyPath + ".members");
         }
@@ -203,13 +227,15 @@ public class Clan {
     public void load(FileConfiguration config, String keyPath) {
         // Loads the clan data from config.
 
-        config.addDefault(keyPath + ".name", "ErrorLoadingClanName");
+        //config.addDefault(keyPath + ".name", "ErrorLoadingClanName");
         config.addDefault(keyPath + ".kills", 0);
         config.addDefault(keyPath + ".captures", 0);
+        //config.addDefault(keyPath + ".prefix", "[FailedToLoad] ");
 
-        this.name = config.getString(keyPath + ".name");
+        //this.name = config.getString(keyPath + ".name");
         this.kills = config.getInt(keyPath + ".kills");
         this.captures = config.getInt(keyPath + ".captures");
+        //this.prefix = config.getString(keyPath + ".prefix");
 
         try {
             Set<String> uuids = config.getConfigurationSection(keyPath + ".members").getKeys(false);

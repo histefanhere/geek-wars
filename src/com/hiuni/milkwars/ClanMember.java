@@ -107,4 +107,10 @@ public class ClanMember {
         return member;
     }
 
+    public void sendMessage(String message) {
+        Player player = Bukkit.getPlayer(this.uuid);
+        if (player == null) { return; } // The player is offline, we don't need to send them a message.
+        player.sendMessage(message);
+    }
+
 }
