@@ -39,6 +39,7 @@ public class TreasureCommand {
                 for (Clan clan: MilkWars.clans) {
                     if (clan.hasLeader(player)) {
                         clan.getFlag().setFlagPoleLocation(location);
+                        clan.getFlag().returnToPole();
                         player.sendMessage(
                                 ChatColor.GREEN + "Successfully set the treasure's home location!"
                         );

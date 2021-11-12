@@ -7,6 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -38,13 +39,10 @@ public class Flag implements Listener {
 //            "3faf4c29f1e7405f4680c5c2b03ef9384f1aecfe2986ad50138c605fefff2f15", // Wool Block
     };
 
-    // TODO: save/load flagId from file
-    private UUID flagId = null;
+    private UUID flagId;
     private Location flagLocation;
     private Location poleLocation;
-
-    // The UUID of the player that's carrying the flag
-    private UUID wearer = null;
+    private UUID wearer;
 
     private int clanId;
 
@@ -88,6 +86,8 @@ public class Flag implements Listener {
     public void returnToPole() {
         wearer = null;
         setFlagLocation(poleLocation);
+
+        DataManager.registerChanges();
     }
 
     /*
@@ -99,12 +99,11 @@ public class Flag implements Listener {
 
     /*
     Sets the location of the flag pole (the home base location).
-    This method will also bring the flag back to the flag pole.
      */
     public void setFlagPoleLocation(Location location) {
         poleLocation = location;
-        wearer = null;
-        setFlagLocation(poleLocation);
+
+        DataManager.registerChanges();
     }
 
     /*
@@ -160,6 +159,8 @@ public class Flag implements Listener {
         // Some player has right-clicked the flag entity. The behaviour of this depends on what clan they're a part of
         for (Clan clan: MilkWars.clans) {
             if (clan.hasMember(player)) {
+                DataManager.registerChanges();
+
                 if (clan.getClanId() == clanId) {
                     // They're a part of the same clan as the flag.
 
@@ -309,6 +310,12 @@ public class Flag implements Listener {
     private void setFlagLocation(Location location) {
         flagLocation = location;
 
+        // We've set a null location, it's pretty obvious we DON'T want to teleport the
+        // flag entity to "null" in this case...
+        if (location == null) {
+            return;
+        }
+
         if (flagId == null) {
             // The flag entity doesn't even exist yet! Create one now
             createNewFlag(location);
@@ -325,6 +332,8 @@ public class Flag implements Listener {
                 entity.teleport(location);
             }
         }
+
+        DataManager.registerChanges();
     }
 
     /*
@@ -345,5 +354,56 @@ public class Flag implements Listener {
         stand.setInvulnerable(true);
 
         flagId = stand.getUniqueId();
+    }
+
+    /*
+    Saves the flag data to file
+     */
+    public void save(FileConfiguration config, String keyPath) {
+        // turns out, "null" doesn't like being made into a string
+        if (flagId != null) {
+            config.set(keyPath + ".id", flagId.toString());
+        }
+        else {
+            config.set(keyPath + ".id", null);
+        }
+
+        // These locations are stored in the data file as Location objects
+        config.set(keyPath + ".location.flag", getFlagLocation());
+        config.set(keyPath + ".location.pole", getFlagPoleLocation());
+
+        // turns out, "null" doesn't like being made into a string
+        if (wearer != null) {
+            config.set(keyPath + ".wearer", wearer.toString());
+        }
+        else {
+            config.set(keyPath + ".wearer", null);
+        }
+    }
+
+    /*
+    Loads the flag data to file
+     */
+    public void load(FileConfiguration config, String keyPath) {
+        // These locations are stored in the data file as location objects, so we can get it directly!
+        setFlagLocation(config.getLocation(keyPath + ".location.flag"));
+        setFlagPoleLocation(config.getLocation(keyPath + ".location.pole"));
+
+        String configId = config.getString(keyPath + ".id");
+        if (configId == null) {
+            flagId = null;
+        }
+        else {
+            flagId = UUID.fromString(configId);
+        }
+
+        String configWearer = config.getString(keyPath + ".wearer");
+        if (configWearer == null) {
+            wearer = null;
+        }
+        else {
+            wearer = UUID.fromString(configWearer);
+            teleportToWearer();
+        }
     }
 }

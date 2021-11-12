@@ -222,6 +222,7 @@ public class Clan {
         for (ClanMember member : members) {
             member.save(config, keyPath + ".members");
         }
+        flag.save(config, keyPath + ".flag");
     }
 
     public void load(FileConfiguration config, String keyPath) {
@@ -236,6 +237,8 @@ public class Clan {
         this.kills = config.getInt(keyPath + ".kills");
         this.captures = config.getInt(keyPath + ".captures");
         //this.prefix = config.getString(keyPath + ".prefix");
+
+        flag.load(config, keyPath + ".flag");
 
         try {
             Set<String> uuids = config.getConfigurationSection(keyPath + ".members").getKeys(false);
