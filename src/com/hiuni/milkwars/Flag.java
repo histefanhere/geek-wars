@@ -14,6 +14,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityToggleGlideEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.event.world.EntitiesLoadEvent;
@@ -262,6 +263,33 @@ public class Flag implements Listener {
         if (event.getEntity().getUniqueId().equals(wearer)) {
             // The wearer has died! We need to drop the flag
             dropFlag();
+        }
+    }
+
+    /*
+    Prevents the wearer of the flag from flying away on an elytra
+     */
+    @EventHandler
+    public void onEntityToggleGlide(EntityToggleGlideEvent event) {
+        if (event.getEntity().getUniqueId().equals(wearer)) {
+            if (event.isGliding()) {
+                // The wearer of the flag has tried to glide! Not today my friend, not today.
+                event.setCancelled(true);
+            }
+        }
+    }
+
+    /*
+    Prevents the wearer of the flag from teleporting by any means
+     */
+    @EventHandler
+    public void onPlayerTeleport(PlayerTeleportEvent event) {
+        // For some reason the flag isn't able to teleport through the portal.
+        // If it turns out there's some way to make it do so, that needs to be
+        // listened for in an event similar to this and cancelled.
+        
+        if (event.getPlayer().getUniqueId().equals(wearer)) {
+            event.setCancelled(true);
         }
     }
 
