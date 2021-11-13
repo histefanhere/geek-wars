@@ -28,13 +28,13 @@ public class DataManager {
         }
 
         if (!DataManager.hasChanged) {
-            Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Milk-Wars] Clan data" +
-                    " has not changed, no reason to save to file.");
+//            Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Milk-Wars] Clan data" +
+//                    " has not changed, no reason to save to file.");
             return true;
         }
 
-        Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Milk-Wars]" +
-                " Saving data to file.");
+//        Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Milk-Wars]" +
+//                " Saving data to file.");
 
         FileManager.setup(DataManager.plugin, "ClanData.yml");
         MilkWars.clans[0].save(FileManager.getConfig(), "cows");
