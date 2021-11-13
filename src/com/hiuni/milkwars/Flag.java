@@ -174,12 +174,17 @@ public class Flag implements Listener {
                             // A player has clicked on their flag while carrying the enemies flag.
                             // If the flag is at its pole location, that means there's been a capture!
                             if (flagLocation == poleLocation) {
-                                // CAAAAPPPPPTUUURRREEEE!!!!!
 
-                                // TODO: broadcast or something?
-                                player.sendMessage(
-                                        ChatColor.GOLD + "Congratulations on capturing the enemy treasure!"
+                                Announce.sendToClan(clan,
+                                        "Good job " + clan.getName() + " clan, " + player.getDisplayName() +
+                                                " has successfully captured the enemy flag!",
+                                        ChatColor.GREEN
                                 );
+                                Announce.sendToClan(otherClan,
+                                        "Oh no, your flag has been captured by " + player.getDisplayName() +
+                                                " of the " + clan.getName() + " clan!",
+                                        ChatColor.RED);
+
                                 clan.addCapture();
 
                                 // The flag they're carrying needs to be returned to the enemy base
@@ -195,22 +200,18 @@ public class Flag implements Listener {
                     // In either case, clicking the flag should return it to its pole.
                     if (flagLocation != poleLocation) {
                         returnToPole();
-                        // TODO: broadcast or something?
-                        player.sendMessage(
-                                ChatColor.GREEN + "Returned the treasure back to the guild hall!"
-                        );
+                        Announce.sendToAll(player.getDisplayName() + " has returned the " + clan.getName() +
+                                        " treasure to the clan hall.",
+                                ChatColor.YELLOW);
                         return;
                     }
                 } else {
                     // They're a part of the opposite clan! They're now carrying the flag
                     wearer = player.getUniqueId();
                     teleportToWearer();
-
-                    // TODO: broadcast or something?
-                    player.sendMessage(
-                            ChatColor.GREEN + "You've retrieved the enemy treasure! " +
-                                    "Return it to your guild hall for a capture!"
-                    );
+                    Clan otherClan = MilkWars.clans[clan.getClanId() + 1 % 2]; // It's hacky af, but I don't care.
+                    Announce.sendToAll(player.getDisplayName() + " has picked up the " + otherClan.getName() + " treasure!",
+                            ChatColor.YELLOW);
                 }
             }
         }
