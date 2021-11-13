@@ -1,6 +1,7 @@
 package com.hiuni.milkwars.commands.subcommands;
 
 import com.hiuni.milkwars.Clan;
+import com.hiuni.milkwars.Flag;
 import com.hiuni.milkwars.MilkWars;
 import dev.jorel.commandapi.CommandAPI;
 import dev.jorel.commandapi.CommandAPICommand;
@@ -34,7 +35,7 @@ public class TreasureCommand {
                 Location location = player.getLocation();
                 location.setX(Location.locToBlock(location.getX()) + 0.5);
                 location.setZ(Location.locToBlock(location.getZ()) + 0.5);
-                location.setY(Location.locToBlock(location.getY()) - 0.8);
+                location.setY(Location.locToBlock(location.getY()) + Flag.POLE_OFFSET);
 
                 for (Clan clan: MilkWars.clans) {
                     if (clan.hasLeader(player)) {

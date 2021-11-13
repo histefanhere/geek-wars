@@ -1,12 +1,9 @@
 package com.hiuni.milkwars;
 
-import com.mojang.authlib.GameProfile;
-import com.mojang.authlib.properties.Property;
 import dev.dbassett.skullcreator.SkullCreator;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
@@ -20,10 +17,8 @@ import org.bukkit.event.player.*;
 import org.bukkit.event.world.EntitiesLoadEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.scheduler.BukkitScheduler;
 
-import java.lang.reflect.Field;
 import java.util.UUID;
 
 public class Flag implements Listener {
@@ -47,7 +42,9 @@ public class Flag implements Listener {
 
     private int clanId;
 
-    private static final double OFFSET = 1.9;
+    private static final double PLAYER_OFFSET = 1.2;
+    private static final double GROUND_OFFSET = -1.1;
+    public static final double POLE_OFFSET = -0.8;
 
     Flag(int clanId) {
         this.clanId = clanId;
@@ -69,7 +66,7 @@ public class Flag implements Listener {
             return;
         }
 
-        flagLocation.setYaw(Location.normalizeYaw(flagLocation.getYaw() + 0.5f));
+        flagLocation.setYaw(Location.normalizeYaw(flagLocation.getYaw() + 0.8f));
         ent.teleport(flagLocation);
     }
 
@@ -181,7 +178,7 @@ public class Flag implements Listener {
                                 player.sendMessage(
                                         ChatColor.GOLD + "Congratulations on capturing the enemy treasure!"
                                 );
-                                clan.addCapture();
+                                otherClan.addCapture();
 
                                 // The flag they're carrying needs to be returned to the enemy base
                                 otherClan.getFlag().returnToPole();
@@ -287,7 +284,7 @@ public class Flag implements Listener {
         // For some reason the flag isn't able to teleport through the portal.
         // If it turns out there's some way to make it do so, that needs to be
         // listened for in an event similar to this and cancelled.
-        
+
         if (event.getPlayer().getUniqueId().equals(wearer)) {
             event.setCancelled(true);
         }
@@ -300,9 +297,9 @@ public class Flag implements Listener {
         // TODO: broadcast or something?
 
         Location location = getFlagLocation();
-        location.setY(location.getY() - OFFSET - 1.1);
-        setFlagLocation(location);
+        location.setY(location.getY() - PLAYER_OFFSET + GROUND_OFFSET);
         wearer = null;
+        setFlagLocation(location);
     }
 
     /*
@@ -326,7 +323,7 @@ public class Flag implements Listener {
         Location location = player.getLocation();
 
         // Put the flag two blocks above the player
-        location.setY(location.getY() + OFFSET);
+        location.setY(location.getY() + PLAYER_OFFSET);
 
         setFlagLocation(location);
     }
@@ -357,6 +354,11 @@ public class Flag implements Listener {
                 createNewFlag(location);
             } else {
                 // We've found the entity somewhere, just teleport it to it's location
+
+                // We should just make sure here, while we've got the flag,
+                // that the marker status is correctly set
+                ((ArmorStand) entity).setMarker(wearer != null);
+
                 entity.teleport(location);
             }
         }
@@ -380,6 +382,9 @@ public class Flag implements Listener {
         stand.setGravity(false);
         stand.setInvisible(true);
         stand.setInvulnerable(true);
+
+        // If there's a wearer, make it a marker
+        stand.setMarker(wearer != null);
 
         flagId = stand.getUniqueId();
     }
