@@ -29,7 +29,7 @@ public class DataManager {
 
         if (!DataManager.hasChanged) {
             Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Milk-Wars] Clan data" +
-                    "has not changed, no reason to save to file.");
+                    " has not changed, no reason to save to file.");
             return true;
         }
 
