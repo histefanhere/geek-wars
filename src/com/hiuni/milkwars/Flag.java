@@ -270,7 +270,9 @@ public class Flag implements Listener {
     Make the wearer drop the flag.
      */
     private void dropFlag() {
-        // TODO: broadcast or something?
+
+        Clan clan = MilkWars.clans[this.clanId];
+        Announce.sendToAll("The " + clan.getName() + " treasure has been dropped!", ChatColor.YELLOW);
 
         Location location = getFlagLocation();
         location.setY(location.getY() - OFFSET - 1.1);
