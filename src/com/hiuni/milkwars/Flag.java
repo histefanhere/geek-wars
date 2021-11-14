@@ -347,6 +347,9 @@ public class Flag implements Listener {
         if (event.getEntity().getUniqueId().equals(wearer)) {
             if (event.isGliding()) {
                 // The wearer of the flag has tried to glide! Not today my friend, not today.
+                event.getEntity().sendMessage(
+                        ChatColor.RED + "You are not allowed to fly while carrying treasure!"
+                );
                 event.setCancelled(true);
             }
         }
@@ -363,6 +366,9 @@ public class Flag implements Listener {
 
         if (event.getPlayer().getUniqueId().equals(wearer)) {
             event.setCancelled(true);
+            event.getPlayer().sendMessage(
+                    ChatColor.RED + "You are not allowed to teleport while carrying treasure!"
+            );
         }
     }
 
