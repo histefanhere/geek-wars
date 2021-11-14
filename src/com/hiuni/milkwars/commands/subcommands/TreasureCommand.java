@@ -5,6 +5,8 @@ import com.hiuni.milkwars.Flag;
 import com.hiuni.milkwars.MilkWars;
 import dev.jorel.commandapi.CommandAPI;
 import dev.jorel.commandapi.CommandAPICommand;
+import dev.jorel.commandapi.CommandPermission;
+import dev.jorel.commandapi.arguments.MultiLiteralArgument;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 
@@ -60,8 +62,33 @@ public class TreasureCommand {
                 CommandAPI.fail("Something has gone wrong!");
             });
 
+    private final CommandAPICommand treasureActivate = new CommandAPICommand("activate")
+            .withPermission(CommandPermission.OP)
+            .withArguments(new MultiLiteralArgument("cows", "sheep", "all"))
+            .executes((sender, args) -> {
+                if (args[0] == "cows" || args[0] == "all") {
+                    MilkWars.clans[0].getFlag().setActive(true);
+                }
+                if (args[0] == "sheep" || args[0] == "all") {
+                    MilkWars.clans[1].getFlag().setActive(true);
+                }
+
+                switch ((String) args[0]) {
+                    case "cows" -> sender.sendMessage(
+                            ChatColor.GREEN + "Activated the " + MilkWars.clans[0].getName() + " treasure!"
+                    );
+                    case "sheep" -> sender.sendMessage(
+                            ChatColor.GREEN + "Activated the " + MilkWars.clans[1].getName() + " treasure!"
+                    );
+                    case "all" -> sender.sendMessage(
+                            ChatColor.GREEN + "Activated both the clans treasure!"
+                    );
+                }
+            });
+
     public CommandAPICommand getCommand() {
         return new CommandAPICommand("treasure")
-                .withSubcommand(treasureSetLocation);
+                .withSubcommand(treasureSetLocation)
+                .withSubcommand(treasureActivate);
     }
 }

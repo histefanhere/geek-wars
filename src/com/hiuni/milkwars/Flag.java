@@ -19,26 +19,32 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitScheduler;
 
+import java.util.Calendar;
 import java.util.UUID;
 
 public class Flag implements Listener {
 
-    // Always only have TWO heads uncommented
-    private static final String[] HEADS = {
-//            "5d6c6eda942f7f5f71c3161c7306f4aed307d82895f9d2b07ab4525718edc5", // Base Cow
-            "8d103358d8f1bdaef1214bfa77c4da641433186bd4bc44d857c16811476fe", // Golden Cow
-//            "651c03b5e659275ed85ca2c8ad988c755ccfba45aff3f6d8d6f2738b0967cccd", // Milk Bucket
+    // These don't really make sense anymore, I'm just keeping them here in case we ever need them in the future
+    // 1646a62fec2dd97f5e4aa329ae446c6011a8e8e2d817aeeb8fdc11cc54ec2ebe - Spool Of Wool
+    // 3faf4c29f1e7405f4680c5c2b03ef9384f1aecfe2986ad50138c605fefff2f15 - Wool Block
+    // 651c03b5e659275ed85ca2c8ad988c755ccfba45aff3f6d8d6f2738b0967cccd" - Milk Bucket
 
-//            "f31f9ccc6b3e32ecf13b8a11ac29cd33d18c95fc73db8a66c5d657ccb8be70", // Base Sheep
-            "2513d5d588af9c9e98dbf9ea57a7a1598740f21bcce133b9f9aacc67d4faa", // Golden Sheep
-//            "1646a62fec2dd97f5e4aa329ae446c6011a8e8e2d817aeeb8fdc11cc54ec2ebe", // Spool Of Wool
-//            "3faf4c29f1e7405f4680c5c2b03ef9384f1aecfe2986ad50138c605fefff2f15", // Wool Block
+    private static final String[][] HEADS = {
+            {
+                "5d6c6eda942f7f5f71c3161c7306f4aed307d82895f9d2b07ab4525718edc5", // Base Cow
+                "8d103358d8f1bdaef1214bfa77c4da641433186bd4bc44d857c16811476fe", // Golden Cow
+            },
+            {
+                "f31f9ccc6b3e32ecf13b8a11ac29cd33d18c95fc73db8a66c5d657ccb8be70", // Base Sheep
+                "2513d5d588af9c9e98dbf9ea57a7a1598740f21bcce133b9f9aacc67d4faa", // Golden Sheep
+            }
     };
 
     private UUID flagId;
     private Location flagLocation;
     private Location poleLocation;
     private UUID wearer;
+    private boolean active = true;
 
     private int clanId;
 
@@ -46,11 +52,29 @@ public class Flag implements Listener {
     private static final double GROUND_OFFSET = -1.1;
     public static final double POLE_OFFSET = -0.8;
 
+    private static final int HOUR_TO_RESPAWN_AT = 6;
+
     Flag(int clanId) {
         this.clanId = clanId;
 
-        BukkitScheduler scheduler = Bukkit.getScheduler();
-        scheduler.runTaskTimer(MilkWars.getInstance(), this::repeatingTask, 0, 1L);
+        // Schedule the function that spins the flags to run every tick
+        Bukkit.getScheduler().runTaskTimer(MilkWars.getInstance(), this::repeatingTask, 0, 1L);
+
+        // We also want to schedule the function that respawns the flags
+
+        Calendar cal = Calendar.getInstance();
+        long now = cal.getTimeInMillis();
+        if(cal.get(Calendar.HOUR_OF_DAY) >= HOUR_TO_RESPAWN_AT) {
+            cal.add(Calendar.DATE, 1);
+        }
+        cal.set(Calendar.HOUR_OF_DAY, HOUR_TO_RESPAWN_AT);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+
+        long offset = cal.getTimeInMillis() - now;
+        long ticks = offset / 50L;
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(MilkWars.getInstance(), this::respawnFlagAtPole, ticks, 1728000L);
     }
 
     private void repeatingTask() {
@@ -71,11 +95,52 @@ public class Flag implements Listener {
     }
 
     /*
+    Recalls the flag to its pole.
+    This function is called at HOUR_TO_RESPAWN_AT every irl day.
+     */
+    private void respawnFlagAtPole() {
+        returnToPole();
+
+        // TODO: activate flag here
+    }
+
+    /*
     Get the UUID of the player carrying the flag.
     Returns null if the flag is not being carried.
      */
     public UUID getWearer() {
         return wearer;
+    }
+
+    /*
+    Get if the flag is active or not.
+     */
+    public boolean getActive() {
+        return active;
+    }
+
+    /*
+    Sets if the flag is active or not.
+    This will also update the flag's head in game.
+     */
+    public void setActive(boolean status) {
+        if (this.active == status) {
+            return;
+        }
+        this.active = status;
+
+        // Now we need to update the head of the flag in game.
+        // If we can find it, it's much easier.
+        Entity ent = Bukkit.getServer().getEntity(flagId);
+        if (ent != null) {
+            ((ArmorStand) ent).getEquipment().setHelmet(getHead());
+        }
+        else {
+            // Teleport the flag to itself.
+            // Since we know it's not currently being loaded,
+            // The old one will get deleted when this location is loaded.
+            setFlagLocation(flagLocation);
+        }
     }
 
     /*
@@ -180,7 +245,8 @@ public class Flag implements Listener {
                                 );
                                 otherClan.addCapture();
 
-                                // The flag they're carrying needs to be returned to the enemy base
+                                // Deactivate the flag, so it can't be captured again, and return it to the enemy base
+                                otherClan.getFlag().setActive(false);
                                 otherClan.getFlag().returnToPole();
 
                                 return;
@@ -200,15 +266,25 @@ public class Flag implements Listener {
                         return;
                     }
                 } else {
-                    // They're a part of the opposite clan! They're now carrying the flag
-                    wearer = player.getUniqueId();
-                    teleportToWearer();
+                    // They're a part of the opposite clan!
 
-                    // TODO: broadcast or something?
-                    player.sendMessage(
-                            ChatColor.GREEN + "You've retrieved the enemy treasure! " +
-                                    "Return it to your guild hall for a capture!"
-                    );
+                    // You're only allowed to pick up the flag if it's active
+                    if (active) {
+                        // They're now carrying the flag
+                        wearer = player.getUniqueId();
+                        teleportToWearer();
+
+                        // TODO: broadcast or something?
+                        player.sendMessage(
+                                ChatColor.GREEN + "You've retrieved the enemy treasure! " +
+                                        "Return it to your guild hall for a capture!"
+                        );
+                    }
+                    else {
+                        player.sendMessage(
+                                ChatColor.RED + "You cannot grab this treasure since it is not active!"
+                        );
+                    }
                 }
             }
         }
@@ -373,9 +449,7 @@ public class Flag implements Listener {
         ArmorStand stand = (ArmorStand) Bukkit.getWorld("world").spawnEntity(location, EntityType.ARMOR_STAND);
 
         // Set the helmet of the armor stand to a specific player head
-        String url = "http://textures.minecraft.net/texture/" + HEADS[clanId];
-        ItemStack stack = SkullCreator.itemFromUrl(url);
-        stand.getEquipment().setHelmet(stack);
+        stand.getEquipment().setHelmet(getHead());
 
         stand.setCustomName(getEntityName());
 
@@ -387,6 +461,17 @@ public class Flag implements Listener {
         stand.setMarker(wearer != null);
 
         flagId = stand.getUniqueId();
+    }
+
+    /*
+    Generates the player head item for the flag.
+    The specific skin to use depends on what clan the flag is in and if it's active or not.
+     */
+    private ItemStack getHead() {
+        String head = HEADS[clanId][active ? 1 : 0];
+        String url = "http://textures.minecraft.net/texture/" + head;
+        ItemStack stack = SkullCreator.itemFromUrl(url);
+        return stack;
     }
 
     /*
@@ -404,6 +489,8 @@ public class Flag implements Listener {
         // These locations are stored in the data file as Location objects
         config.set(keyPath + ".location.flag", getFlagLocation());
         config.set(keyPath + ".location.pole", getFlagPoleLocation());
+
+        config.set(keyPath + ".active", getActive());
 
         // turns out, "null" doesn't like being made into a string
         if (wearer != null) {
@@ -425,6 +512,9 @@ public class Flag implements Listener {
         else {
             flagId = UUID.fromString(configId);
         }
+
+        config.addDefault(keyPath + ".active", true);
+        active = config.getBoolean(keyPath + ".active");
 
         // These locations are stored in the data file as location objects, so we can get it directly!
         setFlagLocation(config.getLocation(keyPath + ".location.flag"));

@@ -1,0 +1,19 @@
+/mw
+- clan
+  - join [OP]
+    - cows
+    - sheep
+  - leave [OP]
+  - members
+    - list
+    - promote [LEADER, OP]
+    - demote [LEADER, OP]
+- treasure 
+  - setlocation [LEADER]
+  - sethome [LEADER]
+  - activate [OP]
+    - cows
+    - sheep
+    - all
+- player [OP]
+  - setchatcolour
