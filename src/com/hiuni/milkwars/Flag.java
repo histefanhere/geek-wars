@@ -418,10 +418,6 @@ public class Flag implements Listener {
     Loads the flag data to file
      */
     public void load(FileConfiguration config, String keyPath) {
-        // These locations are stored in the data file as location objects, so we can get it directly!
-        setFlagLocation(config.getLocation(keyPath + ".location.flag"));
-        setFlagPoleLocation(config.getLocation(keyPath + ".location.pole"));
-
         String configId = config.getString(keyPath + ".id");
         if (configId == null) {
             flagId = null;
@@ -429,6 +425,10 @@ public class Flag implements Listener {
         else {
             flagId = UUID.fromString(configId);
         }
+
+        // These locations are stored in the data file as location objects, so we can get it directly!
+        setFlagLocation(config.getLocation(keyPath + ".location.flag"));
+        setFlagPoleLocation(config.getLocation(keyPath + ".location.pole"));
 
         String configWearer = config.getString(keyPath + ".wearer");
         if (configWearer == null) {
