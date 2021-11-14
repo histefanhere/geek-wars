@@ -9,7 +9,7 @@ import org.bukkit.*;
 import org.bukkit.entity.Player;
 
 public class TreasureCommand {
-    private final CommandAPICommand treasureSetLocation = new CommandAPICommand("setlocation")
+    private final CommandAPICommand treasureSetLocation = new CommandAPICommand("sethome")
             .withRequirement((sender -> {
                 Player player = (Player) sender;
 
@@ -25,14 +25,23 @@ public class TreasureCommand {
                 // Because of the requirement, we know the player
                 // is a clan leader.
 
+                Location location = player.getLocation();
+
                 // Here we check the various requirements for the flag pole location, which are:
                 // - has to be in the overworld
                 // - has to be within 5k of spawn
-                // TODO: Check requirements
+                if (!location.getWorld().equals(Bukkit.getServer().getWorld("world"))) {
+                    CommandAPI.fail("You can only set treasure homes in the overworld!");
+                    return;
+                }
+                Location zero = new Location(Bukkit.getServer().getWorld("world"), 0, 0, 0);
+                if (location.distance(zero) > 5000) {
+                    CommandAPI.fail("Must be within 5k blocks of spawn!");
+                    return;
+                }
 
                 // Get the location to create the flag pole at
                 // Centered in the middle of the block
-                Location location = player.getLocation();
                 location.setX(Location.locToBlock(location.getX()) + 0.5);
                 location.setZ(Location.locToBlock(location.getZ()) + 0.5);
                 location.setY(Location.locToBlock(location.getY()) + Flag.POLE_OFFSET);
