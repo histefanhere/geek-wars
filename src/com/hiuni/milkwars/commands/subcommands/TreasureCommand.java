@@ -8,10 +8,11 @@ import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.CommandPermission;
 import dev.jorel.commandapi.arguments.MultiLiteralArgument;
 import org.bukkit.*;
+import org.bukkit.command.Command;
 import org.bukkit.entity.Player;
 
 public class TreasureCommand {
-    private final CommandAPICommand treasureSetLocation = new CommandAPICommand("sethome")
+    private final CommandAPICommand treasureSetHome = new CommandAPICommand("sethome")
             .withRequirement((sender -> {
                 Player player = (Player) sender;
 
@@ -62,6 +63,39 @@ public class TreasureCommand {
                 CommandAPI.fail("Something has gone wrong!");
             });
 
+    private final CommandAPICommand treasureSetLocation = new CommandAPICommand("setlocation")
+            .withRequirement((sender -> {
+                Player player = (Player) sender;
+
+                // Check if player is in either clan, and if they're a leader
+                for (Clan clan: MilkWars.clans) {
+                    if (clan.hasLeader(player)) {
+                        return true;
+                    }
+                }
+                return false;
+            }))
+            .executesPlayer(((player, args) -> {
+                for (Clan clan: MilkWars.clans) {
+                    if (clan.hasMember(player)) {
+
+                        if (clan.getFlag().getFlagLocation() == null) {
+                            CommandAPI.fail("Flag has not been created!");
+                        }
+                        else {
+                            Location location = player.getLocation();
+                            location.setY(Location.locToBlock(location.getY()) + Flag.POLE_OFFSET);
+                            clan.getFlag().setFlagLocation(location);
+
+                            player.sendMessage(
+                                    ChatColor.GREEN + "Teleported the flag to you!"
+                            );
+                        }
+                        return;
+                    }
+                }
+            }));
+
     private final CommandAPICommand treasureActivate = new CommandAPICommand("activate")
             .withPermission(CommandPermission.OP)
             .withArguments(new MultiLiteralArgument("cows", "sheep", "all"))
@@ -88,6 +122,7 @@ public class TreasureCommand {
 
     public CommandAPICommand getCommand() {
         return new CommandAPICommand("treasure")
+                .withSubcommand(treasureSetHome)
                 .withSubcommand(treasureSetLocation)
                 .withSubcommand(treasureActivate);
     }

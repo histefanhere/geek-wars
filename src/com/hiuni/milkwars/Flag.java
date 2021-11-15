@@ -52,7 +52,7 @@ public class Flag implements Listener {
     private static final double GROUND_OFFSET = -1.1;
     public static final double POLE_OFFSET = -0.8;
 
-    private static final int HOUR_TO_RESPAWN_AT = 6;
+    private static final int HOUR_TO_RESET_AT = 6;
 
     Flag(int clanId) {
         this.clanId = clanId;
@@ -64,17 +64,22 @@ public class Flag implements Listener {
 
         Calendar cal = Calendar.getInstance();
         long now = cal.getTimeInMillis();
-        if(cal.get(Calendar.HOUR_OF_DAY) >= HOUR_TO_RESPAWN_AT) {
+        if(cal.get(Calendar.HOUR_OF_DAY) >= HOUR_TO_RESET_AT) {
             cal.add(Calendar.DATE, 1);
         }
-        cal.set(Calendar.HOUR_OF_DAY, HOUR_TO_RESPAWN_AT);
+        cal.set(Calendar.HOUR_OF_DAY, HOUR_TO_RESET_AT);
         cal.set(Calendar.MINUTE, 0);
         cal.set(Calendar.SECOND, 0);
         cal.set(Calendar.MILLISECOND, 0);
 
         long offset = cal.getTimeInMillis() - now;
         long ticks = offset / 50L;
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(MilkWars.getInstance(), this::respawnFlagAtPole, ticks, 1728000L);
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(
+                MilkWars.getInstance(),
+                this::respawnFlagAtPole,
+                ticks,
+                24L * 60L * 60L * 20L
+        );
     }
 
     private void repeatingTask() {
@@ -99,9 +104,8 @@ public class Flag implements Listener {
     This function is called at HOUR_TO_RESPAWN_AT every irl day.
      */
     private void respawnFlagAtPole() {
+        setActive(true);
         returnToPole();
-
-        // TODO: activate flag here
     }
 
     /*
@@ -414,7 +418,7 @@ public class Flag implements Listener {
     Sets the location of the flag. If we're unable to find the flag entity,
     simply create a new one! The old flag will get deleted once it's loaded in again.
      */
-    private void setFlagLocation(Location location) {
+    public void setFlagLocation(Location location) {
         flagLocation = location;
 
         // We've set a null location, it's pretty obvious we DON'T want to teleport the
