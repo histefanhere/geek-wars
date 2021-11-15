@@ -1,13 +1,11 @@
 package com.hiuni.milkwars;
 
-import com.hiuni.milkwars.commands.ClanCommandManager;
+import com.hiuni.milkwars.commands.CommandManager;
 import com.hiuni.milkwars.events.ClanKillCounterEvent;
 import com.hiuni.milkwars.events.SaveOnWorldSave;
 import com.hiuni.milkwars.commands.subcommands.FileCommand;
-import com.hiuni.milkwars.commands.subcommands.TreasureCommand;
 import dev.jorel.commandapi.CommandAPI;
 import dev.jorel.commandapi.CommandAPIConfig;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -53,7 +51,7 @@ public class MilkWars extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new ClanKillCounterEvent(), this);
 
         // Register the clan command
-        ClanCommandManager.register();
+        CommandManager.register();
 
         CommandAPI.onEnable(this);
 

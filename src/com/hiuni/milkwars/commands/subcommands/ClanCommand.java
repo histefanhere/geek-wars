@@ -15,7 +15,74 @@ import java.text.Collator;
 import java.util.Collection;
 import java.util.TreeSet;
 
-public class MembersCommand {
+public class ClanCommand {
+    private final CommandAPICommand clanJoin = new CommandAPICommand("join")
+            .withArguments(new PlayerArgument("player"))
+            .withArguments(new MultiLiteralArgument("cows", "sheep"))
+            .executes((sender, args) -> {
+                Player player = (Player) args[0];
+
+                int clanIndex = 0;
+                switch ((String) args[1]) {
+                    case "cows" -> clanIndex = 0;
+                    case "sheep" -> clanIndex = 1;
+                }
+                Clan clan = MilkWars.clans[clanIndex];
+                Clan oppositeClan = MilkWars.clans[1 - clanIndex];
+
+                // First test if they're a part of the sheep clan...
+                if (oppositeClan.hasMember(player)) {
+                    CommandAPI.fail("Cannot be a member of both clans!");
+                    return;
+                }
+
+                // Try to add them to the clan...
+                if (clan.addMember(player)) {
+                    sender.sendMessage(
+                            String.format(
+                                    ChatColor.GREEN + "Successfully added %s to the %s!",
+                                    player.getName(),
+                                    clan.getName()
+                            )
+                    );
+                    player.sendMessage(
+                            String.format(ChatColor.GREEN + "Welcome to the %s!", clan.getName())
+                    );
+                    new SettingsCommand().updateNameTag(player);
+                    return;
+                }
+
+                // They're already a part of the clan!
+                CommandAPI.fail("Player is already a member of the clan!");
+            });
+
+    private final CommandAPICommand clanLeave = new CommandAPICommand("leave")
+            .withArguments(new PlayerArgument("player"))
+            .executes((sender, args) -> {
+                Player player = (Player) args[0];
+
+                // Try to add the player to each clan
+                for (Clan clan: MilkWars.clans) {
+                    if (clan.removeMember(player)) {
+                        sender.sendMessage(
+                                String.format(
+                                        ChatColor.GREEN + "Successfully removed %s from the %s!",
+                                        player.getName(),
+                                        clan.getName()
+                                )
+                        );
+                        player.sendMessage(
+                                String.format(ChatColor.GREEN + "Left the %s", clan.getName())
+                        );
+                        new SettingsCommand().updateNameTag(player);
+                        return;
+                    }
+                }
+
+                // If we've got here, the player isn't in any clan
+                CommandAPI.fail("Player isn't a part of a clan!");
+            });
+
     private final CommandAPICommand membersList = new CommandAPICommand("list")
             .withArguments(new MultiLiteralArgument("cows", "sheep"))
             .executes((sender, args) -> {
@@ -55,77 +122,7 @@ public class MembersCommand {
                 sender.sendMessage(out);
             });
 
-    private final CommandAPICommand membersJoin = new CommandAPICommand("join")
-            .withPermission(CommandPermission.OP)
-            .withArguments(new PlayerArgument("player"))
-            .withArguments(new MultiLiteralArgument("cows", "sheep"))
-            .executes((sender, args) -> {
-                Player player = (Player) args[0];
-
-                int clanIndex = 0;
-                switch ((String) args[1]) {
-                    case "cows" -> clanIndex = 0;
-                    case "sheep" -> clanIndex = 1;
-                }
-                Clan clan = MilkWars.clans[clanIndex];
-                Clan oppositeClan = MilkWars.clans[1 - clanIndex];
-
-                // First test if they're a part of the sheep clan...
-                if (oppositeClan.hasMember(player)) {
-                    CommandAPI.fail("Cannot be a member of both clans!");
-                    return;
-                }
-
-                // Try to add them to the clan...
-                if (clan.addMember(player)) {
-                    sender.sendMessage(
-                            String.format(
-                                    ChatColor.GREEN + "Successfully added %s to the %s!",
-                                    player.getName(),
-                                    clan.getName()
-                            )
-                    );
-                    player.sendMessage(
-                            String.format(ChatColor.GREEN + "Welcome to the %s!", clan.getName())
-                    );
-                    new SetChatColourCommand().updateNameTag(player);
-                    return;
-                }
-
-                // They're already a part of the clan!
-                CommandAPI.fail("Player is already a member of the clan!");
-            });
-
-    private final CommandAPICommand membersLeave = new CommandAPICommand("leave")
-            .withPermission(CommandPermission.OP)
-            .withArguments(new PlayerArgument("player"))
-            .executes((sender, args) -> {
-                Player player = (Player) args[0];
-
-                // Try to add the player to each clan
-                for (Clan clan: MilkWars.clans) {
-                    if (clan.removeMember(player)) {
-                        sender.sendMessage(
-                                String.format(
-                                        ChatColor.GREEN + "Successfully removed %s from the %s!",
-                                        player.getName(),
-                                        clan.getName()
-                                )
-                        );
-                        player.sendMessage(
-                                String.format(ChatColor.GREEN + "Left the %s", clan.getName())
-                        );
-                        new SetChatColourCommand().updateNameTag(player);
-                        return;
-                    }
-                }
-
-                // If we've got here, the player isn't in any clan
-                CommandAPI.fail("Player isn't a part of a clan!");
-            });
-
     private final CommandAPICommand membersPromote = new CommandAPICommand("promote")
-            .withPermission(CommandPermission.OP)
             .withArguments(new PlayerArgument("player"))
             .executes((sender, args) -> {
                Player player = (Player) args[0];
@@ -146,7 +143,6 @@ public class MembersCommand {
             });
 
     private final CommandAPICommand membersDemote = new CommandAPICommand("demote")
-            .withPermission(CommandPermission.OP)
             .withArguments(new PlayerArgument("player"))
             .executes((sender, args) -> {
                 Player player = (Player) args[0];
@@ -167,7 +163,6 @@ public class MembersCommand {
             });
 
     private final CommandAPICommand membersSignIn = new CommandAPICommand("signin")
-            .withPermission(CommandPermission.OP)
             .withArguments(new PlayerArgument("player"))
             .executes((sender, args) -> {
                 Player player = (Player) args[0];
@@ -184,7 +179,7 @@ public class MembersCommand {
                                 player.sendMessage(ChatColor.GREEN + "You are now signed in. Good luck!");
 
                                 // Update the player's name tag
-                                new SetChatColourCommand().updateNameTag(player);
+                                new SettingsCommand().updateNameTag(player);
                             } else {
                                 // Couldn't sign in
                                 sender.sendMessage(ChatColor.RED + "Player is already signed in");
@@ -200,7 +195,6 @@ public class MembersCommand {
             });
 
     private final CommandAPICommand membersSignOut = new CommandAPICommand("signout")
-            .withPermission(CommandPermission.OP)
             .withArguments(new PlayerArgument("player"))
             .executes((sender, args) -> {
                 Player player = (Player) args[0];
@@ -217,7 +211,7 @@ public class MembersCommand {
                                 player.sendMessage(ChatColor.GREEN + "You are now signed out");
 
                                 // Update the player's name tag
-                                new SetChatColourCommand().updateNameTag(player);
+                                new SettingsCommand().updateNameTag(player);
                             } else {
                                 // Couldn't sign out
                                 sender.sendMessage(ChatColor.RED + "Player is already signed out");
@@ -233,13 +227,16 @@ public class MembersCommand {
             });
 
     public CommandAPICommand getCommand() {
-        return new CommandAPICommand("members")
-                .withSubcommand(membersList)
-                .withSubcommand(membersJoin)
-                .withSubcommand(membersLeave)
-                .withSubcommand(membersPromote)
-                .withSubcommand(membersDemote)
-                .withSubcommand(membersSignIn)
-                .withSubcommand(membersSignOut);
+        return new CommandAPICommand("clan")
+                .withPermission(CommandPermission.OP)
+                .withSubcommand(clanJoin)
+                .withSubcommand(clanLeave)
+                .withSubcommand(new CommandAPICommand("members")
+                        .withSubcommand(membersList)
+                        .withSubcommand(membersPromote)
+                        .withSubcommand(membersDemote)
+                        .withSubcommand(membersSignIn)
+                        .withSubcommand(membersSignOut)
+                );
     }
 }

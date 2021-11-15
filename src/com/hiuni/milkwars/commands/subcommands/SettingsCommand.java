@@ -2,6 +2,7 @@ package com.hiuni.milkwars.commands.subcommands;
 
 import com.hiuni.milkwars.Clan;
 import com.hiuni.milkwars.ClanMember;
+import com.hiuni.milkwars.DataManager;
 import com.hiuni.milkwars.MilkWars;
 import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.CommandPermission;
@@ -9,6 +10,7 @@ import dev.jorel.commandapi.arguments.MultiLiteralArgument;
 import dev.jorel.commandapi.arguments.PlayerArgument;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.command.Command;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
@@ -17,11 +19,11 @@ import org.bukkit.scoreboard.Team;
 import java.lang.reflect.Array;
 import java.util.HashMap;
 
-public class SetChatColourCommand {
+public class SettingsCommand {
 
     public HashMap<String, ChatColor> colours = new HashMap<>();
 
-    public SetChatColourCommand() {
+    public SettingsCommand() {
         colours.put("dark_red", ChatColor.DARK_RED);
         colours.put("red", ChatColor.RED);
         colours.put("gold", ChatColor.GOLD);
@@ -105,16 +107,39 @@ public class SetChatColourCommand {
         targetTeam.addEntry(player.getName());
     }
 
-    public CommandAPICommand getCommand() {
-        return new CommandAPICommand("setchatcolour")
-                .withPermission(CommandPermission.OP)
-                .withArguments(new MultiLiteralArgument(colours.keySet().toArray(new String[0])))
-                .withArguments(new PlayerArgument("player"))
-                .executes((sender, args) -> {
-                    String colourName = (String) args[0];
-                    Player player = (Player) args[1];
+    private final CommandAPICommand settingsFile = new CommandAPICommand("file")
+            .withArguments(new MultiLiteralArgument("save", "load"))
+            .executes((sender, args) -> {
+                switch ((String) args[0]) {
+                    case "save":
+                        if (DataManager.save()) {
+                            sender.sendMessage(ChatColor.GREEN + "[Milk-Wars] Successfully saved clans.");
+                        } else {
+                            sender.sendMessage(ChatColor.RED + "[Milk-Wars] Something went wrong, couldn't save the clans.");
+                        }
+                        break;
+                    case "load":
+                        if (DataManager.load()) {
+                            sender.sendMessage(ChatColor.GREEN + "[Milk-Wars] Successfully loaded clans.");
+                        } else {
+                            sender.sendMessage(ChatColor.RED + "[Milk-Wars] Something went wrong, couldn't load the clans.");
+                        }
+                }
+            });
 
-                    doNameTag(player, colourName);
-                });
+    public CommandAPICommand getCommand() {
+        return new CommandAPICommand("player")
+                .withPermission(CommandPermission.OP)
+                .withSubcommand(new CommandAPICommand("setchatcolour")
+                        .withArguments(new MultiLiteralArgument(colours.keySet().toArray(new String[0])))
+                        .withArguments(new PlayerArgument("player"))
+                        .executes((sender, args) -> {
+                            String colourName = (String) args[0];
+                            Player player = (Player) args[1];
+
+                            doNameTag(player, colourName);
+                        })
+                )
+                .withSubcommand(settingsFile);
     }
 }
