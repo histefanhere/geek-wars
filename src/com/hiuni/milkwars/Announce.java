@@ -12,7 +12,7 @@ public class Announce {
     // Send to clan.
     public static void sendToClan (Clan clan, String message, ChatColor color) {
         // Sends a message to all signed in members of a clan.
-        sendToClan(clan, message, color, true);
+        sendToClan(clan, message, color, false);
     }
     public static void sendToClan (Clan clan, String message, ChatColor color, boolean activeOnly) {
         // Sends a message to clan members. If activeOnly = true then is sent to all
@@ -24,7 +24,7 @@ public class Announce {
     // Send to clan leaders.
     public static void sendToLeaders(Clan clan, String message, ChatColor color) {
         // Sends the message to all signed in clan leaders.
-        sendToLeaders(clan, message, color, true);
+        sendToLeaders(clan, message, color, false);
     }
     public static void sendToLeaders(Clan clan, String message, ChatColor color, boolean activeOnly) {
         // Sends the message to all clan leaders, If activeOnly = true then only sends to all
@@ -46,6 +46,20 @@ public class Announce {
             ) { // Could use clan.getLeaders, but I think this might be more efficient, no biggie either way lol.
                 memberSend(member, message, color);
             }
+        }
+    }
+
+    public static void sendToAll(String message, ChatColor color) {
+        sendToAll(message, color, false, false);
+    }
+
+    public static void sendToAll(String message, ChatColor color, boolean activeOnly) {
+        sendToAll(message, color, activeOnly, false);
+    }
+
+    public static void sendToAll(String message, ChatColor color, boolean activeOnly, boolean leaderOnly) {
+        for (Clan clan : MilkWars.clans) {
+            clanSend(clan, message, color, activeOnly, leaderOnly);
         }
     }
 

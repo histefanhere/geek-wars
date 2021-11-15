@@ -4,6 +4,7 @@ import com.hiuni.milkwars.commands.ClanCommandManager;
 import com.hiuni.milkwars.events.ClanKillCounterEvent;
 import com.hiuni.milkwars.events.SaveOnWorldSave;
 import com.hiuni.milkwars.commands.subcommands.FileCommand;
+import com.hiuni.milkwars.commands.subcommands.TreasureCommand;
 import dev.jorel.commandapi.CommandAPI;
 import dev.jorel.commandapi.CommandAPIConfig;
 import org.bukkit.Bukkit;
@@ -11,6 +12,11 @@ import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class MilkWars extends JavaPlugin {
+
+    private static MilkWars instance;
+    public static MilkWars getInstance() {
+        return MilkWars.instance;
+    }
 
     public static Clan[] clans = new Clan[2];
 
@@ -21,10 +27,19 @@ public class MilkWars extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        MilkWars.instance = this;
 
         // Create the clans.
-        clans[0] = new Clan("Milk Drinkers", ChatColor.DARK_GRAY + "[MD] ");
-        clans[1] = new Clan("Wool Wearers", ChatColor.WHITE + "[WW] ");
+        clans[0] = new Clan(
+                0,
+                "Milk Drinkers",
+                ChatColor.DARK_GRAY + "[MD] "
+        );
+        clans[1] = new Clan(
+                1,
+                "Wool Wearers", // WIP name.
+                ChatColor.WHITE + "[WW] "
+        );
 
         // Load the data, and set event for auto saving.
         DataManager.setPlugin(this);
@@ -41,6 +56,11 @@ public class MilkWars extends JavaPlugin {
         ClanCommandManager.register();
 
         CommandAPI.onEnable(this);
+
+        // Register the flag's event listeners
+        for (Clan clan: clans) {
+            getServer().getPluginManager().registerEvents(clan.getFlag(), this);
+        }
 
         getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[Milk-Wars] Plugin has been successfully enabled!");
     }

@@ -1,5 +1,6 @@
 package com.hiuni.milkwars;
 
+import dev.jorel.commandapi.CommandAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -9,27 +10,31 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
+import java.util.UUID;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class Clan {
 
+    private int clanId;
     private String name;
     private String prefix;
     private List<ClanMember> members; // A list of clan members;
     private int kills; // A counter for how many times clan members have killed other clam members.
     private int captures; // A counter for how many times the clan has successfully captured the enemy flag.
+    private Flag flag;
 
-    Clan(String name, String prefix) {
+    Clan(int clanId, String name, String prefix) {
 
         // Remember if you add anything that needs to persist across server restarts then add it to the save/load methods.
+        this.clanId = clanId;
         this.name = name;
         Bukkit.getConsoleSender().sendMessage(this.name);
         this.prefix = prefix;
         this.members = new ArrayList<ClanMember>();
         this.kills = 0;
         this.captures = 0;
-
+        this.flag = new Flag(clanId);
     }
 
 //    private static JavaPlugin plugin;
@@ -43,14 +48,18 @@ public class Clan {
 //        return Clan.plugin;
 //    }
 
-
     public boolean addMember(Player player) {
         // Adds a player to the clan if they are not already a part of it.
         if (this.hasMember(player)) {
             return false;
         } else {
             DataManager.registerChanges(); // Allows the system to know that changes haven't been saved to disk.
-            return this.members.add(new ClanMember(player.getName(), player.getUniqueId()));
+            this.members.add(new ClanMember(player.getName(), player.getUniqueId()));
+
+            // Update the command requirements of the player, now that they're a part of the clan.
+            CommandAPI.updateRequirements(player);
+
+            return true;
         }
     }
 
@@ -58,8 +67,16 @@ public class Clan {
         // Makes player a leader of the clan.
         for (ClanMember member : this.members) {
             if (member.isPlayer(player)) {
-                DataManager.registerChanges();
-                return member.promote();
+                boolean result = member.promote();
+
+                // If the player was successfully promoted, we need to update their command requirements
+                // so that they can access all their new commands
+                if (result) {
+                    DataManager.registerChanges();
+                    CommandAPI.updateRequirements(player);
+                }
+
+                return result;
             }
         }
         return false;
@@ -69,8 +86,16 @@ public class Clan {
         // Demoted the member from a leader to a normal member.
         for (ClanMember member : this.members) {
             if (member.isPlayer(player)) {
-                DataManager.registerChanges();
-                return member.demote();
+                boolean result = member.demote();
+
+                // If the player was successfully demoted, we need to update their command requirements
+                // so that they cannot access all their old commands
+                if (result) {
+                    DataManager.registerChanges();
+                    CommandAPI.updateRequirements(player);
+                }
+
+                return result;
             }
         }
         return false;
@@ -82,6 +107,10 @@ public class Clan {
             if (member.isPlayer(player)) {
                 this.members.remove(member);
                 DataManager.registerChanges();
+
+                // Update their command requirements
+                CommandAPI.updateRequirements(player);
+
                 return true;
                 // Could probably use "members.removeif(member -> (member.isPlayer(player)))",
                 // but this way we don't need to search the whole list if we find one early,
@@ -142,6 +171,11 @@ public class Clan {
         return false; // If we couldn't find this member in the clan.
     }
 
+    public int getClanId() {
+        // Returns the ID of the clan.
+        return this.clanId;
+    }
+
     public String getName() {
         // Returns the name of the clan.
         return this.name; // Is this safe? would it be possible to accidentally rename the clan with this.
@@ -174,6 +208,11 @@ public class Clan {
         return this.captures;
     }
 
+    public Flag getFlag() {
+        // Returns the flag object of this clan
+        return this.flag;
+    }
+
     public void save(FileConfiguration config, String keyPath) {
         // Saves the clan data to file so that it can preserved when the server restarts.
         //config.set(keyPath + ".name", getName());
@@ -183,6 +222,7 @@ public class Clan {
         for (ClanMember member : members) {
             member.save(config, keyPath + ".members");
         }
+        flag.save(config, keyPath + ".flag");
     }
 
     public void load(FileConfiguration config, String keyPath) {
@@ -197,6 +237,8 @@ public class Clan {
         this.kills = config.getInt(keyPath + ".kills");
         this.captures = config.getInt(keyPath + ".captures");
         //this.prefix = config.getString(keyPath + ".prefix");
+
+        flag.load(config, keyPath + ".flag");
 
         try {
             Set<String> uuids = config.getConfigurationSection(keyPath + ".members").getKeys(false);
