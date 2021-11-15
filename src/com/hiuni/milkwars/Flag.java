@@ -206,12 +206,23 @@ public class Flag implements Listener {
                         return;
                     }
                 } else {
-                    // They're a part of the opposite clan! They're now carrying the flag
-                    wearer = player.getUniqueId();
-                    teleportToWearer();
-                    Clan otherClan = MilkWars.clans[clan.getClanId() + 1 % 2]; // It's hacky af, but I don't care.
-                    Announce.sendToAll(player.getDisplayName() + " has picked up the " + otherClan.getName() + " treasure!",
-                            ChatColor.YELLOW);
+                    // They're a part of the opposite clan!
+
+                    // You're only allowed to pick up the flag if it's active
+                    if (active) {
+                        // They're now carrying the flag
+                        wearer = player.getUniqueId();
+                        teleportToWearer();
+
+                        Clan otherClan = MilkWars.clans[(clan.getClanId() + 1) % 2]; // It's hacky af, but I don't care.
+                        Announce.sendToAll(player.getDisplayName() + " has picked up the " + otherClan.getName() + " treasure!",
+                                ChatColor.YELLOW);
+                        }
+                    else {
+                        player.sendMessage(
+                                ChatColor.RED + "You cannot grab this treasure since it is not active!"
+                        );
+                    }
                 }
             }
         }
