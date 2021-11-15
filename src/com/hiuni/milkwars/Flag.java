@@ -283,7 +283,7 @@ public class Flag implements Listener {
                         wearer = player.getUniqueId();
                         teleportToWearer();
 
-                        Clan otherClan = MilkWars.clans[clan.getClanId() + 1 % 2]; // It's hacky af, but I don't care.
+                        Clan otherClan = MilkWars.clans[(clan.getClanId() + 1) % 2]; // It's hacky af, but I don't care.
                         Announce.sendToAll(player.getDisplayName() + " has picked up the " + otherClan.getName() + " treasure!",
                                 ChatColor.YELLOW);
                         }

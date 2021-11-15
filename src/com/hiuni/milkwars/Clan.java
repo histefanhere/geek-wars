@@ -1,6 +1,7 @@
 package com.hiuni.milkwars;
 
 import dev.jorel.commandapi.CommandAPI;
+import org.apache.commons.lang.ObjectUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -219,6 +220,9 @@ public class Clan {
         config.set(keyPath + ".kills", getKills());
         config.set(keyPath + ".captures", getCaptures());
         //config.set(keyPath + ".prefix", getPrefix());
+
+        config.set(keyPath + ".members", "");
+
         for (ClanMember member : members) {
             member.save(config, keyPath + ".members");
         }
@@ -240,6 +244,7 @@ public class Clan {
 
         flag.load(config, keyPath + ".flag");
 
+        this.members.clear();
         try {
             Set<String> uuids = config.getConfigurationSection(keyPath + ".members").getKeys(false);
             for (String key : uuids) {

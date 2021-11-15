@@ -10,6 +10,8 @@ import org.bukkit.event.world.WorldSaveEvent;
 public class SaveOnWorldSave implements Listener {
     @EventHandler
     public static void onWorldSaveEvent (WorldSaveEvent event) {
-        DataManager.save();
+        if (event.getWorld().getName().equalsIgnoreCase("world")) {
+            DataManager.save();
+        }
     }
 }
