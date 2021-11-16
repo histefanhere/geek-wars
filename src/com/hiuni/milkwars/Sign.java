@@ -14,8 +14,8 @@ import java.util.function.Supplier;
 
 public class Sign {
 
-    private Location location;
-    private String rawString[];
+    private final Location location;
+    private final String[] rawString = {"","","",""};
 
     private static final List<Sign> existingSigns = new ArrayList<Sign>();
 
@@ -75,16 +75,24 @@ public class Sign {
         put('3', () -> Integer.toString(MilkWars.clans[1].getCaptures()));
     }};
 
+
     public Sign(Location location, String[] lines) {
         this.location = location;
-        this.rawString = lines;
+
+        for (int i = 0; i < 4; i++) {
+            this.rawString[i] = lines[i].replace("#MW","");
+        }
 
         existingSigns.removeIf(otherSign -> otherSign.location.equals(this.location));
 
         this.update();
         Sign.existingSigns.add(this);
+    }
 
-        Bukkit.getConsoleSender().sendMessage(existingSigns.toString());
+    public static void updateAll(){
+        for (Sign s : existingSigns) {
+            s.update();
+        }
     }
 
     public void update(){
@@ -97,7 +105,6 @@ public class Sign {
         }
 
         org.bukkit.block.Sign s = getSign();
-        //s.setEditable(true);
         for (int i = 0; i < 4; i++) {
             s.setLine(i, formatLine(rawString[i]));
         }
@@ -115,8 +122,19 @@ public class Sign {
         char[] charArray = text.toCharArray();
         for (int i = 0; i < charArray.length; i++) {
 
+            // For variable codes.
+            if (charArray[i] == '#') {
+                try {
+                    String varStr = VARIABLEREPLACEMENTS.get(charArray[i + 1]).get();
+                    sb.append(varStr);
+                    i++;
+                } catch (ArrayIndexOutOfBoundsException | NullPointerException e) {
+                    sb.append('#');
+                }
+            }
+
             // For format codes.
-            if (charArray[i] == '&') {
+            else if (charArray[i] == '&') {
                 try {
                     String formatStr = FORMATREPLACEMENTS.get(charArray[i + 1]);
                     if (formatStr == null) {
@@ -127,17 +145,6 @@ public class Sign {
                     i++;
                 } catch (ArrayIndexOutOfBoundsException e) {
                     sb.append('&');
-                }
-            }
-
-            // For variable codes.
-            else if (charArray[i] == '#') {
-                try {
-                    String varStr = VARIABLEREPLACEMENTS.get(charArray[i + 1]).get();
-                    sb.append(varStr);
-                    i++;
-                } catch (ArrayIndexOutOfBoundsException | NullPointerException e) {
-                    sb.append('#');
                 }
             }
 
