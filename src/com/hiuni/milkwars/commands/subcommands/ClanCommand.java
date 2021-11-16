@@ -9,6 +9,8 @@ import dev.jorel.commandapi.CommandPermission;
 import dev.jorel.commandapi.arguments.MultiLiteralArgument;
 import dev.jorel.commandapi.arguments.PlayerArgument;
 import org.bukkit.ChatColor;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.text.Collator;
@@ -93,34 +95,52 @@ public class ClanCommand {
                 }
                 Clan clan = MilkWars.clans[clanIndex];
 
-                int clanSize = clan.getAllMembers().size();
-                if (clanSize == 0) {
-                    sender.sendMessage(String.format(ChatColor.YELLOW + "The %s is empty", clan.getName()));
-                    return;
-                }
-
-                // Tree sets are automatically sorted. Handy!
-                Collection<String> names = new TreeSet<>(Collator.getInstance());
-                String out = ChatColor.YELLOW + "Members of the " + clan.getName() + " (" +
-                        ChatColor.GOLD + "leaders" + ChatColor.YELLOW + "):\n";
-
-                for (ClanMember clanMember: clan.getAllMembers()) {
-                    if (clanMember.isLeader()) {
-                        names.add(ChatColor.GOLD + clanMember.getName());
-                    }
-                    else {
-                        names.add(ChatColor.YELLOW + clanMember.getName());
-                    }
-                }
-
-                String delimiter = ChatColor.YELLOW + ", ";
-                if (clanSize > 15) {
-                    delimiter = "\n";
-                }
-                out += String.join(delimiter, names);
-
-                sender.sendMessage(out);
+                sendList(sender, clan);
             });
+
+    private final CommandAPICommand leadersMembersList = new CommandAPICommand("list")
+            .executesPlayer((player, args) -> {
+                // For this command to be ran the player must be a leader
+                // therefore we're certain he's in a clan
+                for (Clan clan: MilkWars.clans) {
+                    if (clan.hasLeader(player)) {
+                        sendList(player, clan);
+                        return;
+                    }
+                }
+
+                CommandAPI.fail("Something went wrong!");
+            });
+
+    private void sendList(CommandSender sender, Clan clan) {
+        int clanSize = clan.getAllMembers().size();
+        if (clanSize == 0) {
+            sender.sendMessage(String.format(ChatColor.YELLOW + "The %s is empty", clan.getName()));
+            return;
+        }
+
+        // Tree sets are automatically sorted. Handy!
+        Collection<String> names = new TreeSet<>(Collator.getInstance());
+        String out = ChatColor.YELLOW + "Members of the " + clan.getName() + " (" +
+                ChatColor.GOLD + "leaders" + ChatColor.YELLOW + "):\n";
+
+        for (ClanMember clanMember: clan.getAllMembers()) {
+            if (clanMember.isLeader()) {
+                names.add(ChatColor.GOLD + clanMember.getName());
+            }
+            else {
+                names.add(ChatColor.YELLOW + clanMember.getName());
+            }
+        }
+
+        String delimiter = ChatColor.YELLOW + ", ";
+        if (clanSize > 15) {
+            delimiter = "\n";
+        }
+        out += String.join(delimiter, names);
+
+        sender.sendMessage(out);
+    }
 
     private final CommandAPICommand membersPromote = new CommandAPICommand("promote")
             .withArguments(new PlayerArgument("player"))
@@ -228,7 +248,6 @@ public class ClanCommand {
 
     public CommandAPICommand getCommand() {
         return new CommandAPICommand("clan")
-                .withPermission(CommandPermission.OP)
                 .withSubcommand(clanJoin)
                 .withSubcommand(clanLeave)
                 .withSubcommand(new CommandAPICommand("members")
@@ -237,6 +256,7 @@ public class ClanCommand {
                         .withSubcommand(membersDemote)
                         .withSubcommand(membersSignIn)
                         .withSubcommand(membersSignOut)
-                );
+                )
+                .withSubcommand(new TreasureCommand().getOpCommand());
     }
 }

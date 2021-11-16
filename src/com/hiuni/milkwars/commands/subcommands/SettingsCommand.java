@@ -21,9 +21,10 @@ import java.util.HashMap;
 
 public class SettingsCommand {
 
-    public HashMap<String, ChatColor> colours = new HashMap<>();
+    public static HashMap<String, ChatColor> colours = new HashMap<>();
+    static {
+        colours = new HashMap<>();
 
-    public SettingsCommand() {
         colours.put("dark_red", ChatColor.DARK_RED);
         colours.put("red", ChatColor.RED);
         colours.put("gold", ChatColor.GOLD);
@@ -40,7 +41,6 @@ public class SettingsCommand {
         colours.put("gray", ChatColor.GRAY);
         colours.put("dark_gray", ChatColor.DARK_GRAY);
         colours.put("black", ChatColor.BLACK);
-
     }
 
     public void updateNameTag(Player player) {
@@ -107,6 +107,16 @@ public class SettingsCommand {
         targetTeam.addEntry(player.getName());
     }
 
+    private final CommandAPICommand settingsSetChatColour = new CommandAPICommand("setchatcolour")
+            .withArguments(new MultiLiteralArgument(colours.keySet().toArray(new String[0])))
+            .withArguments(new PlayerArgument("player"))
+            .executes((sender, args) -> {
+                String colourName = (String) args[0];
+                Player player = (Player) args[1];
+
+                doNameTag(player, colourName);
+            });
+
     private final CommandAPICommand settingsFile = new CommandAPICommand("file")
             .withArguments(new MultiLiteralArgument("save", "load"))
             .executes((sender, args) -> {
@@ -128,18 +138,8 @@ public class SettingsCommand {
             });
 
     public CommandAPICommand getCommand() {
-        return new CommandAPICommand("player")
-                .withPermission(CommandPermission.OP)
-                .withSubcommand(new CommandAPICommand("setchatcolour")
-                        .withArguments(new MultiLiteralArgument(colours.keySet().toArray(new String[0])))
-                        .withArguments(new PlayerArgument("player"))
-                        .executes((sender, args) -> {
-                            String colourName = (String) args[0];
-                            Player player = (Player) args[1];
-
-                            doNameTag(player, colourName);
-                        })
-                )
+        return new CommandAPICommand("settings")
+                .withSubcommand(settingsSetChatColour)
                 .withSubcommand(settingsFile);
     }
 }
