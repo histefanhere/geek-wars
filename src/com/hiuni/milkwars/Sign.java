@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.function.Supplier;
 
 public class Sign {
 
@@ -64,6 +65,16 @@ public class Sign {
         put('r', ChatColor.RESET.toString());
     }};
 
+    private static final HashMap<Character, Supplier<String>> VARIABLEREPLACEMENTS = new HashMap<>(){{
+        // I was going to use multiple character keys, but it's so much more efficient using
+        // single character keys, not to mention much easier to implement.
+        put('0', () -> Integer.toString(MilkWars.clans[0].getKills()));
+        put('1', () -> Integer.toString(MilkWars.clans[0].getCaptures()));
+
+        put('2', () -> Integer.toString(MilkWars.clans[1].getKills()));
+        put('3', () -> Integer.toString(MilkWars.clans[1].getCaptures()));
+    }};
+
     public Sign(Location location, String[] lines) {
         this.location = location;
         this.rawString = lines;
@@ -86,7 +97,7 @@ public class Sign {
         }
 
         org.bukkit.block.Sign s = getSign();
-        s.setEditable(true);
+        //s.setEditable(true);
         for (int i = 0; i < 4; i++) {
             s.setLine(i, formatLine(rawString[i]));
         }
@@ -110,6 +121,7 @@ public class Sign {
                     String formatStr = FORMATREPLACEMENTS.get(charArray[i + 1]);
                     if (formatStr == null) {
                         sb.append('&');
+                        continue;
                     }
                     sb.append(formatStr);
                     i++;
@@ -119,15 +131,20 @@ public class Sign {
             }
 
             // For variable codes.
-            if (charArray[i] == '#') {
-                
+            else if (charArray[i] == '#') {
+                try {
+                    String varStr = VARIABLEREPLACEMENTS.get(charArray[i + 1]).get();
+                    sb.append(varStr);
+                    i++;
+                } catch (ArrayIndexOutOfBoundsException | NullPointerException e) {
+                    sb.append('#');
+                }
             }
 
             else {
                 sb.append(charArray[i]);
             }
         }
-        Bukkit.getConsoleSender().sendMessage(sb.toString());
         return sb.toString();
     }
 
