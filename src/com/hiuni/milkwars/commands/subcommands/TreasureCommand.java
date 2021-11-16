@@ -13,17 +13,6 @@ import org.bukkit.entity.Player;
 
 public class TreasureCommand {
     private final CommandAPICommand treasureSetHome = new CommandAPICommand("sethome")
-            .withRequirement((sender -> {
-                Player player = (Player) sender;
-
-                // Check if player is in either clan, and if they're a leader
-                for (Clan clan: MilkWars.clans) {
-                    if (clan.hasLeader(player)) {
-                        return true;
-                    }
-                }
-                return false;
-            }))
             .executesPlayer((player, args) -> {
                 // Because of the requirement, we know the player
                 // is a clan leader.
@@ -64,17 +53,6 @@ public class TreasureCommand {
             });
 
     private final CommandAPICommand treasureSetLocation = new CommandAPICommand("setlocation")
-            .withRequirement((sender -> {
-                Player player = (Player) sender;
-
-                // Check if player is in either clan, and if they're a leader
-                for (Clan clan: MilkWars.clans) {
-                    if (clan.hasLeader(player)) {
-                        return true;
-                    }
-                }
-                return false;
-            }))
             .executesPlayer(((player, args) -> {
                 for (Clan clan: MilkWars.clans) {
                     if (clan.hasMember(player)) {
@@ -97,7 +75,6 @@ public class TreasureCommand {
             }));
 
     private final CommandAPICommand treasureActivate = new CommandAPICommand("activate")
-            .withPermission(CommandPermission.OP)
             .withArguments(new MultiLiteralArgument("cows", "sheep", "all"))
             .executes((sender, args) -> {
                 if (args[0] == "cows" || args[0] == "all") {
@@ -120,10 +97,14 @@ public class TreasureCommand {
                 }
             });
 
-    public CommandAPICommand getCommand() {
+    public CommandAPICommand getLeadersCommand() {
         return new CommandAPICommand("treasure")
                 .withSubcommand(treasureSetHome)
-                .withSubcommand(treasureSetLocation)
+                .withSubcommand(treasureSetLocation);
+    }
+
+    public CommandAPICommand getOpCommand() {
+        return new CommandAPICommand("treasure")
                 .withSubcommand(treasureActivate);
     }
 }

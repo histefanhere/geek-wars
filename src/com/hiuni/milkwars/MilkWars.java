@@ -1,15 +1,13 @@
 package com.hiuni.milkwars;
 
-import com.hiuni.milkwars.commands.ClanCommandManager;
+import com.hiuni.milkwars.commands.CommandManager;
 import com.hiuni.milkwars.events.ClanKillCounterEvent;
 import com.hiuni.milkwars.events.SaveOnWorldSave;
-import com.hiuni.milkwars.commands.subcommands.FileCommand;
-import com.hiuni.milkwars.commands.subcommands.TreasureCommand;
 import com.hiuni.milkwars.events.SignCreateEvent;
 import dev.jorel.commandapi.CommandAPI;
 import dev.jorel.commandapi.CommandAPIConfig;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class MilkWars extends JavaPlugin {
@@ -42,25 +40,22 @@ public class MilkWars extends JavaPlugin {
                 ChatColor.WHITE + "[WW] "
         );
 
-        // Load the data, and set event for auto saving.
-        DataManager.setPlugin(this);
+        // Load the data from file
         DataManager.load();
-        getServer().getPluginManager().registerEvents(new SaveOnWorldSave(), this);
 
-        // For manually saving and loading the data.
-        new FileCommand().setPlugin(this);
-
-        // Event for clan kill counter.
-        getServer().getPluginManager().registerEvents(new ClanKillCounterEvent(), this);
-
-        // Register the clan command
-        ClanCommandManager.register();
-
+        // Register the commands
+        CommandManager.register();
         CommandAPI.onEnable(this);
 
-        // Register the flag's event listeners
-        for (Clan clan: clans) {
-            getServer().getPluginManager().registerEvents(clan.getFlag(), this);
+        // Register all the event listeners to Bukkit
+        Listener[] listeners = {
+                new SaveOnWorldSave(),
+                new ClanKillCounterEvent(),
+                clans[0].getFlag(),
+                clans[1].getFlag()
+        };
+        for (Listener woman: listeners) {
+            getServer().getPluginManager().registerEvents(woman, this);
         }
 
         // Register the sign event listener.
