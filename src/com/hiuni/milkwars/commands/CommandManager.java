@@ -32,6 +32,7 @@ public class CommandManager {
                     return false;
                 }))
                 .withSubcommand(new TreasureCommand().getLeadersCommand())
+                .withSubcommand(new ClanCommand().getLeadersMembersCommand())
                 .register();
     }
 }

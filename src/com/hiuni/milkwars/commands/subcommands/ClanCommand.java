@@ -85,6 +85,49 @@ public class ClanCommand {
                 CommandAPI.fail("Player isn't a part of a clan!");
             });
 
+    private final CommandAPICommand leadersMembersKick = new CommandAPICommand("kick")
+            .withArguments(new PlayerArgument("player"))
+            .executesPlayer((player, args) -> {
+                Player playerToKick = (Player) args[0];
+
+                for (Clan clan: MilkWars.clans) {
+                    if (clan.hasMember(player)) {
+                        // We've found the clan of the leader.
+                        // Now lets check whether the player he wants to kick is just a member
+
+                        if (!clan.hasMember(playerToKick)) {
+                            CommandAPI.fail("That player is not in your clan!");
+                        }
+
+                        if (clan.hasLeader(playerToKick)) {
+                            CommandAPI.fail("You cannot kick leaders from your clan!");
+                            return;
+                        }
+
+                        if (clan.removeMember(playerToKick)) {
+                            new SettingsCommand().updateNameTag(playerToKick);
+                            player.sendMessage(
+                                    String.format(
+                                            ChatColor.GREEN + "Successfully kicked %s from the %s!",
+                                            playerToKick.getName(),
+                                            clan.getName()
+                                    )
+                            );
+                            playerToKick.sendMessage(
+                                    String.format(
+                                            ChatColor.YELLOW + "You have been kicked from the %s", clan.getName()
+                                    )
+                            );
+                        }
+                        else {
+                            CommandAPI.fail("Unable to kick member from your clan!");
+                        }
+                        return;
+                    }
+                }
+            });
+
+
     private final CommandAPICommand membersList = new CommandAPICommand("list")
             .withArguments(new MultiLiteralArgument("cows", "sheep"))
             .executes((sender, args) -> {
@@ -258,5 +301,11 @@ public class ClanCommand {
                         .withSubcommand(membersSignOut)
                 )
                 .withSubcommand(new TreasureCommand().getOpCommand());
+    }
+
+    public CommandAPICommand getLeadersMembersCommand() {
+        return new CommandAPICommand("members")
+                .withSubcommand(leadersMembersList)
+                .withSubcommand(leadersMembersKick);
     }
 }
