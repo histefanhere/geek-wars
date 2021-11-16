@@ -90,7 +90,7 @@ public class Flag implements Listener {
             return;
         }
 
-        Entity ent = Bukkit.getEntity(flagId);
+        Entity ent = Bukkit.getServer().getEntity(flagId);
         if (ent == null) {
             return;
         }
@@ -437,7 +437,7 @@ public class Flag implements Listener {
             createNewFlag(location);
         }
         else {
-            Entity entity = Bukkit.getEntity(flagId);
+            Entity entity = Bukkit.getServer().getEntity(flagId);
             if (entity == null) {
                 // We failed to find the flag entity, so who knows where it could be
                 // in the world. No worries though! We'll just create a new one and
@@ -543,5 +543,19 @@ public class Flag implements Listener {
             wearer = UUID.fromString(configWearer);
             teleportToWearer();
         }
+
+        // Once we've finished loading and creating all the entities, we need to delete all the old ones.
+        // This is very similar to the EntitiesLoadEvent
+        for (Entity ent: Bukkit.getServer().getWorld("world").getEntities()) {
+            String customName = ent.getCustomName();
+            if (customName != null && customName.equals(getEntityName())) {
+                // We've found a flag from this clan!
+                // If it's not the latest one, we can safely get rid of it
+                if (!ent.getUniqueId().equals(flagId)) {
+                    ent.remove();
+                }
+            }
+        }
+
     }
 }
