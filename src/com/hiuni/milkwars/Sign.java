@@ -5,6 +5,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -168,5 +169,17 @@ public class Sign {
 
     public org.bukkit.block.Sign getSign() {
         return (org.bukkit.block.Sign) getBlock().getState();
+    }
+
+    public static void saveAll(FileConfiguration config, String keyPath) {
+        config.set(keyPath, "");
+        for (int i = 0; i < existingSigns.size(); i++) {
+            existingSigns.get(i).save(config, keyPath + "." + Integer.toString(i));
+        }
+    }
+
+    private void save(FileConfiguration config, String keyPath) {
+        config.set(keyPath + ".location", this.getLocation());
+        config.set(keyPath + ".rawString", this.rawString);
     }
 }
