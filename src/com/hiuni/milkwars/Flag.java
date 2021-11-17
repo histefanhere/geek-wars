@@ -253,7 +253,7 @@ public class Flag implements Listener {
                                                 " of the " + clan.getName() + " clan!",
                                         ChatColor.RED);
 
-                                otherClan.addCapture();
+                                clan.addCapture();
 
                                 // Deactivate the flag, so it can't be captured again, and return it to the enemy base
                                 otherClan.getFlag().setActive(false);

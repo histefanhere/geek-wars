@@ -4,6 +4,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
+
 public class DataManager {
 
     private static boolean hasChanged = false;
@@ -27,7 +29,13 @@ public class DataManager {
         FileManager.setup(MilkWars.getInstance(), "ClanData.yml");
         MilkWars.clans[0].save(FileManager.getConfig(), "cows");
         MilkWars.clans[1].save(FileManager.getConfig(), "sheep");
-        return FileManager.saveConfig();
+        FileManager.saveConfig();
+
+        FileManager.setup(MilkWars.getInstance(), "SignData.yml");
+        Sign.saveAll(FileManager.getConfig());
+        FileManager.saveConfig();
+
+        return true;
     }
 
     public static boolean load() {
@@ -37,6 +45,10 @@ public class DataManager {
         FileManager.setup(MilkWars.getInstance(), "ClanData.yml");
         MilkWars.clans[0].load(FileManager.getConfig(), "cows");
         MilkWars.clans[1].load(FileManager.getConfig(), "sheep");
+
+        FileManager.setup(MilkWars.getInstance(), "SignData.yml");
+        Sign.loadAll(FileManager.getConfig());
+
         DataManager.hasChanged = false;
         return true;
     }

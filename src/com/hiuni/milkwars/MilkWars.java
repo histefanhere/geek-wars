@@ -3,6 +3,7 @@ package com.hiuni.milkwars;
 import com.hiuni.milkwars.commands.CommandManager;
 import com.hiuni.milkwars.events.ClanKillCounterEvent;
 import com.hiuni.milkwars.events.SaveOnWorldSave;
+import com.hiuni.milkwars.events.SignCreateEvent;
 import dev.jorel.commandapi.CommandAPI;
 import dev.jorel.commandapi.CommandAPIConfig;
 import org.bukkit.ChatColor;
@@ -56,6 +57,9 @@ public class MilkWars extends JavaPlugin {
         for (Listener woman: listeners) {
             getServer().getPluginManager().registerEvents(woman, this);
         }
+
+        // Register the sign event listener.
+        getServer().getPluginManager().registerEvents(new SignCreateEvent(), this);
 
         getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[Milk-Wars] Plugin has been successfully enabled!");
     }
