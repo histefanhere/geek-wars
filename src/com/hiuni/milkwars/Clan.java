@@ -190,7 +190,9 @@ public class Clan {
     public int addKill() {
         // Increments the amount of kills the clan has and returns the new count.
         DataManager.registerChanges();
-        return this.kills++;
+        this.kills++;
+        Sign.updateAll();
+        return this.getKills();
     }
 
     public int getKills() {
@@ -201,7 +203,9 @@ public class Clan {
     public int addCapture() {
         // Increment the amount of captures the clan has and returns the new count.
         DataManager.registerChanges();
-        return this.captures++;
+        this.captures++;
+        Sign.updateAll();
+        return this.getCaptures();
     }
 
     public int getCaptures() {

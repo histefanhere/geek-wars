@@ -12,6 +12,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.function.Supplier;
 
+// todo comment this up a little better.
+
 public class Sign {
 
     private final Location location;
@@ -90,7 +92,9 @@ public class Sign {
     }
 
     public static void updateAll(){
+        Bukkit.getConsoleSender().sendMessage("updating all signs");
         for (Sign s : existingSigns) {
+            Bukkit.getConsoleSender().sendMessage(s.toString());
             s.update();
         }
     }
@@ -108,8 +112,7 @@ public class Sign {
         for (int i = 0; i < 4; i++) {
             s.setLine(i, formatLine(rawString[i]));
         }
-
-        //s.update();
+        // s.update();
         // Idk why this needs to be run like this,
         // but I spent a *really* long time trying to get this to work, and for some
         // reason this is the only way I could do it.

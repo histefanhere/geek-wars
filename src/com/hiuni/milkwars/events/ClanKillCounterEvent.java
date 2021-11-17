@@ -28,13 +28,8 @@ public class ClanKillCounterEvent implements Listener {
         Clan enemyClan = null;
         ClanMember member = null;
         ClanMember killerMember = null;
+
         for (Clan clan : MilkWars.clans) {
-//            if (clan.hasMember(player)) {
-//                friendlyClan = clan;
-//            }
-//            if (clan.hasMember(killer)) {
-//                enemyClan = clan;
-//            }
             try {
                 member = clan.getMember(player);
                 friendlyClan = clan;
@@ -47,8 +42,6 @@ public class ClanKillCounterEvent implements Listener {
             }
             catch (NoSuchElementException e) {}
         }
-
-
 
         // Check if the players are in different clans.
         // And that they are both signed in.
