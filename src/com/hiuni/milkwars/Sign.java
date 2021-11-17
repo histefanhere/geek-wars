@@ -3,14 +3,12 @@ package com.hiuni.milkwars;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.*;
 import java.util.function.Supplier;
 
-// todo comment this up a little better.
 
 public class Sign {
 
@@ -55,7 +53,35 @@ public class Sign {
         put('3', () -> Integer.toString(MilkWars.clans[1].getCaptures()));
     }};
 
-
+    /**
+     * Creates a Sign object that represents an ingame smart sign.
+     * <p>
+     *     Smart signs are simply signs that can be used to display Milk-War/clan related variables.
+     *     for example these signs could display the amount of kills each clan has.
+     *     These signs can also be formatted using the standard colour/format codes in spigot.
+     *     Although you can use these signs simply to make fancy signs,
+     *     this is not recommended as it causes unnecessary strain on the server
+     *     (this would be *very* slight, but if we want all signs to make normal signs fancy then
+     *     there are better ways of doing this).
+     * </p><p>
+     *     Smart signs are created by making a normal sign, but somewhere in the sign text
+     *     the player must enter #MW, this will tell the server that we want this sign to
+     *     be special.
+     *     Formatting text in the sign is done with the `&` symbol, followed by the symbol
+     *     that represents the colour/format that you want to apply. for example:
+     *     `&7&l&nHello World`
+     *     Will create the text: "Hello World" in white (&7), bold (&l) and underlined (&n).
+     *     Putting variables in the sign is done using a hash, for example if the cows clan
+     *     has 3 kills then: `&7Kills: #0`
+     *     Will display: "Kills: 3" in white text.
+     * </p><p>
+     *     All signs are automatically added to an internal list of signs so we can keep
+     *     keep track of them easier.
+     * </p>
+     *
+     * @param location  The location of the sign, the easiest way to get this is with block.getLocation().
+     * @param lines     The text that has been input to the sign, this is what will be used create the formatted text.
+     */
     public Sign(Location location, String[] lines) {
         this.location = location;
 
@@ -71,6 +97,11 @@ public class Sign {
         Bukkit.getConsoleSender().sendMessage("Hello, I am a new sign!");
     }
 
+    /**
+     * Updates all the smart signs that we know of.
+     * If we try to update a sign and find that it doesn't exist anymore (ie the sign has
+     * recently been broken) then we remove the sign from the internal list of signs.
+     */
     public static void updateAll(){
         Bukkit.getConsoleSender().sendMessage("updating all signs");
 
@@ -84,6 +115,11 @@ public class Sign {
         }
     }
 
+    /**
+     * Updates the text on the sign.
+     * If we try to update a sign which no longer exists then it is removed from the
+     * internal list of signs.
+     */
     public void update(){
         Block block = getBlock();
         if (!(block.getState() instanceof org.bukkit.block.Sign)) {
@@ -105,6 +141,13 @@ public class Sign {
         Bukkit.getScheduler().runTask(MilkWars.getInstance(), (Runnable) s::update);
     }
 
+    /**
+     * Formats a string.
+     * Goes through a string and replaces the format codes/variable codes with the
+     * respective values.
+     * @param text  The raw string which needs to be formatted.
+     * @return      Returns a coloured/formatted string with variable values in place.
+     */
     private static String formatLine(String text) {
         StringBuilder sb = new StringBuilder();
         char[] charArray = text.toCharArray();
@@ -113,10 +156,13 @@ public class Sign {
             // For variable codes.
             if (charArray[i] == '#') {
                 try {
+                    // Try to replace the code with a variable.
                     String varStr = VARIABLEREPLACEMENTS.get(charArray[i + 1]).get();
                     sb.append(varStr);
                     i++;
                 } catch (ArrayIndexOutOfBoundsException | NullPointerException e) {
+                    // If there's no variable associated with the code,
+                    // or we're at the end of the line, then we shouldn't interpret this as a code.
                     sb.append('#');
                 }
             }
@@ -124,14 +170,18 @@ public class Sign {
             // For format codes.
             else if (charArray[i] == '&') {
                 try {
+                    // Try to find the string to replace with.
                     String formatStr = FORMATREPLACEMENTS.get(charArray[i + 1]);
                     if (formatStr == null) {
+                        // If there's no replacement then this isn't supposed to be a
+                        // format code.
                         sb.append('&');
                         continue;
                     }
                     sb.append(formatStr);
                     i++;
                 } catch (ArrayIndexOutOfBoundsException e) {
+                    // If this is placed at the end of a line then it's not a code.
                     sb.append('&');
                 }
             }
@@ -143,19 +193,34 @@ public class Sign {
         return sb.toString();
     }
 
+    /**
+     * Gets the location of the sign.
+     * @return  the location of the sign.
+     */
     public Location getLocation() {
         return this.location;
     }
 
+    /**
+     * Gets the block in the world.
+     * @return  The block in the world at the location where the sign should be.
+     */
     public Block getBlock() {
         return this.getLocation().getBlock();
     }
 
+    /**
+     * Gets the sign data from the world.
+     * @return  The block state of the block, cast to a block.Sign object.
+     */
     public org.bukkit.block.Sign getSign() {
         return (org.bukkit.block.Sign) getBlock().getState();
     }
 
-
+    /**
+     * Saves all the Signs to file.
+     * @param config    The FileConfiguration object to add all the data to.
+     */
     public static void saveAll(FileConfiguration config) {
         config.set("Signs", "");
         for (int i = 0; i < existingSigns.size(); i++) {
@@ -163,11 +228,22 @@ public class Sign {
         }
     }
 
+    /**
+     * Saves this sign to file.
+     * @param config    The FileConfiguration object to add the data to.
+     * @param keyPath   The keypath to save this sign object to,
+     *                  not very important what this is, as long as it is unique.
+     */
     private void save(FileConfiguration config, String keyPath) {
         config.set(keyPath + ".location", this.getLocation());
         config.set(keyPath + ".rawString", this.rawString);
     }
 
+    /**
+     * Loads all the data from file,
+     * Takes all the data stored in file and creates sign objects for each of them.
+     * @param config    The FileConfiguration object to pull the data from.
+     */
     public static void loadAll(FileConfiguration config) {
         config.addDefault("Signs", new HashSet<String>(){});
         try {
