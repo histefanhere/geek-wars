@@ -87,6 +87,8 @@ public class Sign {
 
         this.update();
         Sign.existingSigns.add(this);
+
+        Bukkit.getConsoleSender().sendMessage("Hello, I am a new sign!");
     }
 
     public static void updateAll(){
@@ -170,9 +172,9 @@ public class Sign {
 
 
     public static void saveAll(FileConfiguration config) {
-        config.set("", "");
+        config.set("Signs", "");
         for (int i = 0; i < existingSigns.size(); i++) {
-            existingSigns.get(i).save(config, Integer.toString(i));
+            existingSigns.get(i).save(config, "Signs." + Integer.toString(i));
         }
     }
 
@@ -182,10 +184,16 @@ public class Sign {
     }
 
     public static void loadAll(FileConfiguration config) {
-        Set<String> keys = config.getConfigurationSection("").getKeys(false);
-        for (String key : keys) {
-            new Sign(config.getLocation(key + ".location"),
-                        config.getStringList(key + "rawString").toArray(new String[2]));
+        config.addDefault("Signs", new HashSet<String>(){});
+        try {
+            Set<String> keys = config.getConfigurationSection("Signs").getKeys(false);
+            for (String key : keys) {
+                new Sign(config.getLocation("Signs." + key + ".location"),
+                        config.getStringList("Signs." + key + ".rawString").toArray(new String[2]));
+            }
+        } catch (NullPointerException e) {
+            Bukkit.getConsoleSender().sendMessage("[Milk-Wars] could not find any sign" +
+                    " data to load.");
         }
     }
 }
