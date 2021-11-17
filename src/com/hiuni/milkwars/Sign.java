@@ -19,26 +19,6 @@ public class Sign {
 
     private static final List<Sign> existingSigns = new ArrayList<Sign>();
 
-    private static final List<Material> signTypes = Arrays.asList(
-            Material.ACACIA_WALL_SIGN,
-            Material.WARPED_WALL_SIGN,
-            Material.BIRCH_WALL_SIGN,
-            Material.CRIMSON_WALL_SIGN,
-            Material.OAK_WALL_SIGN,
-            Material.DARK_OAK_WALL_SIGN,
-            Material.JUNGLE_WALL_SIGN,
-            Material.SPRUCE_WALL_SIGN,
-
-            Material.ACACIA_SIGN,
-            Material.WARPED_SIGN,
-            Material.BIRCH_SIGN,
-            Material.CRIMSON_SIGN,
-            Material.OAK_SIGN,
-            Material.DARK_OAK_SIGN,
-            Material.JUNGLE_SIGN,
-            Material.SPRUCE_SIGN
-    );
-
     private static final HashMap<Character, String> FORMATREPLACEMENTS = new HashMap<>(){{
         put('0', ChatColor.BLACK.toString());
         put('1', ChatColor.DARK_BLUE.toString());
@@ -106,7 +86,7 @@ public class Sign {
 
     public void update(){
         Block block = getBlock();
-        if (!signTypes.contains(block.getType())) { // TODO could maybe use (state instanceof Sign) instead.
+        if (!(block.getState() instanceof org.bukkit.block.Sign)) {
             // The sign no longer exists.
             Bukkit.getConsoleSender().sendMessage("This block is no longer a sign.");
             existingSigns.remove(this);
