@@ -43,6 +43,10 @@ public class DataManager {
         FileManager.setup(MilkWars.getInstance(), "ClanData.yml");
         MilkWars.clans[0].load(FileManager.getConfig(), "cows");
         MilkWars.clans[1].load(FileManager.getConfig(), "sheep");
+
+        FileManager.setup(MilkWars.getInstance(), "SignData.yml");
+        Sign.loadAll(FileManager.getConfig());
+
         DataManager.hasChanged = false;
         return true;
     }
