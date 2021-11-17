@@ -93,7 +93,12 @@ public class Sign {
 
     public static void updateAll(){
         Bukkit.getConsoleSender().sendMessage("updating all signs");
-        for (Sign s : existingSigns) {
+
+        // We need to iterate over a copy of the existing signs list as we might modify it
+        // And we don't want to be iterating over a changing list.
+        ArrayList<Sign> signsCopy = new ArrayList<Sign>(existingSigns);
+
+        for (Sign s : signsCopy) {
             Bukkit.getConsoleSender().sendMessage(s.toString());
             s.update();
         }
