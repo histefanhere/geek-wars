@@ -29,11 +29,13 @@ public class DataManager {
         FileManager.setup(MilkWars.getInstance(), "ClanData.yml");
         MilkWars.clans[0].save(FileManager.getConfig(), "cows");
         MilkWars.clans[1].save(FileManager.getConfig(), "sheep");
+        FileManager.saveConfig();
 
         FileManager.setup(MilkWars.getInstance(), "SignData.yml");
         Sign.saveAll(FileManager.getConfig());
+        FileManager.saveConfig();
 
-        return FileManager.saveConfig();
+        return true;
     }
 
     public static boolean load() {
