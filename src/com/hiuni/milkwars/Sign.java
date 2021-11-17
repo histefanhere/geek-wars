@@ -171,10 +171,10 @@ public class Sign {
         return (org.bukkit.block.Sign) getBlock().getState();
     }
 
-    public static void saveAll(FileConfiguration config, String keyPath) {
-        config.set(keyPath, "");
+    public static void saveAll(FileConfiguration config) {
+        config.set("", "");
         for (int i = 0; i < existingSigns.size(); i++) {
-            existingSigns.get(i).save(config, keyPath + "." + Integer.toString(i));
+            existingSigns.get(i).save(config, Integer.toString(i));
         }
     }
 
