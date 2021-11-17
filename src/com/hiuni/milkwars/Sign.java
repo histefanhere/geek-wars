@@ -7,10 +7,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.function.Supplier;
 
 // todo comment this up a little better.
@@ -171,6 +168,7 @@ public class Sign {
         return (org.bukkit.block.Sign) getBlock().getState();
     }
 
+
     public static void saveAll(FileConfiguration config) {
         config.set("", "");
         for (int i = 0; i < existingSigns.size(); i++) {
@@ -181,5 +179,13 @@ public class Sign {
     private void save(FileConfiguration config, String keyPath) {
         config.set(keyPath + ".location", this.getLocation());
         config.set(keyPath + ".rawString", this.rawString);
+    }
+
+    public static void loadAll(FileConfiguration config) {
+        Set<String> keys = config.getConfigurationSection("").getKeys(false);
+        for (String key : keys) {
+            new Sign(config.getLocation(key + ".location"),
+                        config.getStringList(key + "rawString").toArray(new String[2]));
+        }
     }
 }
