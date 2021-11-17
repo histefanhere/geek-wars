@@ -93,8 +93,6 @@ public class Sign {
 
         this.update();
         Sign.existingSigns.add(this);
-
-        Bukkit.getConsoleSender().sendMessage("Hello, I am a new sign!");
     }
 
     /**
@@ -103,14 +101,14 @@ public class Sign {
      * recently been broken) then we remove the sign from the internal list of signs.
      */
     public static void updateAll(){
-        Bukkit.getConsoleSender().sendMessage("updating all signs");
+        //Bukkit.getConsoleSender().sendMessage("updating all signs");
 
         // We need to iterate over a copy of the existing signs list as we might modify it
         // And we don't want to be iterating over a changing list.
         ArrayList<Sign> signsCopy = new ArrayList<Sign>(existingSigns);
 
         for (Sign s : signsCopy) {
-            Bukkit.getConsoleSender().sendMessage(s.toString());
+            //Bukkit.getConsoleSender().sendMessage(s.toString());
             s.update();
         }
     }
@@ -124,7 +122,6 @@ public class Sign {
         Block block = getBlock();
         if (!(block.getState() instanceof org.bukkit.block.Sign)) {
             // The sign no longer exists.
-            Bukkit.getConsoleSender().sendMessage("This block is no longer a sign.");
             existingSigns.remove(this);
             return;
         }
@@ -253,8 +250,8 @@ public class Sign {
                         config.getStringList("Signs." + key + ".rawString").toArray(new String[2]));
             }
         } catch (NullPointerException e) {
-            Bukkit.getConsoleSender().sendMessage("[Milk-Wars] could not find any sign" +
-                    " data to load.");
+//            Bukkit.getConsoleSender().sendMessage("[Milk-Wars] could not find any sign" +
+//                    " data to load.");
         }
     }
 }
