@@ -35,7 +35,7 @@ Admins need to manage and overview the game, and for this the main tool on their
 ### Joining and leaving a clan
 
 The following is the command for making a player join and leave a clan:
-```mcfunction
+```
 /mw clan join <player> <cows | sheep>
 /mw clan leave <player>
 ```
@@ -43,14 +43,14 @@ The join command is intended to be in a command block at spawn for players to jo
 the leave command is only intended to be manually ran by admins in rare cases.
 
 To see the players in a clan, run the following command:
-```mcfunction
+```
 /mw clan members list <cows | sheep>
 ```
 
 ### Promoting and demoting clan leaders
 
 To help run the game smoother and take some responsibility of the admins, clans can have their own _clan leaders_ that can manage their clan. To make someone a leader of their clan or revoke their leader status, do one the following commands:
-```mcfunction
+```
 /mw clan members promote <player>
 /mw clan members demote <player>
 ```
@@ -59,7 +59,7 @@ To help run the game smoother and take some responsibility of the admins, clans 
 ### Changing chat colours
 
 Since Milk Wars needs to display a prefix on a player's username when they're signed in to their clan, it has to take control over the team system. Because of this, there's a special command for allowing players to set their personal chat colours:
-```mcfunction
+```
 /mw settings setchatcolour <aqua | black | gold | blue ...> <player>
 ```
 All vanilla colours are available. This command is intended to be run in command blocks at spawn for players to choose their own colours.
@@ -78,7 +78,7 @@ As a clan leader you have access to the `/clan` (or `/cl`) command. This gives y
 ### Managing your clan members
 
 As a clan leader you are able to see the members of your clan and even kick members out if they're misbehaving or cheating with the following commands:
-```mcfunction
+```
 /clan members list
 /clan members kick <player>
 ```
@@ -87,13 +87,13 @@ Note that only admins are allowed to join players into a clan.
 ### Managing your clan treasure
 
 Your most important role as a clan leader is to manage your clan's treasure. the main command you will do this with is:
-```mcfunction
+```
 /clan treasure sethome
 ```
 This sets the respawn point of the treasure and teleports it to you. Your location becomes the home point of the treasure, and should be in _a visible and well-lit area of your clan hall._ Players shouldn't have to break blocks to get to it! As a clan leader it's your responsibility to make your clan's treasure actually accessible to the enemies to make it fun and enjoyable for everyone. 10 layers of obsidian? No! A fun and challenging parkour to get to the treasure? Perfect!
 
 If for some reason the treasure gets destroyed (which should be impossible) or lost, you can run the following command. Note that the treasure automatically respawns after 24 hours back at its home location, so you should rarely (if ever) need to run this command:
-```mcfunction
+```
 /clan treasure setlocation
 ```
 
