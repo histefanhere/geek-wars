@@ -49,8 +49,8 @@ public class Sign {
         put('0', () -> Integer.toString(MilkWars.clans[0].getKills()));
         put('1', () -> Integer.toString(MilkWars.clans[0].getCaptures()));
 
-        put('2', () -> Integer.toString(MilkWars.clans[1].getKills()));
-        put('3', () -> Integer.toString(MilkWars.clans[1].getCaptures()));
+        put('5', () -> Integer.toString(MilkWars.clans[1].getKills()));
+        put('6', () -> Integer.toString(MilkWars.clans[1].getCaptures()));
     }};
 
     /**
