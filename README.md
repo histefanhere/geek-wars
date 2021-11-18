@@ -61,7 +61,7 @@ Thanks for choosing to play and participate in the official Geek NZ Milk Wars! T
 
 ### Capturing the other clan's treasure
 
-To capture the enemy's treasure, firstly you must be signed in to your clan. You can do this at your clan's hall. At their hall there may be traps or parkour to do in order to obtain their treasure, so be careful! Right click it to pick it up, and return it to your clan's treasure to score a point.
+To capture the enemy's treasure, firstly you must be signed in to your clan. You can do this at your clan's hall. At their hall there may be traps or parkour to do in order to obtain their treasure, so be careful! Right click it with an empty hand to pick it up, and return it to your clan's treasure to score a point.
 
 Easy, right? We thought so too. That's why while you're carrying treasure, you're significantly nerfed:
 - Elytras don't work
