@@ -66,8 +66,85 @@ All vanilla colours are available. This command is intended to be run in command
 
 ### Creating smart signs
 
-TODO: This part
+To help display clan statistics you can use smart signs. Smart signs work in a similar way to normal signs, but with the added benefit of giving you more power to format the text and the ability to display automatically updating clan statistics.
 
+**Variable tags:**
+
+In order to create a smart sign simply place down a sign and make sure that anywhere in the sign text you include `#MW`. This `#MW` tag tells the plugin that you want this sign to be a smart sign, don't worry about it looking ugly: the tag won't actually be displayed on the sign.
+To insert a variable into the sign you can use variable tags. Like the `#MW` tag these all start with a hash followed by some symbol. The available tags are:
+
+- `#0` - Milk Drinkers kill counter: the amount of times a signed in Milk Drinker has killed a signed in enemy.
+- `#1` - Milk Drinkers capture counter: the amount of times the Milk Drinkers clan have captured the enemy flag.
+- `#2` - Wool Wearers kill counter: the amount of times a signed in Wool Wearer has killed a signed in enemy.
+- `#3` - Wool Wearers capture counter: the amount of times the Wool Wearers clan have captured the enemy flag.
+
+**Variable tag usage example:**
+
+<!-- ![Variable tag use example edit message](images/VarTagExampleEdit.png)
+![Variable tag use example after edit](images/VarTagExample.png) -->
+ 
+<img src="images/VarTagExampleEdit.png" alt="Variable tag example edit message" style="width:250px;"/>
+
+```
+Milk Drinkers:
+#MW
+Kills: #0
+Captures: #1
+```
+Once you finish editing the sign the sign will display like so:
+
+<img src="images/VarTagExample.png" alt="Variable tag example result" style="width:250px;"/>
+
+Note that in this example the Milk Drinkers clan has 10 kills and has captured the Wool Wearers flag 3 times. Using these smart signs can be very useful as the signs automatically update. So if, for example, the Milk Drinkers got another kill then the sign would update and display `Kills: 11`.
+
+**Formatting codes:**
+
+If you've used colour/format codes in less vanila servers then this may be familar to you. These tags start with a `&` followed by some symbol, the avalible codes are:
+- `&0` - Black
+- `&1` - Dark Blue
+- `&2` - Dark Green
+- `&3` - Dark Aqua
+- `&4` - Dark Red
+- `&5` - Dark Purple
+- `&6` - Gold
+- `&7` - Gray
+- `&8` - Dark Gray
+- `&9` - Blue
+- `&a` - Green
+- `&b` - Aqua
+- `&c` - Red
+- `&d` - Light Purple
+- `&e` - Yellow
+- `&f` - White
+
+- `&k` - Magic (enchanting table glyphs)
+- `&l` - Bold
+- `&m` - Strikethrough
+- `&n` - Underline
+- `&o` - Italic
+
+- `&r` - Reset to standard
+
+**Smart Sign Usage Example:**
+
+Of course format/colour codes can be used along with variable codes to create some really neat signs:
+
+<img src="images/SmartSignExampleEdit.png" alt="Smart sign example edit message" style="width:250px;"/>
+
+```
+&7&n&lKills:
+#MW
+&7MD: #0
+&7WW: #2
+```
+
+Entering the above text would result in a sign that looks like this:
+
+<img src="images/SmartSignExample.png" alt="Smart sign example after edit" style="width:250px;"/>
+
+And of course these values would automatically update so you don't need to worry about them getting out of date.
+
+> **Note:** Please don't use smart signs to simply make fancy signs: the more there are the greater each subsequent sign will impact preformance. This imapct should be neglegible unless there are lots of these signs (100+ maybe). If you want fancy signs really badly then let us know and I can make that possible with no impact to server performance.
 
 ## For clan leaders
 
