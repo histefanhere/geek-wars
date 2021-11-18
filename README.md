@@ -99,7 +99,7 @@ As a clan leader you are able to see the members of your clan and even kick memb
 /clan members list
 /clan members kick <player>
 ```
-Note that only admins are allowed to join players into a clan.
+Note that only admins (or command blocks) are allowed to join players into a clan.
 
 ### Managing your clan treasure
 
