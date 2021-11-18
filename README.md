@@ -57,7 +57,7 @@ How you use this plugin depends on who you are:
 
 ## For players
 
-Thanks for choosing to play and participate in the official Geek NZ Milk Wars! There's a couple of things you should know before you go into it, including how to score points for your clan and geek etiquette.
+Thanks for choosing to play and participate in the official Geek NZ Milk Wars! There's a couple of things you should know before you go into it, including how to score points for your clan, and geek etiquette.
 
 ### Capturing the other clan's treasure
 
