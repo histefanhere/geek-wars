@@ -162,8 +162,8 @@ To insert a variable into the sign you can use variable tags. Like the `#MW` tag
 
 - `#0` - Milk Drinkers kill counter: the amount of times a signed in Milk Drinker has killed a signed in enemy.
 - `#1` - Milk Drinkers capture counter: the amount of times the Milk Drinkers clan have captured the enemy flag.
-- `#2` - Wool Wearers kill counter: the amount of times a signed in Wool Wearer has killed a signed in enemy.
-- `#3` - Wool Wearers capture counter: the amount of times the Wool Wearers clan have captured the enemy flag.
+- `#5` - Wool Wearers kill counter: the amount of times a signed in Wool Wearer has killed a signed in enemy.
+- `#6` - Wool Wearers capture counter: the amount of times the Wool Wearers clan have captured the enemy flag.
 
 #### Variable tag usage example
 
@@ -200,7 +200,7 @@ Of course format/colour codes can be used along with variable codes to create so
 &7&n&lKills:
 #MW
 &7MD: #0
-&7WW: #2
+&7WW: #5
 ```
 
 Entering the above text would result in a sign that looks like this:
