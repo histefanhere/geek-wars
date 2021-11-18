@@ -207,7 +207,7 @@ Entering the above text would result in a sign that looks like this:
 
 <img src="images/SmartSignExample.png" alt="Smart sign example after edit" style="width:250px;"/>
 
-And of course these values would automatically update, so you don't need to worry about them getting out of date.
+And of course these values would automatically update, so you don't need to worry about them becoming out of date.
 
 > **Note:** Please don't use smart signs to simply make fancy signs: the more there are the greater each subsequent sign will impact performance. This impact should be negligible unless there are lots of these signs (100+ maybe). If you want fancy signs really badly then let us know, and I can make that possible with no impact to server performance.
 
