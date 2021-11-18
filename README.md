@@ -71,7 +71,7 @@ Easy, right? We thought so too. That's why while you're carrying treasure, you'r
 
 Yes that's right, the only way to carry the enemies treasure from their clan hall to yours is by _walking._ Doesn't sound so easy now, right? You'll need to work together with your team to be protected and score for your clan.
 
-Once you capture the enemies treasure, it becomes deactivated and will only activate in the morning. This means you can only capture their treasure once per day.
+Once you capture the enemies treasure, it is sent back to their clan hall and deactivated, it will only activate once a day in the morning. This means you can only capture their treasure daily.
 
 <img src="images/ActiveAndDeactiveTreasure.png" alt="Active (Golden) and Deactive (Normal) Treasure" style="width:600px;"/>
 
