@@ -136,7 +136,7 @@ To see the players in a clan, run the following command:
 
 ### Promoting and demoting clan leaders
 
-To help run the game smoother and take some responsibility of the admins, clans can have their own _clan leaders_ that can manage their clan. To make someone a leader of their clan or revoke their leader status, do one the following commands:
+To help run the game smoother and take some responsibility from the admins, clans can have their own _clan leaders_ that can manage their clan. To make someone a leader of their clan or revoke their leader status, do one the following commands:
 ```
 /mw clan members promote <player>
 /mw clan members demote <player>
