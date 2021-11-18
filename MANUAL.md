@@ -100,30 +100,8 @@ Note that in this example the Milk Drinkers clan has 10 kills and has captured t
 **Formatting codes:**
 
 If you've used colour/format codes in less vanila servers then this may be familar to you. These tags start with a `&` followed by some symbol, the avalible codes are:
-- `&0` - Black
-- `&1` - Dark Blue
-- `&2` - Dark Green
-- `&3` - Dark Aqua
-- `&4` - Dark Red
-- `&5` - Dark Purple
-- `&6` - Gold
-- `&7` - Gray
-- `&8` - Dark Gray
-- `&9` - Blue
-- `&a` - Green
-- `&b` - Aqua
-- `&c` - Red
-- `&d` - Light Purple
-- `&e` - Yellow
-- `&f` - White
 
-- `&k` - Magic (enchanting table glyphs)
-- `&l` - Bold
-- `&m` - Strikethrough
-- `&n` - Underline
-- `&o` - Italic
-
-- `&r` - Reset to standard
+<img src="images/ColourCodes.png" alt="Bukkit Colour Codes" style="width:400px;"/>
 
 **Smart Sign Usage Example:**
 
