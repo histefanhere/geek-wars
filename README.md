@@ -186,7 +186,7 @@ Note that in this example the Milk Drinkers clan has 10 kills and has captured t
 
 #### Formatting codes
 
-If you've used colour/format codes in vanilla servers then this may be familiar to you. These tags start with a `&` followed by some symbol, the available codes are:
+If you've used colour/format codes in servers before then this may be familiar to you. These tags start with a `&` followed by some symbol, the available codes are:
 
 <img src="images/ColourCodes.png" alt="Bukkit Colour Codes" style="width:400px;"/>
 
