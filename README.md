@@ -73,6 +73,8 @@ Yes that's right, the only way to carry the enemies treasure from their clan hal
 
 Once you capture the enemies treasure, it becomes deactivated and will only activate in the morning. This means you can only capture their treasure once per day.
 
+<img src="images/ActiveAndDeactiveTreasure.png" alt="Active (Golden) and Deactive (Normal) Treasure" style="width:600px;"/>
+
 ### Preventing the other clan from capturing your treasure
 
 So what can you do to prevent the other clan from capturing your treasure? Options include keeping the location of your clan hall a tight keep secret, concealing it, and even booby-trapping the hall. Think Indiana Jones style!
@@ -153,7 +155,7 @@ All vanilla colours are available. This command is intended to be run in command
 
 To help display clan statistics you can use smart signs. Smart signs work in a similar way to normal signs, but with the added benefit of giving you more power to format the text and the ability to display automatically updating clan statistics.
 
-**Variable tags:**
+#### Variable tags
 
 In order to create a smart sign simply place down a sign and make sure that anywhere in the sign text you include `#MW`. This `#MW` tag tells the plugin that you want this sign to be a smart sign, don't worry about it looking ugly: the tag won't actually be displayed on the sign.
 To insert a variable into the sign you can use variable tags. Like the `#MW` tag these all start with a hash followed by some symbol. The available tags are:
@@ -163,7 +165,7 @@ To insert a variable into the sign you can use variable tags. Like the `#MW` tag
 - `#2` - Wool Wearers kill counter: the amount of times a signed in Wool Wearer has killed a signed in enemy.
 - `#3` - Wool Wearers capture counter: the amount of times the Wool Wearers clan have captured the enemy flag.
 
-**Variable tag usage example:**
+#### Variable tag usage example
 
 <!-- ![Variable tag use example edit message](images/VarTagExampleEdit.png)
 ![Variable tag use example after edit](images/VarTagExample.png) -->
@@ -182,13 +184,13 @@ Once you finish editing the sign it will display like so:
 
 Note that in this example the Milk Drinkers clan has 10 kills and has captured the Wool Wearers flag 3 times. Using these smart signs can be very useful as the signs automatically update. So if, for example, the Milk Drinkers got another kill then the sign would update and display `Kills: 11`.
 
-**Formatting codes:**
+#### Formatting codes
 
 If you've used colour/format codes in vanilla servers then this may be familiar to you. These tags start with a `&` followed by some symbol, the available codes are:
 
 <img src="images/ColourCodes.png" alt="Bukkit Colour Codes" style="width:400px;"/>
 
-**Smart Sign Usage Example:**
+#### Smart Sign usage example
 
 Of course format/colour codes can be used along with variable codes to create some really neat signs:
 
