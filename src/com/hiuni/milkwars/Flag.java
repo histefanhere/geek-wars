@@ -244,12 +244,12 @@ public class Flag implements Listener {
 
                                 Announce.sendToClan(clan,
                                         "Good job " + clan.getName() + " clan, " + player.getDisplayName() +
-                                                " has successfully captured the enemy flag!",
+                                                " has successfully captured the enemy treasure!",
                                         ChatColor.GREEN
                                 );
 
                                 Announce.sendToClan(otherClan,
-                                        "Oh no, your flag has been captured by " + player.getDisplayName() +
+                                        "Oh no, your treasure has been captured by " + player.getDisplayName() +
                                                 " of the " + clan.getName() + " clan!",
                                         ChatColor.RED);
 
