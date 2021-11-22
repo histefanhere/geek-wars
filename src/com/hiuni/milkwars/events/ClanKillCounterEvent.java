@@ -51,10 +51,11 @@ public class ClanKillCounterEvent implements Listener {
             return;
         }
 
-        event.setDeathMessage(Announce.formatPlayerName(player, friendlyClan) + " of the " +
-                friendlyClan.getName() + " clan died at the hands of " +
-                Announce.formatPlayerName(killer, enemyClan) + " and the " +
-                enemyClan.getName() + " clan.");
+//        event.setDeathMessage(Announce.formatPlayerName(player, friendlyClan) + " of the " +
+//                friendlyClan.getName() + " clan died at the hands of " +
+//                Announce.formatPlayerName(killer, enemyClan) + " and the " +
+//                enemyClan.getName() + " clan.");
+
         enemyClan.addKill();
 
         long now = System.currentTimeMillis();
