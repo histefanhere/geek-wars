@@ -55,7 +55,8 @@ public class ClanKillCounterEvent implements Listener {
 //                friendlyClan.getName() + " clan died at the hands of " +
 //                Announce.formatPlayerName(killer, enemyClan) + " and the " +
 //                enemyClan.getName() + " clan.");
-//        enemyClan.addKill();
+
+        enemyClan.addKill();
 
         long now = System.currentTimeMillis();
         if (now - announcementCooldown > 30 * 60 * 1000) {
