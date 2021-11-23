@@ -139,6 +139,11 @@ To see the players in a clan, run the following command:
 /mw clan members list <cows | sheep>
 ```
 
+For players to know which clan they're joining, placing the clan treasure heads is very simple. To obtain them, run the following command:
+```
+/mw clan gethead <cows | sheep> <active | inactive>
+```
+
 ### Promoting and demoting clan leaders
 
 To help run the game smoother and take some responsibility from the admins, clans can have their own _clan leaders_ that can manage their clan. To make someone a leader of their clan or revoke their leader status, do one the following commands:
