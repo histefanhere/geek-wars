@@ -77,6 +77,14 @@ public class ClanCommand {
                                 String.format(ChatColor.GREEN + "Left the %s", clan.getName())
                         );
                         new SettingsCommand().updateNameTag(player);
+
+                        // If the player is carrying a flag, it needs to be dropped.
+                        for (Clan flagCheck: MilkWars.clans) {
+                            if (player.getUniqueId().equals(flagCheck.getFlag().getWearer())) {
+                                flagCheck.getFlag().dropFlag();
+                            }
+                        }
+
                         return;
                     }
                 }
@@ -118,6 +126,13 @@ public class ClanCommand {
                                             ChatColor.YELLOW + "You have been kicked from the %s", clan.getName()
                                     )
                             );
+
+                            // If the player is carrying a flag, it needs to be dropped.
+                            for (Clan flagCheck: MilkWars.clans) {
+                                if (player.getUniqueId().equals(flagCheck.getFlag().getWearer())) {
+                                    flagCheck.getFlag().dropFlag();
+                                }
+                            }
                         }
                         else {
                             CommandAPI.fail("Unable to kick member from your clan!");
@@ -267,6 +282,15 @@ public class ClanCommand {
                     for (ClanMember member : clan.getAllMembers()) {
                         if (member.isPlayer(player)) {
                             // Found the player
+
+                            // Player cannot sign out if they're carrying a flag
+                            for (Clan flagCheck: MilkWars.clans) {
+                                if (player.getUniqueId().equals(flagCheck.getFlag().getWearer())) {
+                                    sender.sendMessage(ChatColor.RED + "Cannot be signed out while carrying treasure");
+                                    player.sendMessage(ChatColor.RED + "You cannot sign out while carrying treasure!");
+                                    return;
+                                }
+                            }
 
                             if (member.signOut()) {
                                 // Signed out successfully
