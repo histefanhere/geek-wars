@@ -226,6 +226,14 @@ public class Flag implements Listener {
         // Some player has right-clicked the flag entity. The behaviour of this depends on what clan they're a part of
         for (Clan clan: MilkWars.clans) {
             if (clan.hasMember(player)) {
+                // To do *anything* with the flag, the player must be signed in
+                if (!clan.getMember(player).isSignedIn()) {
+                    player.sendMessage(
+                            ChatColor.RED + "You must be signed in to interact with treasure!"
+                    );
+                    return;
+                }
+
                 DataManager.registerChanges();
 
                 if (clan.getClanId() == clanId) {
@@ -237,7 +245,7 @@ public class Flag implements Listener {
                             continue;
                         }
 
-                        if (otherClan.getFlag().getWearer() == player.getUniqueId()) {
+                        if (player.getUniqueId().equals(otherClan.getFlag().getWearer())) {
                             // A player has clicked on their flag while carrying the enemies flag.
                             // If the flag is at its pole location, that means there's been a capture!
                             if (flagLocation == poleLocation) {
@@ -382,7 +390,7 @@ public class Flag implements Listener {
     /*
     Make the wearer drop the flag.
      */
-    private void dropFlag() {
+    public void dropFlag() {
 
         Clan clan = MilkWars.clans[this.clanId];
         Announce.sendToAll("The " + clan.getName() + " treasure has been dropped!", ChatColor.YELLOW);
