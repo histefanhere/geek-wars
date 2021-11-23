@@ -137,7 +137,7 @@ public class Flag implements Listener {
         // If we can find it, it's much easier.
         Entity ent = Bukkit.getServer().getEntity(flagId);
         if (ent != null) {
-            ((ArmorStand) ent).getEquipment().setHelmet(getHead());
+            ((ArmorStand) ent).getEquipment().setHelmet(getHead(clanId, active));
         }
         else {
             // Teleport the flag to itself.
@@ -472,7 +472,7 @@ public class Flag implements Listener {
         ArmorStand stand = (ArmorStand) Bukkit.getWorld("world").spawnEntity(location, EntityType.ARMOR_STAND);
 
         // Set the helmet of the armor stand to a specific player head
-        stand.getEquipment().setHelmet(getHead());
+        stand.getEquipment().setHelmet(getHead(clanId, active));
 
         stand.setCustomName(getEntityName());
 
@@ -490,11 +490,10 @@ public class Flag implements Listener {
     Generates the player head item for the flag.
     The specific skin to use depends on what clan the flag is in and if it's active or not.
      */
-    private ItemStack getHead() {
+    public static ItemStack getHead(int clanId, boolean active) {
         String head = HEADS[clanId][active ? 1 : 0];
         String url = "http://textures.minecraft.net/texture/" + head;
-        ItemStack stack = SkullCreator.itemFromUrl(url);
-        return stack;
+        return SkullCreator.itemFromUrl(url);
     }
 
     /*

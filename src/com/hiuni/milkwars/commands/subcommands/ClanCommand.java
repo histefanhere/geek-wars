@@ -2,6 +2,7 @@ package com.hiuni.milkwars.commands.subcommands;
 
 import com.hiuni.milkwars.Clan;
 import com.hiuni.milkwars.ClanMember;
+import com.hiuni.milkwars.Flag;
 import com.hiuni.milkwars.MilkWars;
 import dev.jorel.commandapi.CommandAPI;
 import dev.jorel.commandapi.CommandAPICommand;
@@ -12,6 +13,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.text.Collator;
 import java.util.Collection;
@@ -313,10 +315,37 @@ public class ClanCommand {
                 CommandAPI.fail("Player isn't a part of a clan!");
             });
 
+    private final CommandAPICommand clanGetHead = new CommandAPICommand("gethead")
+            .withArguments(new MultiLiteralArgument("cows", "sheep"))
+            .withArguments(new MultiLiteralArgument("active", "inactive"))
+            .executesPlayer((player, args) -> {
+                int clanIndex = 0;
+                switch ((String) args[0]) {
+                    case "cows" -> clanIndex = 0;
+                    case "sheep" -> clanIndex = 1;
+                }
+                Clan clan = MilkWars.clans[clanIndex];
+
+                boolean active = args[1].equals("active");
+
+                ItemStack head = Flag.getHead(clanIndex, active);
+
+                boolean accepted = player.getInventory().addItem(head).size() == 0;
+                if (accepted) {
+                    player.sendMessage(
+                            String.format(ChatColor.GREEN + "Got an %s %s head!", args[1], clan.getName())
+                    );
+                }
+                else {
+                    CommandAPI.fail("Your inventory is full!");
+                }
+            });
+
     public CommandAPICommand getCommand() {
         return new CommandAPICommand("clan")
                 .withSubcommand(clanJoin)
                 .withSubcommand(clanLeave)
+                .withSubcommand(clanGetHead)
                 .withSubcommand(new CommandAPICommand("members")
                         .withSubcommand(membersList)
                         .withSubcommand(membersPromote)

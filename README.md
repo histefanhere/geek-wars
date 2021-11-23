@@ -109,6 +109,11 @@ Your most important role as a clan leader is to manage your clan's treasure. the
 ```
 This sets the respawn point of the treasure and teleports it to you. Your location becomes the home point of the treasure, and should be in _a visible and well-lit area of your clan hall._ Players shouldn't have to break blocks to get to it! As a clan leader it's your responsibility to make your clan's treasure actually accessible to the enemies to make it fun and enjoyable for everyone. 10 layers of obsidian? No! A fun and challenging parkour to get to the treasure? Perfect!
 
+While we're on the subject of your clan hall, your clan members need to be able to sign in and out at it. Use the following command to spawn command blocks that do only this:
+```
+/clan setcommandblock <signin | signout>
+```
+
 If for some reason the treasure gets destroyed (which should be impossible for survival players) or lost, you can run the following command. Note that the treasure automatically respawns after 24 hours back at its home location, so you should rarely (if ever) need to run this command:
 ```
 /clan treasure setlocation
@@ -132,6 +137,11 @@ the leave command is only intended to be manually ran by admins in rare cases.
 To see the players in a clan, run the following command:
 ```
 /mw clan members list <cows | sheep>
+```
+
+For players to know which clan they're joining, placing the clan treasure heads is very simple. To obtain them, run the following command:
+```
+/mw clan gethead <cows | sheep> <active | inactive>
 ```
 
 ### Promoting and demoting clan leaders
