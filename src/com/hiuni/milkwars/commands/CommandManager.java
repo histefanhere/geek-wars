@@ -3,6 +3,7 @@ package com.hiuni.milkwars.commands;
 import com.hiuni.milkwars.Clan;
 import com.hiuni.milkwars.MilkWars;
 import com.hiuni.milkwars.commands.subcommands.ClanCommand;
+import com.hiuni.milkwars.commands.subcommands.SetCommandBlockCommand;
 import com.hiuni.milkwars.commands.subcommands.SettingsCommand;
 import com.hiuni.milkwars.commands.subcommands.TreasureCommand;
 import dev.jorel.commandapi.CommandAPICommand;
@@ -33,6 +34,7 @@ public class CommandManager {
                 }))
                 .withSubcommand(new TreasureCommand().getLeadersCommand())
                 .withSubcommand(new ClanCommand().getLeadersMembersCommand())
+                .withSubcommand(new SetCommandBlockCommand().getLeadersCommand())
                 .register();
     }
 }

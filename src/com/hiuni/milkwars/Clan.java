@@ -4,6 +4,7 @@ import dev.jorel.commandapi.CommandAPI;
 import org.apache.commons.lang.ObjectUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
@@ -24,6 +25,9 @@ public class Clan {
     private int kills; // A counter for how many times clan members have killed other clam members.
     private int captures; // A counter for how many times the clan has successfully captured the enemy flag.
     private Flag flag;
+
+    private Location signInCommandBlock;
+    private Location signOutCommandBlock;
 
     Clan(int clanId, String name, String prefix) {
 
@@ -218,6 +222,24 @@ public class Clan {
         return this.flag;
     }
 
+    public Location getSignInCommandBlock() {
+        return signInCommandBlock;
+    }
+
+    public Location getSignOutCommandBlock() {
+        return signOutCommandBlock;
+    }
+
+    public void setSignInCommandBlock(Location location) {
+        signInCommandBlock = location;
+        DataManager.registerChanges();
+    }
+
+    public void setSignOutCommandBlock(Location location) {
+        signOutCommandBlock = location;
+        DataManager.registerChanges();
+    }
+
     public void save(FileConfiguration config, String keyPath) {
         // Saves the clan data to file so that it can preserved when the server restarts.
         //config.set(keyPath + ".name", getName());
@@ -231,6 +253,9 @@ public class Clan {
             member.save(config, keyPath + ".members");
         }
         flag.save(config, keyPath + ".flag");
+
+        config.set(keyPath + ".commandblocks.signin", signInCommandBlock);
+        config.set(keyPath + ".commandblocks.signout", signOutCommandBlock);
     }
 
     public void load(FileConfiguration config, String keyPath) {
@@ -247,6 +272,9 @@ public class Clan {
         //this.prefix = config.getString(keyPath + ".prefix");
 
         flag.load(config, keyPath + ".flag");
+
+        signInCommandBlock = config.getLocation(keyPath + ".commandblocks.signin");
+        signOutCommandBlock = config.getLocation(keyPath + ".commandblocks.signout");
 
         this.members.clear();
         try {
