@@ -36,6 +36,9 @@ public class ClanCommand {
 
                 // First test if they're a part of the sheep clan...
                 if (oppositeClan.hasMember(player)) {
+                    player.sendMessage(
+                            ChatColor.RED + "Cannot be a member of both clans!"
+                    );
                     CommandAPI.fail("Cannot be a member of both clans!");
                     return;
                 }
@@ -57,6 +60,9 @@ public class ClanCommand {
                 }
 
                 // They're already a part of the clan!
+                player.sendMessage(
+                        ChatColor.RED + "You are already a member of the clan!"
+                );
                 CommandAPI.fail("Player is already a member of the clan!");
             });
 
