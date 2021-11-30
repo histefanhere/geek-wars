@@ -2,6 +2,7 @@ package com.hiuni.milkwars.events;
 
 import com.hiuni.milkwars.Clan;
 import com.hiuni.milkwars.MilkWars;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -22,6 +23,7 @@ public class PlayerConsumeEvent implements Listener {
                 if (flagBearer != null && flagBearer.equals(player.getUniqueId())) {
                     // Player is carrying a flag.
                     event.setCancelled(true);
+                    player.sendMessage(ChatColor.YELLOW + "[Milk-wars] You may not drink milk while carrying the flag");
                     return;
                 }
             }
