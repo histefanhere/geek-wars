@@ -17,6 +17,8 @@ import org.bukkit.event.player.*;
 import org.bukkit.event.world.EntitiesLoadEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.potion.PotionEffect;
 import org.bukkit.scheduler.BukkitScheduler;
 
 import java.util.Calendar;
@@ -294,6 +296,15 @@ public class Flag implements Listener {
                         Clan otherClan = MilkWars.clans[(clan.getClanId() + 1) % 2]; // It's hacky af, but I don't care.
                         Announce.sendToAll(player.getDisplayName() + " has picked up the " + otherClan.getName() + " treasure!",
                                 ChatColor.YELLOW);
+
+                        player.addPotionEffect(new PotionEffect(
+                                PotionEffectType.GLOWING,
+                                20*60*3, // The duration in ticks, there are 20 ticks per second, so this should apply for 3 minutes.
+                                0,
+                                false,
+                                false
+                        ));
+
                         }
                     else {
                         player.sendMessage(
