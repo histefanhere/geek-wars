@@ -386,7 +386,7 @@ public class Flag implements Listener {
 
                         // The wearer of the flag has tried to glide! Not today my friend, not today.
                         player.sendMessage(
-                                ChatColor.RED + "You are not allowed to fly while carrying treasure!"
+                                ChatColor.RED + "[Milk-wars] You are not allowed to fly while carrying treasure!"
                         );
                         event.setCancelled(true);
                     }
