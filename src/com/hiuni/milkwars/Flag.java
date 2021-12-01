@@ -4,6 +4,7 @@ import dev.dbassett.skullcreator.SkullCreator;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
@@ -369,14 +370,27 @@ public class Flag implements Listener {
     Prevents the wearer of the flag from flying away on an elytra
      */
     @EventHandler
-    public void onEntityToggleGlide(EntityToggleGlideEvent event) {
-        if (event.getEntity().getUniqueId().equals(wearer)) {
-            if (event.isGliding()) {
-                // The wearer of the flag has tried to glide! Not today my friend, not today.
-                event.getEntity().sendMessage(
-                        ChatColor.RED + "You are not allowed to fly while carrying treasure!"
-                );
-                event.setCancelled(true);
+    public void onPlayerInteract(PlayerInteractEvent event) {
+        Player player = event.getPlayer();
+        if (player.isGliding()) {
+
+            // If they're holding an item AND it's a rocket...
+            if (event.getItem() != null && event.getItem().getType().equals(Material.FIREWORK_ROCKET)) {
+
+                // If they didn't click on anything OR what they've clicked on is air...
+                if (event.getClickedBlock() == null || event.getClickedBlock().getType().equals(Material.AIR)) {
+
+                    // The event is a gliding player who wants to fly off with a rocket.
+                    // If they're carrying this flag, they're not allowed to!
+                    if (player.getUniqueId().equals(wearer)) {
+
+                        // The wearer of the flag has tried to glide! Not today my friend, not today.
+                        player.sendMessage(
+                                ChatColor.RED + "You are not allowed to fly while carrying treasure!"
+                        );
+                        event.setCancelled(true);
+                    }
+                }
             }
         }
     }
