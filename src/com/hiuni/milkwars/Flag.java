@@ -232,7 +232,7 @@ public class Flag implements Listener {
                 // To do *anything* with the flag, the player must be signed in
                 if (!clan.getMember(player).isSignedIn()) {
                     player.sendMessage(
-                            ChatColor.RED + "You must be signed in to interact with treasure!"
+                            ChatColor.RED + "[Milk-wars] You must be signed in to interact with treasure!"
                     );
                     return;
                 }
@@ -309,7 +309,7 @@ public class Flag implements Listener {
                         }
                     else {
                         player.sendMessage(
-                                ChatColor.RED + "You cannot grab this treasure since it is not active!"
+                                ChatColor.RED + "[Milk-wars] You cannot grab this treasure since it is not active!"
                         );
                     }
                 }
@@ -386,7 +386,7 @@ public class Flag implements Listener {
 
                         // The wearer of the flag has tried to glide! Not today my friend, not today.
                         player.sendMessage(
-                                ChatColor.RED + "You are not allowed to fly while carrying treasure!"
+                                ChatColor.RED + "[Milk-wars] You are not allowed to fly while carrying treasure!"
                         );
                         event.setCancelled(true);
                     }
@@ -407,7 +407,7 @@ public class Flag implements Listener {
         if (event.getPlayer().getUniqueId().equals(wearer)) {
             event.setCancelled(true);
             event.getPlayer().sendMessage(
-                    ChatColor.RED + "You are not allowed to teleport while carrying treasure!"
+                    ChatColor.RED + "[Milk-wars] You are not allowed to teleport while carrying treasure!"
             );
         }
     }
