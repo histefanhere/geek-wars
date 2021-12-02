@@ -55,6 +55,7 @@ public class Flag implements Listener {
     private static final double GROUND_OFFSET = -1.1;
     public static final double POLE_OFFSET = -0.8;
 
+    // Resets bi-daily, make this 0 <= HOUR_TO_RESET_AT <= 11
     private static final int HOUR_TO_RESET_AT = 6;
 
     Flag(int clanId) {
@@ -67,10 +68,20 @@ public class Flag implements Listener {
 
         Calendar cal = Calendar.getInstance();
         long now = cal.getTimeInMillis();
-        if(cal.get(Calendar.HOUR_OF_DAY) >= HOUR_TO_RESET_AT) {
+
+        // This encapsulates the logic of resetting at HOUR_TO_RESET_AT, *twice a day*
+        if (cal.get(Calendar.HOUR_OF_DAY) < HOUR_TO_RESET_AT) {
+            cal.set(Calendar.HOUR_OF_DAY, HOUR_TO_RESET_AT);
+        }
+        else if (cal.get(Calendar.HOUR_OF_DAY) < HOUR_TO_RESET_AT + 12) {
+            cal.set(Calendar.HOUR_OF_DAY, HOUR_TO_RESET_AT + 12);
+        }
+        else {
+            // hour of day > hour to reset at + 12
+            cal.set(Calendar.HOUR_OF_DAY, HOUR_TO_RESET_AT);
             cal.add(Calendar.DATE, 1);
         }
-        cal.set(Calendar.HOUR_OF_DAY, HOUR_TO_RESET_AT);
+
         cal.set(Calendar.MINUTE, 0);
         cal.set(Calendar.SECOND, 0);
         cal.set(Calendar.MILLISECOND, 0);
