@@ -250,75 +250,72 @@ public class ClanCommand {
 
     private final CommandAPICommand membersSignIn = new CommandAPICommand("signin")
             .withArguments(new PlayerArgument("player"))
+            .withArguments(new MultiLiteralArgument("cows", "sheep"))
             .executes((sender, args) -> {
                 Player player = (Player) args[0];
 
-                // Try to add the player to each clan
-                for (Clan clan: MilkWars.clans) {
-                    for (ClanMember member : clan.getAllMembers()) {
-                        if (member.isPlayer(player)) {
-                            // Found the player
+                int clanIndex = 0;
+                switch ((String) args[1]) {
+                    case "cows" -> clanIndex = 0;
+                    case "sheep" -> clanIndex = 1;
+                }
+                Clan clan = MilkWars.clans[clanIndex];
 
-                            if (member.signIn()) {
-                                // Signed in successfully
-                                sender.sendMessage(ChatColor.GREEN + "Signed in successfully");
-                                player.sendMessage(ChatColor.GREEN + "You are now signed in. Good luck!");
+                // If the player is in the clan, try signing them in
+                if (clan.hasMember(player)) {
+                    if (clan.getMember(player).signIn()) {
+                        // Signed in successfully
+                        sender.sendMessage(ChatColor.GREEN + "Signed in successfully");
+                        player.sendMessage(ChatColor.GREEN + "You are now signed in. Good luck!");
 
-                                // Update the player's name tag
-                                new SettingsCommand().updateNameTag(player);
-                            } else {
-                                // Couldn't sign in
-                                sender.sendMessage(ChatColor.RED + "Player is already signed in");
-                                player.sendMessage(ChatColor.RED + "You are already signed in!");
-                            }
-                            return;
-                        }
+                        // Update the player's name tag
+                        new SettingsCommand().updateNameTag(player);
+                    } else {
+                        // Couldn't sign in
+                        sender.sendMessage(ChatColor.RED + "Player is already signed in");
+                        player.sendMessage(ChatColor.RED + "You are already signed in!");
                     }
                 }
-
-                // If we've got here, player isn't in any clan
-                CommandAPI.fail("Player isn't a part of a clan!");
+                else {
+                    // Player isn't in the clan
+                    sender.sendMessage(ChatColor.RED + "Player is not in the clan!");
+                    player.sendMessage(ChatColor.RED + "You are not in this clan!");
+                }
             });
 
     private final CommandAPICommand membersSignOut = new CommandAPICommand("signout")
             .withArguments(new PlayerArgument("player"))
+            .withArguments(new MultiLiteralArgument("cows", "sheep"))
             .executes((sender, args) -> {
                 Player player = (Player) args[0];
 
-                // Try to add the player to each clan
-                for (Clan clan: MilkWars.clans) {
-                    for (ClanMember member : clan.getAllMembers()) {
-                        if (member.isPlayer(player)) {
-                            // Found the player
+                int clanIndex = 0;
+                switch ((String) args[1]) {
+                    case "cows" -> clanIndex = 0;
+                    case "sheep" -> clanIndex = 1;
+                }
+                Clan clan = MilkWars.clans[clanIndex];
 
-                            // Player cannot sign out if they're carrying a flag
-                            for (Clan flagCheck: MilkWars.clans) {
-                                if (player.getUniqueId().equals(flagCheck.getFlag().getWearer())) {
-                                    sender.sendMessage(ChatColor.RED + "Cannot be signed out while carrying treasure");
-                                    player.sendMessage(ChatColor.RED + "You cannot sign out while carrying treasure!");
-                                    return;
-                                }
-                            }
+                // If the player is in the clan, try signing them out
+                if (clan.hasMember(player)) {
+                    if (clan.getMember(player).signOut()) {
+                        // Signed out successfully
+                        sender.sendMessage(ChatColor.GREEN + "Signed out successfully");
+                        player.sendMessage(ChatColor.GREEN + "You are now signed out.");
 
-                            if (member.signOut()) {
-                                // Signed out successfully
-                                sender.sendMessage(ChatColor.GREEN + "Signed out successfully");
-                                player.sendMessage(ChatColor.GREEN + "You are now signed out");
-
-                                // Update the player's name tag
-                                new SettingsCommand().updateNameTag(player);
-                            } else {
-                                // Couldn't sign out
-                                sender.sendMessage(ChatColor.RED + "Player is already signed out");
-                                player.sendMessage(ChatColor.RED + "You are already signed out!");
-                            }
-                            return;
-                        }
+                        // Update the player's name tag
+                        new SettingsCommand().updateNameTag(player);
+                    } else {
+                        // Couldn't sign out
+                        sender.sendMessage(ChatColor.RED + "Player is already signed out");
+                        player.sendMessage(ChatColor.RED + "You are already signed out!");
                     }
                 }
-
-                // If we've got here, player isn't in any clan
-                CommandAPI.fail("Player isn't a part of a clan!");
+                else {
+                    // Player isn't in the clan
+                    sender.sendMessage(ChatColor.RED + "Player is not in the clan!");
+                    player.sendMessage(ChatColor.RED + "You are not in this clan!");
+                }
             });
 
     private final CommandAPICommand clanGetHead = new CommandAPICommand("gethead")
