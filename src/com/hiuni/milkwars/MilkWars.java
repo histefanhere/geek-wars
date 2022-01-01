@@ -37,7 +37,7 @@ public class MilkWars extends JavaPlugin {
         );
         clans[1] = new Clan(
                 1,
-                "Wool Wearers", // WIP name.
+                "Wool Weavers",
                 ChatColor.WHITE + "[WW] "
         );
 
