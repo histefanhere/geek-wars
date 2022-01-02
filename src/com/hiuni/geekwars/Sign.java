@@ -65,7 +65,7 @@ public class Sign {
      *     there are better ways of doing this).
      * </p><p>
      *     Smart signs are created by making a normal sign, but somewhere in the sign text
-     *     the player must enter #MW, this will tell the server that we want this sign to
+     *     the player must enter #GW, this will tell the server that we want this sign to
      *     be special.
      *     Formatting text in the sign is done with the `&` symbol, followed by the symbol
      *     that represents the colour/format that you want to apply. for example:
@@ -86,7 +86,7 @@ public class Sign {
         this.location = location;
 
         for (int i = 0; i < 4; i++) {
-            this.rawString[i] = lines[i].replace("#MW","");
+            this.rawString[i] = lines[i].replace("#GW","");
         }
 
         existingSigns.removeIf(otherSign -> otherSign.location.equals(this.location));
