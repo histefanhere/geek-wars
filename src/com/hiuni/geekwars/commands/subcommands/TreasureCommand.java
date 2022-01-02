@@ -1,15 +1,12 @@
-package com.hiuni.milkwars.commands.subcommands;
+package com.hiuni.geekwars.commands.subcommands;
 
-import com.hiuni.milkwars.Clan;
-import com.hiuni.milkwars.Flag;
-import com.hiuni.milkwars.MilkWars;
+import com.hiuni.geekwars.Clan;
+import com.hiuni.geekwars.Flag;
+import com.hiuni.geekwars.GeekWars;
 import dev.jorel.commandapi.CommandAPI;
 import dev.jorel.commandapi.CommandAPICommand;
-import dev.jorel.commandapi.CommandPermission;
 import dev.jorel.commandapi.arguments.MultiLiteralArgument;
 import org.bukkit.*;
-import org.bukkit.command.Command;
-import org.bukkit.entity.Player;
 
 import java.util.Objects;
 
@@ -40,7 +37,7 @@ public class TreasureCommand {
                 location.setZ(Location.locToBlock(location.getZ()) + 0.5);
                 location.setY(Location.locToBlock(location.getY()) + Flag.POLE_OFFSET);
 
-                for (Clan clan: MilkWars.clans) {
+                for (Clan clan: GeekWars.clans) {
                     if (clan.hasLeader(player)) {
                         clan.getFlag().setFlagPoleLocation(location);
                         clan.getFlag().returnToPole();
@@ -56,7 +53,7 @@ public class TreasureCommand {
 
     private final CommandAPICommand treasureSetLocation = new CommandAPICommand("setlocation")
             .executesPlayer(((player, args) -> {
-                for (Clan clan: MilkWars.clans) {
+                for (Clan clan: GeekWars.clans) {
                     if (clan.hasMember(player)) {
 
                         if (clan.getFlag().getFlagLocation() == null) {
@@ -86,18 +83,18 @@ public class TreasureCommand {
             .withArguments(new MultiLiteralArgument("cows", "sheep", "all"))
             .executes((sender, args) -> {
                 if (args[0] == "cows" || args[0] == "all") {
-                    MilkWars.clans[0].getFlag().setActive(true);
+                    GeekWars.clans[0].getFlag().setActive(true);
                 }
                 if (args[0] == "sheep" || args[0] == "all") {
-                    MilkWars.clans[1].getFlag().setActive(true);
+                    GeekWars.clans[1].getFlag().setActive(true);
                 }
 
                 switch ((String) args[0]) {
                     case "cows" -> sender.sendMessage(
-                            ChatColor.GREEN + "Activated the " + MilkWars.clans[0].getName() + " treasure!"
+                            ChatColor.GREEN + "Activated the " + GeekWars.clans[0].getName() + " treasure!"
                     );
                     case "sheep" -> sender.sendMessage(
-                            ChatColor.GREEN + "Activated the " + MilkWars.clans[1].getName() + " treasure!"
+                            ChatColor.GREEN + "Activated the " + GeekWars.clans[1].getName() + " treasure!"
                     );
                     case "all" -> sender.sendMessage(
                             ChatColor.GREEN + "Activated both the clans treasure!"

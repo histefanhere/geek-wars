@@ -1,4 +1,4 @@
-package com.hiuni.milkwars;
+package com.hiuni.geekwars;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -46,17 +46,17 @@ public class Sign {
     private static final HashMap<Character, Supplier<String>> VARIABLEREPLACEMENTS = new HashMap<>(){{
         // I was going to use multiple character keys, but it's so much more efficient using
         // single character keys, not to mention much easier to implement.
-        put('0', () -> Integer.toString(MilkWars.clans[0].getKills()));
-        put('1', () -> Integer.toString(MilkWars.clans[0].getCaptures()));
+        put('0', () -> Integer.toString(GeekWars.clans[0].getKills()));
+        put('1', () -> Integer.toString(GeekWars.clans[0].getCaptures()));
 
-        put('5', () -> Integer.toString(MilkWars.clans[1].getKills()));
-        put('6', () -> Integer.toString(MilkWars.clans[1].getCaptures()));
+        put('5', () -> Integer.toString(GeekWars.clans[1].getKills()));
+        put('6', () -> Integer.toString(GeekWars.clans[1].getCaptures()));
     }};
 
     /**
      * Creates a Sign object that represents an ingame smart sign.
      * <p>
-     *     Smart signs are simply signs that can be used to display Milk-War/clan related variables.
+     *     Smart signs are simply signs that can be used to display Geek-War/clan related variables.
      *     for example these signs could display the amount of kills each clan has.
      *     These signs can also be formatted using the standard colour/format codes in spigot.
      *     Although you can use these signs simply to make fancy signs,
@@ -135,7 +135,7 @@ public class Sign {
         // but I spent a *really* long time trying to get this to work, and for some
         // reason this is the only way I could do it.
         // If you can explain why this works but s.update doesn't, please let me know.
-        Bukkit.getScheduler().runTask(MilkWars.getInstance(), (Runnable) s::update);
+        Bukkit.getScheduler().runTask(GeekWars.getInstance(), (Runnable) s::update);
     }
 
     /**
@@ -250,7 +250,7 @@ public class Sign {
                         config.getStringList("Signs." + key + ".rawString").toArray(new String[2]));
             }
         } catch (NullPointerException e) {
-//            Bukkit.getConsoleSender().sendMessage("[Milk-Wars] could not find any sign" +
+//            Bukkit.getConsoleSender().sendMessage("[Geek-Wars] could not find any sign" +
 //                    " data to load.");
         }
     }

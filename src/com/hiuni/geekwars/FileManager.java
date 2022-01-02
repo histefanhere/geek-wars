@@ -1,4 +1,4 @@
-package com.hiuni.milkwars;
+package com.hiuni.geekwars;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -18,12 +18,12 @@ public class FileManager {
         file = new File(plugin.getDataFolder(), ymlName);
 
         if (!file.exists()) {
-            Bukkit.getServer().getLogger().severe(ChatColor.RED + "[Milk-Wars] Could not find " + ymlName + " Creating new file.");
+            Bukkit.getServer().getLogger().severe(ChatColor.RED + "[Geek-Wars] Could not find " + ymlName + " Creating new file.");
             try {
                 file.getParentFile().mkdirs();
                 file.createNewFile();
             } catch (IOException e) {
-                Bukkit.getServer().getLogger().severe("[Milk-Wars] Failed to create new file." +
+                Bukkit.getServer().getLogger().severe("[Geek-Wars] Failed to create new file." +
                         "\n" + e.getMessage());
                 return false;
             }
@@ -41,7 +41,7 @@ public class FileManager {
         try {
             fileConfig.save(file);
         } catch (IOException e) {
-            Bukkit.getServer().getLogger().severe("[Milk-Wars] Failed to save " + fileName);
+            Bukkit.getServer().getLogger().severe("[Geek-Wars] Failed to save " + fileName);
             return false;
         }
         return true;

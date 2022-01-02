@@ -1,21 +1,21 @@
-package com.hiuni.milkwars;
+package com.hiuni.geekwars;
 
-import com.hiuni.milkwars.commands.CommandManager;
-import com.hiuni.milkwars.events.ClanKillCounterEvent;
-import com.hiuni.milkwars.events.PlayerConsumeEvent;
-import com.hiuni.milkwars.events.SaveOnWorldSave;
-import com.hiuni.milkwars.events.SignCreateEvent;
+import com.hiuni.geekwars.commands.CommandManager;
+import com.hiuni.geekwars.events.ClanKillCounterEvent;
+import com.hiuni.geekwars.events.PlayerConsumeEvent;
+import com.hiuni.geekwars.events.SaveOnWorldSave;
+import com.hiuni.geekwars.events.SignCreateEvent;
 import dev.jorel.commandapi.CommandAPI;
 import dev.jorel.commandapi.CommandAPIConfig;
 import org.bukkit.ChatColor;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class MilkWars extends JavaPlugin {
+public class GeekWars extends JavaPlugin {
 
-    private static MilkWars instance;
-    public static MilkWars getInstance() {
-        return MilkWars.instance;
+    private static GeekWars instance;
+    public static GeekWars getInstance() {
+        return GeekWars.instance;
     }
 
     public static Clan[] clans = new Clan[2];
@@ -27,7 +27,7 @@ public class MilkWars extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        MilkWars.instance = this;
+        GeekWars.instance = this;
 
         // Create the clans.
         clans[0] = new Clan(
@@ -65,13 +65,13 @@ public class MilkWars extends JavaPlugin {
         // Register the item consume listener.
         getServer().getPluginManager().registerEvents(new PlayerConsumeEvent(), this);
 
-        getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[Milk-Wars] Plugin has been successfully enabled!");
+        getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[Geek-Wars] Plugin has been successfully enabled!");
     }
 
     @Override
     public void onDisable() {
         DataManager.save();
-        getServer().getConsoleSender().sendMessage(ChatColor.RED + "[Milk-Wars] Plugin has been disabled");
+        getServer().getConsoleSender().sendMessage(ChatColor.RED + "[Geek-Wars] Plugin has been disabled");
     }
 
 }

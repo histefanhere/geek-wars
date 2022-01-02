@@ -1,10 +1,9 @@
-package com.hiuni.milkwars.events;
+package com.hiuni.geekwars.events;
 
-import com.hiuni.milkwars.Announce;
-import com.hiuni.milkwars.Clan;
-import com.hiuni.milkwars.ClanMember;
-import com.hiuni.milkwars.MilkWars;
-import org.bukkit.Bukkit;
+import com.hiuni.geekwars.Announce;
+import com.hiuni.geekwars.Clan;
+import com.hiuni.geekwars.ClanMember;
+import com.hiuni.geekwars.GeekWars;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -29,7 +28,7 @@ public class ClanKillCounterEvent implements Listener {
         ClanMember member = null;
         ClanMember killerMember = null;
 
-        for (Clan clan : MilkWars.clans) {
+        for (Clan clan : GeekWars.clans) {
             try {
                 member = clan.getMember(player);
                 friendlyClan = clan;

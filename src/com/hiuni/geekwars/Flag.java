@@ -1,4 +1,4 @@
-package com.hiuni.milkwars;
+package com.hiuni.geekwars;
 
 import dev.dbassett.skullcreator.SkullCreator;
 import org.bukkit.Bukkit;
@@ -12,7 +12,6 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityToggleGlideEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.event.world.EntitiesLoadEvent;
@@ -20,7 +19,6 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionEffect;
-import org.bukkit.scheduler.BukkitScheduler;
 
 import java.util.Calendar;
 import java.util.UUID;
@@ -62,7 +60,7 @@ public class Flag implements Listener {
         this.clanId = clanId;
 
         // Schedule the function that spins the flags to run every tick
-        Bukkit.getScheduler().runTaskTimer(MilkWars.getInstance(), this::repeatingTask, 0, 1L);
+        Bukkit.getScheduler().runTaskTimer(GeekWars.getInstance(), this::repeatingTask, 0, 1L);
 
         // We also want to schedule the function that respawns the flags
 
@@ -89,7 +87,7 @@ public class Flag implements Listener {
         long offset = cal.getTimeInMillis() - now;
         long ticks = offset / 50L;
         Bukkit.getScheduler().scheduleSyncRepeatingTask(
-                MilkWars.getInstance(),
+                GeekWars.getInstance(),
                 this::respawnFlagAtPole,
                 ticks,
                 24L * 60L * 60L * 20L
@@ -238,12 +236,12 @@ public class Flag implements Listener {
         }
 
         // Some player has right-clicked the flag entity. The behaviour of this depends on what clan they're a part of
-        for (Clan clan: MilkWars.clans) {
+        for (Clan clan: GeekWars.clans) {
             if (clan.hasMember(player)) {
                 // To do *anything* with the flag, the player must be signed in
                 if (!clan.getMember(player).isSignedIn()) {
                     player.sendMessage(
-                            ChatColor.RED + "[Milk-wars] You must be signed in to interact with treasure!"
+                            ChatColor.RED + "[Geek-wars] You must be signed in to interact with treasure!"
                     );
                     return;
                 }
@@ -254,7 +252,7 @@ public class Flag implements Listener {
                     // They're a part of the same clan as the flag.
 
                     // Are they carrying a flag?
-                    for (Clan otherClan: MilkWars.clans) {
+                    for (Clan otherClan: GeekWars.clans) {
                         if (otherClan.getClanId() == clan.getClanId()) {
                             continue;
                         }
@@ -305,7 +303,7 @@ public class Flag implements Listener {
                         wearer = player.getUniqueId();
                         teleportToWearer();
 
-                        Clan otherClan = MilkWars.clans[(clan.getClanId() + 1) % 2]; // It's hacky af, but I don't care.
+                        Clan otherClan = GeekWars.clans[(clan.getClanId() + 1) % 2]; // It's hacky af, but I don't care.
                         Announce.sendToAll(player.getDisplayName() + " has picked up the " + otherClan.getName() + " treasure!",
                                 ChatColor.YELLOW);
 
@@ -320,7 +318,7 @@ public class Flag implements Listener {
                         }
                     else {
                         player.sendMessage(
-                                ChatColor.RED + "[Milk-wars] You cannot grab this treasure since it is not active!"
+                                ChatColor.RED + "[Geek-Wars] You cannot grab this treasure since it is not active!"
                         );
                     }
                 }
@@ -397,7 +395,7 @@ public class Flag implements Listener {
 
                         // The wearer of the flag has tried to glide! Not today my friend, not today.
                         player.sendMessage(
-                                ChatColor.RED + "[Milk-wars] You are not allowed to fly while carrying treasure!"
+                                ChatColor.RED + "[Geek-Wars] You are not allowed to fly while carrying treasure!"
                         );
                         event.setCancelled(true);
                     }
@@ -418,7 +416,7 @@ public class Flag implements Listener {
         if (event.getPlayer().getUniqueId().equals(wearer)) {
             event.setCancelled(true);
             event.getPlayer().sendMessage(
-                    ChatColor.RED + "[Milk-wars] You are not allowed to teleport while carrying treasure!"
+                    ChatColor.RED + "[Geek-Wars] You are not allowed to teleport while carrying treasure!"
             );
         }
     }
@@ -428,7 +426,7 @@ public class Flag implements Listener {
      */
     public void dropFlag() {
 
-        Clan clan = MilkWars.clans[this.clanId];
+        Clan clan = GeekWars.clans[this.clanId];
         Announce.sendToAll("The " + clan.getName() + " treasure has been dropped!", ChatColor.YELLOW);
 
         Location location = getFlagLocation();

@@ -11,7 +11,7 @@
     <properties>
         <maven.compiler.source>16</maven.compiler.source>
         <maven.compiler.target>16</maven.compiler.target>
-        <mainClass>com.hiuni.milkwars.MilkWars</mainClass>
+        <mainClass>com.hiuni.geekwars.GeekWars</mainClass>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
