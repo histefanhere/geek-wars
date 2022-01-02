@@ -36,7 +36,7 @@ Geek NZ is a New Zealand-based Minecraft SMP server. From the [minecraft-mp page
 -->
 # Introduction
 
-Milk Wars is mostly a Capture The Flag (CTF) like event between two clans, the Milk Drinkers and the Wool Wearers. Internally, and in commands, these are referred to as `cows` and `sheep`. Clan members are able to steal the opposite clan's treasure from their clan hall and bring it back to theirs for points. You can only do this once per day to prevent farming. But good luck finding the clan halls! They're hidden and may even be booby-trapped. The only way to identify a clan hall's location is the *clan tower* on it that's identical for both clans.
+Milk Wars is mostly a Capture The Flag (CTF) like event between two clans, the Milk Drinkers and the Wool Weavers. Internally, and in commands, these are referred to as `cows` and `sheep`. Clan members are able to steal the opposite clan's treasure from their clan hall and bring it back to theirs for points. You can only do this once per day to prevent farming. But good luck finding the clan halls! They're hidden and may even be booby-trapped. The only way to identify a clan hall's location is the *clan tower* on it that's identical for both clans.
 
 The other aspect of Milk Wars is the PVP. Players can kill opposite clan members *Only if they are signed in to their clan.* If they are signed out PVP is prohibited, so those not wishing to participate in the PVP can opt out of it. If you choose to participate however, check over your shoulders once in a while because you could get killed anywhere, anytime!
 
@@ -64,7 +64,7 @@ Thanks for choosing to play and participate in the official Geek NZ Milk Wars! T
 To capture the enemy's treasure, firstly you must be signed in to your clan. You can do this at your clan's hall. At their hall there may be traps or parkour to do in order to obtain their treasure, so be careful! Right click it with an empty hand to pick it up, and return it to your clan's treasure to score a point.
 
 Easy, right? We thought so too. That's why while you're carrying treasure, you're significantly nerfed:
-- Elytras don't work
+- You cannot use rockets with elytras, gliding only.
 - Enderpearls don't work
 - Nether portals don't work
 - Carpet teleportation doesn't work
@@ -172,8 +172,8 @@ To insert a variable into the sign you can use variable tags. Like the `#MW` tag
 
 - `#0` - Milk Drinkers kill counter: the amount of times a signed in Milk Drinker has killed a signed in enemy.
 - `#1` - Milk Drinkers capture counter: the amount of times the Milk Drinkers clan have captured the enemy flag.
-- `#5` - Wool Wearers kill counter: the amount of times a signed in Wool Wearer has killed a signed in enemy.
-- `#6` - Wool Wearers capture counter: the amount of times the Wool Wearers clan have captured the enemy flag.
+- `#5` - Wool Weavers kill counter: the amount of times a signed in Wool Weaver has killed a signed in enemy.
+- `#6` - Wool Weavers capture counter: the amount of times the Wool Weavers clan have captured the enemy flag.
 
 #### Variable tag usage example
 
@@ -192,7 +192,7 @@ Once you finish editing the sign it will display like so:
 
 <img src="images/VarTagExample.png" alt="Variable tag example result" style="width:250px;"/>
 
-Note that in this example the Milk Drinkers clan has 10 kills and has captured the Wool Wearers flag 3 times. Using these smart signs can be very useful as the signs automatically update. So if, for example, the Milk Drinkers got another kill then the sign would update and display `Kills: 11`.
+Note that in this example the Milk Drinkers clan has 10 kills and has captured the Wool Weavers flag 3 times. Using these smart signs can be very useful as the signs automatically update. So if, for example, the Milk Drinkers got another kill then the sign would update and display `Kills: 11`.
 
 #### Formatting codes
 
