@@ -1,4 +1,4 @@
-# Milk Wars
+# Geek Wars
 
 A plugin for a CTF-like PVP event for Geek NZ.
 
@@ -36,9 +36,9 @@ Geek NZ is a New Zealand-based Minecraft SMP server. From the [minecraft-mp page
 -->
 # Introduction
 
-Milk Wars is mostly a Capture The Flag (CTF) like event between two clans, the Milk Drinkers and the Wool Weavers. Internally, and in commands, these are referred to as `cows` and `sheep`. Clan members are able to steal the opposite clan's treasure from their clan hall and bring it back to theirs for points. You can only do this once per day to prevent farming. But good luck finding the clan halls! They're hidden and may even be booby-trapped. The only way to identify a clan hall's location is the *clan tower* on it that's identical for both clans.
+Geek Wars is mostly a Capture The Flag (CTF) like event between two clans, the Milk Drinkers and the Wool Weavers. Internally, and in commands, these are referred to as `cows` and `sheep`. Clan members are able to steal the opposite clan's treasure from their clan hall and bring it back to theirs for points. You can only do this once per day to prevent farming. But good luck finding the clan halls! They're hidden and may even be booby-trapped. The only way to identify a clan hall's location is the *clan tower* on it that's identical for both clans.
 
-The other aspect of Milk Wars is the PVP. Players can kill opposite clan members *Only if they are signed in to their clan.* If they are signed out PVP is prohibited, so those not wishing to participate in the PVP can opt out of it. If you choose to participate however, check over your shoulders once in a while because you could get killed anywhere, anytime!
+The other aspect of Geek Wars is the PVP. Players can kill opposite clan members *Only if they are signed in to their clan.* If they are signed out PVP is prohibited, so those not wishing to participate in the PVP can opt out of it. If you choose to participate however, check over your shoulders once in a while because you could get killed anywhere, anytime!
 
 At the end of the event, the clan with the most treasure captures and kills will win. Signs at spawn will automatically update with the latest tally of kills and captures for each clan, so make sure to help your clan win!
 
@@ -57,7 +57,7 @@ How you use this plugin depends on who you are:
 
 ## For players
 
-Thanks for choosing to play and participate in the official Geek NZ Milk Wars! There's a couple of things you should know before you go into it, including how to score points for your clan, and geek etiquette.
+Thanks for choosing to play and participate in the official Geek NZ Geek Wars! There's a couple of things you should know before you go into it, including how to score points for your clan, and geek etiquette.
 
 ### Capturing the other clan's treasure
 
@@ -83,12 +83,12 @@ If you manage to kill the carrier of your treasure, it will drop on the ground, 
 
 ### Getting kills
 
-The other aspect of the Milk Wars is killing. If **and only if an enemy player is signed in to their clan** and you are signed in to yours, you can kill them for an extra point for your clan. Being signed in essentially puts a target on your back, so be careful!
+The other aspect of the Geek Wars is killing. If **and only if an enemy player is signed in to their clan** and you are signed in to yours, you can kill them for an extra point for your clan. Being signed in essentially puts a target on your back, so be careful!
 
 
 ## For clan leaders
 
-Congratulations on being a clan leader! This means you're responsible and trustworthy enough to help manage the Milk Wars event.
+Congratulations on being a clan leader! This means you're responsible and trustworthy enough to help manage the Geek Wars event.
 
 As a clan leader you have access to the `/clan` (or `/cl`) command. This gives you control over the members of your clan, and most importantly, your clan's flag. Let's take a closer look at how you do those things.
 
@@ -122,42 +122,42 @@ If for some reason the treasure gets destroyed (which should be impossible for s
 
 ## For admins
 
-Admins need to manage and overview the game, and for this the main tool on their utility belt is the `/milkwars` (or `/mw`) command. With this command you can make players join or leave clans, promote them to leaders, and more.
+Admins need to manage and overview the game, and for this the main tool on their utility belt is the `/geekwars` (or `/gw`) command. With this command you can make players join or leave clans, promote them to leaders, and more.
 
 ### Joining and leaving a clan
 
 The following is the command for making a player join and leave a clan:
 ```
-/mw clan join <player> <cows | sheep>
-/mw clan leave <player>
+/gw clan join <player> <cows | sheep>
+/gw clan leave <player>
 ```
 The join command is intended to be in a command block at spawn for players to join into a clan of their choice, and
 the leave command is only intended to be manually ran by admins in rare cases.
 
 To see the players in a clan, run the following command:
 ```
-/mw clan members list <cows | sheep>
+/gw clan members list <cows | sheep>
 ```
 
 For players to know which clan they're joining, placing the clan treasure heads is very simple. To obtain them, run the following command:
 ```
-/mw clan gethead <cows | sheep> <active | inactive>
+/gw clan gethead <cows | sheep> <active | inactive>
 ```
 
 ### Promoting and demoting clan leaders
 
 To help run the game smoother and take some responsibility from the admins, clans can have their own _clan leaders_ that can manage their clan. To make someone a leader of their clan or revoke their leader status, do one the following commands:
 ```
-/mw clan members promote <player>
-/mw clan members demote <player>
+/gw clan members promote <player>
+/gw clan members demote <player>
 ```
 **ONLY ASSIGN RESPONSIBLE AND TRUSTWORTHY PEOPLE AS CLAN LEADERS.** Since they have control over their clan's treasure, it's no fun if they abuse the commands they have available to them and ruin the game for everyone else.
 
 ### Changing chat colours
 
-Since Milk Wars needs to display a prefix on a player's username when they're signed in to their clan, it has to take control over the team system. Because of this, there's a special command for allowing players to set their personal chat colours:
+Since Geek Wars needs to display a prefix on a player's username when they're signed in to their clan, it has to take control over the team system. Because of this, there's a special command for allowing players to set their personal chat colours:
 ```
-/mw settings setchatcolour <aqua | black | gold | blue ...> <player>
+/gw settings setchatcolour <aqua | black | gold | blue ...> <player>
 ```
 All vanilla colours are available. This command is intended to be run in command blocks at spawn for players to choose their own colours.
 
@@ -167,8 +167,8 @@ To help display clan statistics you can use smart signs. Smart signs work in a s
 
 #### Variable tags
 
-In order to create a smart sign simply place down a sign and make sure that anywhere in the sign text you include `#MW`. This `#MW` tag tells the plugin that you want this sign to be a smart sign, don't worry about it looking ugly: the tag won't actually be displayed on the sign.
-To insert a variable into the sign you can use variable tags. Like the `#MW` tag these all start with a hash followed by some symbol. The available tags are:
+In order to create a smart sign simply place down a sign and make sure that anywhere in the sign text you include `#GW`. This `#GW` tag tells the plugin that you want this sign to be a smart sign, don't worry about it looking ugly: the tag won't actually be displayed on the sign.
+To insert a variable into the sign you can use variable tags. Like the `#GW` tag these all start with a hash followed by some symbol. The available tags are:
 
 - `#0` - Milk Drinkers kill counter: the amount of times a signed in Milk Drinker has killed a signed in enemy.
 - `#1` - Milk Drinkers capture counter: the amount of times the Milk Drinkers clan have captured the enemy flag.
@@ -184,7 +184,7 @@ To insert a variable into the sign you can use variable tags. Like the `#MW` tag
 
 ```
 Milk Drinkers:
-#MW
+#GW
 Kills: #0
 Captures: #1
 ```
@@ -192,7 +192,7 @@ Once you finish editing the sign it will display like so:
 
 <img src="images/VarTagExample.png" alt="Variable tag example result" style="width:250px;"/>
 
-Note that in this example the Milk Drinkers clan has 10 kills and has captured the Wool Weavers flag 3 times. Using these smart signs can be very useful as the signs automatically update. So if, for example, the Milk Drinkers got another kill then the sign would update and display `Kills: 11`.
+Note that in this example the Milk Drinkers clan has 0 kills and has captured the Wool Weavers flag 0 times. Using these smart signs can be very useful as the signs automatically update. So if, for example, the Milk Drinkers got a kill then the sign would update and display `Kills: 1`.
 
 #### Formatting codes
 
@@ -208,7 +208,7 @@ Of course format/colour codes can be used along with variable codes to create so
 
 ```
 &7&n&lKills:
-#MW
+#GW
 &7MD: #0
 &7WW: #5
 ```
