@@ -31,7 +31,6 @@ public class Clan {
         // Remember if you add anything that needs to persist across server restarts then add it to the save/load methods.
         this.clanId = clanId;
         this.name = name;
-        Bukkit.getConsoleSender().sendMessage(this.name);
         this.prefix = prefix;
         this.members = new ArrayList<ClanMember>();
         this.kills = 0;
