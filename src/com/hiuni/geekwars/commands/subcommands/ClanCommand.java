@@ -1,16 +1,14 @@
-package com.hiuni.milkwars.commands.subcommands;
+package com.hiuni.geekwars.commands.subcommands;
 
-import com.hiuni.milkwars.Clan;
-import com.hiuni.milkwars.ClanMember;
-import com.hiuni.milkwars.Flag;
-import com.hiuni.milkwars.MilkWars;
+import com.hiuni.geekwars.Clan;
+import com.hiuni.geekwars.ClanMember;
+import com.hiuni.geekwars.Flag;
+import com.hiuni.geekwars.GeekWars;
 import dev.jorel.commandapi.CommandAPI;
 import dev.jorel.commandapi.CommandAPICommand;
-import dev.jorel.commandapi.CommandPermission;
 import dev.jorel.commandapi.arguments.MultiLiteralArgument;
 import dev.jorel.commandapi.arguments.PlayerArgument;
 import org.bukkit.ChatColor;
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -31,8 +29,8 @@ public class ClanCommand {
                     case "cows" -> clanIndex = 0;
                     case "sheep" -> clanIndex = 1;
                 }
-                Clan clan = MilkWars.clans[clanIndex];
-                Clan oppositeClan = MilkWars.clans[1 - clanIndex];
+                Clan clan = GeekWars.clans[clanIndex];
+                Clan oppositeClan = GeekWars.clans[1 - clanIndex];
 
                 // First test if they're a part of the sheep clan...
                 if (oppositeClan.hasMember(player)) {
@@ -72,7 +70,7 @@ public class ClanCommand {
                 Player player = (Player) args[0];
 
                 // Try to add the player to each clan
-                for (Clan clan: MilkWars.clans) {
+                for (Clan clan: GeekWars.clans) {
                     if (clan.removeMember(player)) {
                         sender.sendMessage(
                                 String.format(
@@ -87,7 +85,7 @@ public class ClanCommand {
                         new SettingsCommand().updateNameTag(player);
 
                         // If the player is carrying a flag, it needs to be dropped.
-                        for (Clan flagCheck: MilkWars.clans) {
+                        for (Clan flagCheck: GeekWars.clans) {
                             if (player.getUniqueId().equals(flagCheck.getFlag().getWearer())) {
                                 flagCheck.getFlag().dropFlag();
                             }
@@ -106,7 +104,7 @@ public class ClanCommand {
             .executesPlayer((player, args) -> {
                 Player playerToKick = (Player) args[0];
 
-                for (Clan clan: MilkWars.clans) {
+                for (Clan clan: GeekWars.clans) {
                     if (clan.hasMember(player)) {
                         // We've found the clan of the leader.
                         // Now lets check whether the player he wants to kick is just a member
@@ -136,7 +134,7 @@ public class ClanCommand {
                             );
 
                             // If the player is carrying a flag, it needs to be dropped.
-                            for (Clan flagCheck: MilkWars.clans) {
+                            for (Clan flagCheck: GeekWars.clans) {
                                 if (player.getUniqueId().equals(flagCheck.getFlag().getWearer())) {
                                     flagCheck.getFlag().dropFlag();
                                 }
@@ -159,7 +157,7 @@ public class ClanCommand {
                     case "cows" -> clanIndex = 0;
                     case "sheep" -> clanIndex = 1;
                 }
-                Clan clan = MilkWars.clans[clanIndex];
+                Clan clan = GeekWars.clans[clanIndex];
 
                 sendList(sender, clan);
             });
@@ -168,7 +166,7 @@ public class ClanCommand {
             .executesPlayer((player, args) -> {
                 // For this command to be ran the player must be a leader
                 // therefore we're certain he's in a clan
-                for (Clan clan: MilkWars.clans) {
+                for (Clan clan: GeekWars.clans) {
                     if (clan.hasLeader(player)) {
                         sendList(player, clan);
                         return;
@@ -214,7 +212,7 @@ public class ClanCommand {
                Player player = (Player) args[0];
 
                 // Try and promote the player in both clans
-                for (Clan clan: MilkWars.clans) {
+                for (Clan clan: GeekWars.clans) {
                     if (clan.promote(player)) {
                         sender.sendMessage(ChatColor.GREEN + "Promoted Successfully");
                         player.sendMessage(
@@ -234,7 +232,7 @@ public class ClanCommand {
                 Player player = (Player) args[0];
 
                 // Try and demote the player in both clans
-                for (Clan clan: MilkWars.clans) {
+                for (Clan clan: GeekWars.clans) {
                     if (clan.demote(player)) {
                         sender.sendMessage(ChatColor.GREEN + "Demoted Successfully");
                         player.sendMessage(
@@ -259,7 +257,7 @@ public class ClanCommand {
                     case "cows" -> clanIndex = 0;
                     case "sheep" -> clanIndex = 1;
                 }
-                Clan clan = MilkWars.clans[clanIndex];
+                Clan clan = GeekWars.clans[clanIndex];
 
                 // If the player is in the clan, try signing them in
                 if (clan.hasMember(player)) {
@@ -294,7 +292,7 @@ public class ClanCommand {
                     case "cows" -> clanIndex = 0;
                     case "sheep" -> clanIndex = 1;
                 }
-                Clan clan = MilkWars.clans[clanIndex];
+                Clan clan = GeekWars.clans[clanIndex];
 
                 // If the player is in the clan, try signing them out
                 if (clan.hasMember(player)) {
@@ -327,7 +325,7 @@ public class ClanCommand {
                     case "cows" -> clanIndex = 0;
                     case "sheep" -> clanIndex = 1;
                 }
-                Clan clan = MilkWars.clans[clanIndex];
+                Clan clan = GeekWars.clans[clanIndex];
 
                 boolean active = args[1].equals("active");
 

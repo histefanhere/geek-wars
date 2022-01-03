@@ -1,22 +1,19 @@
-package com.hiuni.milkwars.commands.subcommands;
+package com.hiuni.geekwars.commands.subcommands;
 
-import com.hiuni.milkwars.Clan;
-import com.hiuni.milkwars.ClanMember;
-import com.hiuni.milkwars.DataManager;
-import com.hiuni.milkwars.MilkWars;
+import com.hiuni.geekwars.Clan;
+import com.hiuni.geekwars.ClanMember;
+import com.hiuni.geekwars.DataManager;
+import com.hiuni.geekwars.GeekWars;
 import dev.jorel.commandapi.CommandAPICommand;
-import dev.jorel.commandapi.CommandPermission;
 import dev.jorel.commandapi.arguments.MultiLiteralArgument;
 import dev.jorel.commandapi.arguments.PlayerArgument;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.command.Command;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.scoreboard.Team;
 
-import java.lang.reflect.Array;
 import java.util.HashMap;
 
 public class SettingsCommand {
@@ -71,7 +68,7 @@ public class SettingsCommand {
         String teamPrefix = "";
         String[] prefixes = {"cw_", "sh_"};
         for (int i = 0; i < 2; i++) {
-            Clan clan = MilkWars.clans[i];
+            Clan clan = GeekWars.clans[i];
             boolean foundPlayer = false;
             for (ClanMember member: clan.getAllMembers()) {
                 if (member.isPlayer(player)) {
@@ -123,16 +120,16 @@ public class SettingsCommand {
                 switch ((String) args[0]) {
                     case "save":
                         if (DataManager.save()) {
-                            sender.sendMessage(ChatColor.GREEN + "[Milk-Wars] Successfully saved clans.");
+                            sender.sendMessage(ChatColor.GREEN + "[Geek-Wars] Successfully saved clans.");
                         } else {
-                            sender.sendMessage(ChatColor.RED + "[Milk-Wars] Something went wrong, couldn't save the clans.");
+                            sender.sendMessage(ChatColor.RED + "[Geek-Wars] Something went wrong, couldn't save the clans.");
                         }
                         break;
                     case "load":
                         if (DataManager.load()) {
-                            sender.sendMessage(ChatColor.GREEN + "[Milk-Wars] Successfully loaded clans.");
+                            sender.sendMessage(ChatColor.GREEN + "[Geek-Wars] Successfully loaded clans.");
                         } else {
-                            sender.sendMessage(ChatColor.RED + "[Milk-Wars] Something went wrong, couldn't load the clans.");
+                            sender.sendMessage(ChatColor.RED + "[Geek-Wars] Something went wrong, couldn't load the clans.");
                         }
                 }
             });

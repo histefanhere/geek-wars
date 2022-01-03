@@ -1,9 +1,7 @@
-package com.hiuni.milkwars;
+package com.hiuni.geekwars;
 
 import dev.jorel.commandapi.CommandAPI;
-import org.apache.commons.lang.ObjectUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -12,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
-import java.util.UUID;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -286,7 +283,7 @@ public class Clan {
                 members.add(member);
             }
         } catch (NullPointerException e) {
-            Bukkit.getConsoleSender().sendMessage("[Milk-Wars] Could not find any member data to load" +
+            Bukkit.getConsoleSender().sendMessage("[Geek-Wars] Could not find any member data to load" +
                     "for clan: " + this.name);
         }
     }

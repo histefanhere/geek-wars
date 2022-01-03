@@ -1,19 +1,19 @@
-package com.hiuni.milkwars.commands;
+package com.hiuni.geekwars.commands;
 
-import com.hiuni.milkwars.Clan;
-import com.hiuni.milkwars.MilkWars;
-import com.hiuni.milkwars.commands.subcommands.ClanCommand;
-import com.hiuni.milkwars.commands.subcommands.SetCommandBlockCommand;
-import com.hiuni.milkwars.commands.subcommands.SettingsCommand;
-import com.hiuni.milkwars.commands.subcommands.TreasureCommand;
+import com.hiuni.geekwars.Clan;
+import com.hiuni.geekwars.GeekWars;
+import com.hiuni.geekwars.commands.subcommands.ClanCommand;
+import com.hiuni.geekwars.commands.subcommands.SetCommandBlockCommand;
+import com.hiuni.geekwars.commands.subcommands.SettingsCommand;
+import com.hiuni.geekwars.commands.subcommands.TreasureCommand;
 import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.CommandPermission;
 import org.bukkit.entity.Player;
 
 public class CommandManager {
     public static void register() {
-        new CommandAPICommand("milkwars")
-                .withAliases("mw")
+        new CommandAPICommand("geekwars")
+                .withAliases("gw")
                 .withPermission(CommandPermission.OP)
                 .withSubcommand(new ClanCommand().getCommand())
                 .withSubcommand(new SettingsCommand().getCommand())
@@ -25,7 +25,7 @@ public class CommandManager {
                     Player player = (Player) sender;
 
                     // Check if player is in either clan, and if they're a leader
-                    for (Clan clan: MilkWars.clans) {
+                    for (Clan clan: GeekWars.clans) {
                         if (clan.hasLeader(player)) {
                             return true;
                         }

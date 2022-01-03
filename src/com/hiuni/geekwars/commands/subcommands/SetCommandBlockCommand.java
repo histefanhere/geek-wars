@@ -1,8 +1,7 @@
-package com.hiuni.milkwars.commands.subcommands;
+package com.hiuni.geekwars.commands.subcommands;
 
-import com.hiuni.milkwars.Clan;
-import com.hiuni.milkwars.DataManager;
-import com.hiuni.milkwars.MilkWars;
+import com.hiuni.geekwars.Clan;
+import com.hiuni.geekwars.GeekWars;
 import dev.jorel.commandapi.CommandAPI;
 import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.arguments.MultiLiteralArgument;
@@ -11,7 +10,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.CommandBlock;
-import org.bukkit.entity.Player;
 
 import java.util.Objects;
 
@@ -22,7 +20,7 @@ public class SetCommandBlockCommand {
                 .executesPlayer((player, args) -> {
 
                     // The player is a leader, so we know they're in a clan
-                    for (Clan clan: MilkWars.clans) {
+                    for (Clan clan: GeekWars.clans) {
                         if (clan.hasLeader(player)) {
                             Location location = player.getLocation();
 

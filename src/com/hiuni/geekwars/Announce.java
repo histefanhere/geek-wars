@@ -1,11 +1,7 @@
-package com.hiuni.milkwars;
+package com.hiuni.geekwars;
 
-import dev.jorel.commandapi.arguments.ChatArgument;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import org.bukkit.scoreboard.ScoreboardManager;
-import org.bukkit.scoreboard.Team;
 
 public class Announce {
 
@@ -34,7 +30,7 @@ public class Announce {
 
     public static void memberSend(ClanMember member, String message, ChatColor color) {
         // Sends the message to the member formatted correctly.
-        member.sendMessage(color + "[Milk-wars] " + message);
+        member.sendMessage(color + "[Geek-wars] " + message);
     }
 
     public static void clanSend(Clan clan, String message, ChatColor color,
@@ -58,7 +54,7 @@ public class Announce {
     }
 
     public static void sendToAll(String message, ChatColor color, boolean activeOnly, boolean leaderOnly) {
-        for (Clan clan : MilkWars.clans) {
+        for (Clan clan : GeekWars.clans) {
             clanSend(clan, message, color, activeOnly, leaderOnly);
         }
     }
