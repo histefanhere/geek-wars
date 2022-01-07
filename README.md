@@ -6,6 +6,8 @@ Geek NZ is a New Zealand-based Minecraft SMP server. From the [minecraft-mp page
 
 > Our small New Zealand based server has always been popular with friends and family. We run a vanilla server on PaperMC with a few small additions to make life a little easier. If you are a nice person you are welcome to join us.
 
+Downloads can be found [here](https://github.com/histefanhere/milk-wars/releases).
+
 <!--
 ####################
 # TABLE OF CONTENTS
