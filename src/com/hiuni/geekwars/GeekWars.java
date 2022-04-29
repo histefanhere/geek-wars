@@ -22,7 +22,7 @@ public class GeekWars extends JavaPlugin {
 
     @Override
     public void onLoad() {
-        CommandAPI.onLoad(new CommandAPIConfig());
+        CommandAPI.onLoad(new CommandAPIConfig().useLatestNMSVersion(true));
     }
 
     @Override
