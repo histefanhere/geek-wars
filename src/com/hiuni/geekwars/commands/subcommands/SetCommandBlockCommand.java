@@ -50,7 +50,7 @@ public class SetCommandBlockCommand {
                             }
                             location.getBlock().setType(Material.COMMAND_BLOCK);
                             CommandBlock block = (CommandBlock) location.getBlock().getState();
-                            block.setCommand("mw clan members " + (String) args[0] + " @p");
+                            block.setCommand("gw clan members " + (String) args[0] + " @p");
                             block.update();
 
                             player.sendMessage(ChatColor.GREEN + "Spawned command block!");
