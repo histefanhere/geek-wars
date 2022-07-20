@@ -4,15 +4,35 @@ Thanks for choosing to play and participate in the official Geek NZ Geek Wars! T
 
 ## Table of contents
 
+* [Rules](#rules)
+* [Finding the other clan's hall](#finding-the-other-clans-hall)
 * [Capturing the other clan's treasure](#capturing-the-other-clans-treasure)
 * [Preventing the other clan from capturing your treasure](#preventing-the-other-clan-from-capturing-your-treasure)
 * [Getting kills](#getting-kills)
 
+## Rules
+
+Of course, we here on geek are all friends and this event is all for fun. In that spirit, basic gentlemen's rules apply meaning that:
+
+- If you kill someone, you are expected to return their items to them, build a chest for them to collect their items, etc.
+- If you *get* killed by someone, don't go into a fit of rage! Say GG and move on.
+- This event doesn't change the fact that Geek NZ is a family friendly server - *keep conversations PG*
+- All other Geek NZ Rules apply
+
+With that out of the way, let's start talking *treasure!*
+
+## Finding the other clan's hall
+
+The treasure you seek is hidden away at the enemy clan's hall. To find it, you need to look out for one of these specific bell towers which mark that a clan hall is nearby:
+
+<img src="images/ClanHallBellTowers.jpg" alt="Two different styles of tall bell towers" style="width:600px;"/>
+
+Once you've found a tower, look around for hidden entrances to bases. Be careful! The clan hall might have traps or parkour to do before you can get to the treasure, and it may even be guarded. There should be no need to break blocks at their hall in order to get to the treasure so **do not grief.**
+
 ## Capturing the other clan's treasure
 
-To capture the enemy's treasure, firstly you must be signed in to your clan. You can do this at your clan's hall. At their hall there may be traps or parkour to do in order to obtain their treasure, so be careful! Right click it with an empty hand to pick it up, and return it to your clan's treasure to score a point.
+To capture the enemy's treasure, firstly you must be signed in to your clan. You can do this at your clan's hall. Right click it with an empty hand to pick it up, and return it to your clan's treasure to score a point. Easy, right? We thought so too. That's why while you're carrying treasure, you're significantly nerfed:
 
-Easy, right? We thought so too. That's why while you're carrying treasure, you're significantly nerfed:
 - You cannot use rockets with elytras, gliding only.
 - Enderpearls don't work
 - Nether portals don't work
