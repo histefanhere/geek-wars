@@ -1,13 +1,13 @@
 # Leaders handbook
 
+Congratulations on being a clan leader! This means you're responsible and trustworthy enough to help manage the Geek Wars event.
+
+As a clan leader you have access to the `/clan` (or `/cl`) command. This gives you control over the members of your clan, and most importantly, your clan's flag. Let's take a closer look at how you do those things.
+
 ## Table of contents
 
 * [Managing your clan members](#managing-your-clan-members)
 * [Managing your clan treasure](#managing-your-clan-treasure)
-
-Congratulations on being a clan leader! This means you're responsible and trustworthy enough to help manage the Geek Wars event.
-
-As a clan leader you have access to the `/clan` (or `/cl`) command. This gives you control over the members of your clan, and most importantly, your clan's flag. Let's take a closer look at how you do those things.
 
 ## Managing your clan members
 
@@ -35,3 +35,5 @@ If for some reason the treasure gets destroyed (which should be impossible for s
 ```
 /clan treasure setlocation
 ```
+
+Of course, as a leader of clan you're also a player of the geek war! Make sure you've read the [Players handbook](players-handbook.md) to know how to play the game and the rules.

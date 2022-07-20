@@ -1,12 +1,12 @@
 # Players handbook
 
+Thanks for choosing to play and participate in the official Geek NZ Geek Wars! There's a couple of things you should know before you go into it, including how to score points for your clan, and geek etiquette. This handbook will tell you everything you need to know!
+
 ## Table of contents
 
 * [Capturing the other clan's treasure](#capturing-the-other-clans-treasure)
 * [Preventing the other clan from capturing your treasure](#preventing-the-other-clan-from-capturing-your-treasure)
 * [Getting kills](#getting-kills)
-
-Thanks for choosing to play and participate in the official Geek NZ Geek Wars! There's a couple of things you should know before you go into it, including how to score points for your clan, and geek etiquette.
 
 ## Capturing the other clan's treasure
 

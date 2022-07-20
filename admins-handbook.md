@@ -1,5 +1,7 @@
 # Admins handbook
 
+Admins need to manage and overview the game, and for this the main tool on their utility belt is the `/geekwars` (or `/gw`) command. With this command you can make players join or leave clans, promote them to leaders, and more.
+
 ## Table of contents
 
 * [Joining and leaving a clan](#joining-and-leaving-a-clan)
@@ -10,8 +12,6 @@
   * [Variable tags usage example](#variable-tag-usage-example)
   * [Formatting codes](#formatting-codes)
   * [Smart sign usage example](#smart-sign-usage-example)
-
-Admins need to manage and overview the game, and for this the main tool on their utility belt is the `/geekwars` (or `/gw`) command. With this command you can make players join or leave clans, promote them to leaders, and more.
 
 ## Joining and leaving a clan
 
@@ -109,3 +109,5 @@ Entering the above text would result in a sign that looks like this:
 And of course these values would automatically update, so you don't need to worry about them becoming out of date.
 
 > **Note:** Please don't use smart signs to simply make fancy signs: the more there are the greater each subsequent sign will impact performance. This impact should be negligible unless there are lots of these signs (100+ maybe). If you want fancy signs really badly then let us know, and I can make that possible with no impact to server performance.
+
+If you're a leader as well as an admin, make sure you're up to date with the power at a leaders disposal by reading the [Leaders handbook](leaders-handbook.md). It's also very important you read the [Players handbook](players-handbook.md) to know how to play the game!
