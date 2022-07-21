@@ -14,8 +14,8 @@ Thanks for choosing to play and participate in the official Geek NZ Geek Wars! T
 
 Of course, we here on geek are all friends and this event is all for fun. In that spirit, basic gentlemen's rules apply meaning that:
 
-- If you kill someone, you are expected to return their items to them, build a chest for them to collect their items, etc.
-- If you *get* killed by someone, don't go into a fit of rage! Say GG and move on.
+- If you kill someone, you are expected to return their items to them, build a chest for them to collect their items, etc
+- If you *get* killed by someone, don't go into a fit of rage! Say GG and move on
 - This event doesn't change the fact that Geek NZ is a family friendly server - *keep conversations PG*
 - All other Geek NZ Rules apply
 
@@ -53,3 +53,5 @@ If you manage to kill the carrier of your treasure, it will drop on the ground, 
 ## Getting kills
 
 The other aspect of the Geek Wars is killing. If **and only if an enemy player is signed in to their clan** and you are signed in to yours, you can kill them for an extra point for your clan. Being signed in essentially puts a target on your back, so be careful!
+
+When you are signed in, you have a prefix before your name showing what clan you're in - either `[WW]` or `[MD]`
