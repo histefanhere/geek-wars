@@ -54,7 +54,7 @@ public class Flag implements Listener {
     public static final double POLE_OFFSET = -0.8;
 
     // Resets bi-daily, make this 0 <= HOUR_TO_RESET_AT <= 11
-    private static final int HOUR_TO_RESET_AT = 6;
+    private static final int HOUR_TO_RESET_AT = 2;
 
     Flag(int clanId) {
         this.clanId = clanId;
